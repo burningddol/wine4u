@@ -1,9 +1,3 @@
-
-
 export default function Home() {
-  return (
-    <div >
-     ds
-    </div>
-  );
+  return <div>ds</div>;
 }
