@@ -1,18 +1,12 @@
-import {
-  fetchRecommendedWines,
-  fetchWines,
-  fetchWinesProps,
-} from '@/libs/api/wines/getAPIData';
+import { fetchRecommendedWines, fetchWines } from '@/libs/api/wines/getAPIData';
 import RecommendedWineList from './_components/RecommendedWines';
 import WineList from './_components/WineList';
 
 export default async function WinesPage() {
-  const fetchWinesArgs: fetchWinesProps = {
-    limit: 6,
-  };
-
-  const recommendedWines = await fetchRecommendedWines(10);
-  const wines = await fetchWines(fetchWinesArgs);
+  const [recommendedWines, wines] = await Promise.all([
+    fetchRecommendedWines(10),
+    fetchWines({ limit: 6 }),
+  ]);
 
   return (
     <>

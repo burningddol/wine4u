@@ -1,6 +1,6 @@
 'use client';
+
 import Image from 'next/image';
-import { useDeviceType } from '../_libs/hooks/useDeviceType';
 import { useDeviceTypeStore } from '@/libs/zustand';
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 
 export default function WineSearchBar({ value, onChange, openFilter }: Props) {
   const { deviceType } = useDeviceTypeStore();
-
   const isNotDesktop = deviceType !== 'desktop';
 
   return (
@@ -21,7 +20,7 @@ export default function WineSearchBar({ value, onChange, openFilter }: Props) {
           src="/wines/input.svg"
           width={20}
           height={20}
-          alt="돋보기"
+          alt=""
           className="absolute top-3 left-3.5"
         />
         <input
@@ -36,9 +35,10 @@ export default function WineSearchBar({ value, onChange, openFilter }: Props) {
         <div className="mt-10 flex items-center justify-between">
           <button
             onClick={openFilter}
+            aria-label="필터 열기"
             className="flex h-10.5 w-10.5 cursor-pointer items-center justify-center rounded-lg border border-gray-300 md:h-12 md:w-12"
           >
-            <Image src="/wines/filter.svg" width={18} height={18} alt="필터" />
+            <Image src="/wines/filter.svg" width={18} height={18} alt="" />
           </button>
           <button className="bg-primary h-10 w-40 cursor-pointer rounded-sm px-6 py-2.5 text-sm font-bold text-white md:h-12 md:w-54">
             와인 등록하기

@@ -1,3 +1,5 @@
+export type WineType = 'RED' | 'WHITE' | 'SPARKLING';
+
 export interface User {
   id: number;
   nickname: string;
@@ -31,10 +33,10 @@ export interface RecommendedWine {
   region: string;
   image: string;
   price: number;
-  type: 'RED' | 'WHITE' | 'SPARKLING';
+  type: WineType;
   avgRating: number;
   reviewCount: number;
-  recentReview: RecentReview | null; // 리뷰가 없는 경우 null
+  recentReview: RecentReview | null;
 }
 
 export type RecommendedWines = RecommendedWine[];
@@ -45,14 +47,22 @@ export interface Wine {
   region: string;
   image: string;
   price: number;
-  type: 'RED' | 'WHITE' | 'SPARKLING';
+  type: WineType;
   avgRating: number;
   reviewCount: number;
   recentReview: RecentReview | null;
+  userId: number;
 }
 
 export interface WineListResponse {
   totalCount: number;
   nextCursor: number | null;
   list: Wine[];
+}
+
+export interface WineFilterValues {
+  type?: WineType;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
 }

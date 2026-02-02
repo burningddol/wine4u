@@ -9,7 +9,7 @@ interface Props {
 
 function WineCard({ wine }: Props) {
   return (
-    <div className="flex max-w-[370px] flex-col justify-start">
+    <article className="flex max-w-[370px] flex-col justify-start">
       <div className="flex h-[332px] w-full justify-center bg-gray-100 xl:h-[360px]">
         <div className="relative h-[332px] w-[332px] xl:h-[360px] xl:w-[370px]">
           <Image
@@ -44,7 +44,7 @@ function WineCard({ wine }: Props) {
           </div>
         </>
       )}
-    </div>
+    </article>
   );
 }
 

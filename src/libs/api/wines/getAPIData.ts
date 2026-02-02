@@ -1,12 +1,28 @@
-import { RecommendedWines } from '@/types/wines/types';
+import {
+  RecommendedWines,
+  WineListResponse,
+  WineType,
+} from '@/types/wines/types';
+
+const API_BASE = 'https://winereview-api.vercel.app/14-2';
+
+export interface FetchWinesParams {
+  limit: number;
+  cursor?: number;
+  type?: WineType;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
+  name?: string;
+}
 
 export async function fetchRecommendedWines(
   limit: number,
 ): Promise<RecommendedWines> {
   const res = await fetch(
-    `https://winereview-api.vercel.app/14-2/wines/recommended?limit=${limit}`,
+    `${API_BASE}/wines/recommended?limit=${limit}`,
     {
-      next: { revalidate: 10 }, // 10초 마다
+      next: { revalidate: 10 },
     },
   );
 
@@ -18,16 +34,6 @@ export async function fetchRecommendedWines(
   return data;
 }
 
-export interface fetchWinesProps {
-  limit: number;
-  cursor?: number;
-  type?: 'RED' | 'WHITE' | 'SPARKLING';
-  minPrice?: number;
-  maxPrice?: number;
-  rating?: number;
-  name?: string;
-}
-
 export async function fetchWines({
   limit,
   cursor,
@@ -36,7 +42,7 @@ export async function fetchWines({
   maxPrice,
   rating,
   name,
-}: fetchWinesProps): Promise<any> {
+}: FetchWinesParams): Promise<WineListResponse> {
   const params = new URLSearchParams();
   params.append('limit', limit.toString());
 
@@ -47,10 +53,8 @@ export async function fetchWines({
   if (rating !== undefined) params.append('rating', rating.toString());
   if (name) params.append('name', name);
 
-  const url = `https://winereview-api.vercel.app/14-2/wines?${params.toString()}`;
-
-  const res = await fetch(url, {
-    next: { revalidate: 1 }, // 1초 주기
+  const res = await fetch(`${API_BASE}/wines?${params.toString()}`, {
+    next: { revalidate: 1 },
   });
 
   if (!res.ok) {
