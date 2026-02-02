@@ -9,9 +9,9 @@ interface Props {
 
 function WineCard({ wine }: Props) {
   return (
-    <div className="flex max-w-[370px] flex-col">
-      <div className="flex h-[332px] w-full items-center justify-center bg-gray-100 xl:h-[360px]">
-        <div className="relative h-[332px] w-[332px] xl:w-[370px]">
+    <div className="flex max-w-[370px] flex-col justify-start">
+      <div className="flex h-[332px] w-full justify-center bg-gray-100 xl:h-[360px]">
+        <div className="relative h-[332px] w-[332px] xl:h-[360px] xl:w-[370px]">
           <Image
             src={wine.image}
             alt={wine.name}
@@ -29,7 +29,9 @@ function WineCard({ wine }: Props) {
         </span>
       </div>
 
-      <h3 className="mt-2 text-lg leading-snug font-bold">{wine.name}</h3>
+      <h3 className="mt-2 line-clamp-2 w-50 text-lg leading-snug font-bold break-words">
+        {wine.name}
+      </h3>
 
       {wine.recentReview && (
         <>

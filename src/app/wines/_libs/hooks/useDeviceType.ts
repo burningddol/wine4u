@@ -1,16 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDeviceTypeStore } from '@/libs/zustand';
 
-export type DeviceType = 'mobile' | 'tablet' | 'desktop';
+export type { DeviceType } from '@/libs/zustand';
 
 const BREAKPOINTS = {
   tablet: 768,
   desktop: 1280,
 } as const;
 
-export function useDeviceType(): DeviceType {
-  const [deviceType, setDeviceType] = useState<DeviceType>('desktop');
+export function useDeviceType() {
+  const { setDeviceType } = useDeviceTypeStore();
 
   useEffect(() => {
     const tabletQuery = window.matchMedia(
@@ -20,10 +21,10 @@ export function useDeviceType(): DeviceType {
       `(min-width: ${BREAKPOINTS.desktop}px)`,
     );
 
-    const getDeviceType = (): DeviceType => {
-      if (desktopQuery.matches) return 'desktop';
-      if (tabletQuery.matches) return 'tablet';
-      return 'mobile';
+    const getDeviceType = () => {
+      if (desktopQuery.matches) return 'desktop' as const;
+      if (tabletQuery.matches) return 'tablet' as const;
+      return 'mobile' as const;
     };
 
     setDeviceType(getDeviceType());
@@ -39,7 +40,5 @@ export function useDeviceType(): DeviceType {
       tabletQuery.removeEventListener('change', handleChange);
       desktopQuery.removeEventListener('change', handleChange);
     };
-  }, []);
-
-  return deviceType;
+  }, [setDeviceType]);
 }

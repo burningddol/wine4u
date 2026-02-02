@@ -6,20 +6,48 @@ import { Wine, WineListResponse } from '@/types/wines/types';
 import useInfiniteScroll from '../_libs/hooks/useInfiniteScroll';
 import useDebounce from '../_libs/hooks/useDebounce';
 import WineCard from './WineCard';
-import Image from 'next/image';
+import WineSearchBar from './WineSearchBar';
+import WineFilter from './WineFilter';
+
+import Modal from '@/components/Modal';
+import { useDeviceTypeStore } from '@/libs/zustand';
+import { cn } from '@/libs/api/utils';
 
 interface Props {
   wines: WineListResponse;
 }
 
+export type WineType = 'RED' | 'WHITE' | 'SPARKLING';
+
+export interface FilterValues {
+  type?: WineType;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
+}
+
+export const INITIAL_FILTER = {
+  type: undefined,
+  minPrice: undefined,
+  maxPrice: undefined,
+  rating: undefined,
+};
+
 export default function WineList({ wines }: Props) {
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
   const isInitialMount = useRef(true);
+  const [isOpenFilter, setIsOpenFilter] = useState(false);
+  const [currentFilter, setCurrentFilter] =
+    useState<FilterValues>(INITIAL_FILTER);
 
   const [list, setList] = useState<Wine[]>(wines.list);
   const [cursor, setCursor] = useState<number | null>(wines.nextCursor);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { deviceType } = useDeviceTypeStore();
+
+  const isDesktop = deviceType === 'desktop';
 
   const loadMore = useCallback(async () => {
     if (isLoading || cursor === null) return;
@@ -29,6 +57,7 @@ export default function WineList({ wines }: Props) {
         limit: 6,
         cursor,
         name: debouncedSearch || undefined,
+        ...currentFilter,
       });
       setList((prev) => [...prev, ...data.list]);
       setCursor(data.nextCursor);
@@ -41,61 +70,94 @@ export default function WineList({ wines }: Props) {
 
   const observerRef = useInfiniteScroll(loadMore, cursor !== null);
 
+  const refreshList = (params: FilterValues) => {
+    setIsLoading(true);
+    try {
+      fetchWines({
+        limit: 6,
+        name: debouncedSearch || undefined,
+        ...params,
+      }).then((data) => {
+        setList(data.list);
+        setCursor(data.nextCursor);
+      });
+    } catch (e) {
+      console.log('refresh failed' + e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   //첫 마운트땐 동작하면 안됨
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    fetchWines({ limit: 6, name: debouncedSearch || undefined }).then(
-      (data) => {
-        setList(data.list);
-        setCursor(data.nextCursor);
-      },
-    );
-  }, [debouncedSearch]);
+    refreshList(currentFilter);
+  }, [
+    debouncedSearch,
+    currentFilter.maxPrice,
+    currentFilter.minPrice,
+    currentFilter.rating,
+    currentFilter.type,
+  ]);
 
   return (
-    <div>
-      <div className="container m-auto mt-17 w-full md:mt-42 md:max-w-[680px] xl:mt-53 xl:max-w-[801px]">
-        <div className="relative">
-          <Image
-            src="/wines/input.svg"
-            width={20}
-            height={20}
-            alt="돋보기"
-            className="absolute top-3 left-3.5"
+    <div
+      className={cn(
+        'm-auto mt-8 w-full gap-30 md:mt-32 xl:mt-42',
+        isDesktop ? 'flex max-w-[1145px] gap-30' : '',
+      )}
+    >
+      {isDesktop && (
+        <div>
+          <WineFilter
+            onClose={() => setIsOpenFilter(false)}
+            currentFilter={currentFilter}
+            setCurrentFilter={setCurrentFilter}
+            isDesktop={isDesktop}
           />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="와인을 검색해 보세요"
-            className="w-full rounded-2xl border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:border-purple-500"
-          />
-        </div>
-
-        <div className="mt-10 flex items-center justify-between">
-          <button className="flex h-10.5 w-10.5 items-center justify-center rounded-lg border border-gray-300 md:h-12 md:w-12">
-            <Image src="/wines/filter.svg" width={18} height={18} alt="필터" />
-          </button>
-          <button className="bg-primary h-10 w-40 rounded-sm px-6 py-2.5 text-sm font-bold text-white md:h-12 md:w-54">
+          <button className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white">
             와인 등록하기
           </button>
         </div>
-      </div>
+      )}
 
-      <section className="relative container m-auto mt-10 w-full py-10 md:max-w-[680px] xl:max-w-[801px]">
-        <div className="grid grid-cols-1 place-items-center gap-5 md:grid-cols-2 xl:gap-16">
-          {list.map((wine) => (
-            <WineCard key={wine.id} wine={wine} />
-          ))}
-        </div>
+      <div>
+        <WineSearchBar
+          value={search}
+          onChange={setSearch}
+          openFilter={() => setIsOpenFilter(true)}
+        />
 
-        {cursor !== null && (
-          <div ref={observerRef} className="absolute bottom-100 py-30" />
+        <section className="relative container m-auto w-full py-5 md:max-w-[680px] xl:max-w-[801px]">
+          <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-2 xl:gap-16">
+            {list.map((wine) => (
+              <WineCard key={wine.id} wine={wine} />
+            ))}
+          </div>
+
+          {cursor !== null && (
+            <div ref={observerRef} className="absolute bottom-100 py-30" />
+          )}
+        </section>
+        {isOpenFilter && (
+          <Modal
+            title="필터"
+            width={375}
+            height={641}
+            onClose={() => setIsOpenFilter(false)}
+          >
+            <WineFilter
+              onClose={() => setIsOpenFilter(false)}
+              currentFilter={currentFilter}
+              setCurrentFilter={setCurrentFilter}
+              isDesktop={isDesktop}
+            />
+          </Modal>
         )}
-      </section>
+      </div>
     </div>
   );
 }

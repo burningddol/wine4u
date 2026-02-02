@@ -55,7 +55,7 @@ export default function RecommendedCarousel({
       >
         {recommendedWines.map((wine) => (
           <SwiperSlide key={wine.id}>
-            <div className="flex h-full flex-col items-center rounded-md bg-transparent pb-4 md:h-[320px]">
+            <div className="flex h-full flex-col items-center rounded-md bg-transparent md:h-[320px]">
               <div className="relative h-[165px] w-full md:h-[228px]">
                 <Image
                   src={wine.image}
@@ -65,13 +65,14 @@ export default function RecommendedCarousel({
                   sizes="(max-width: 768px) 150px, 201px"
                 />
               </div>
-              <p className="text-primary mt-3 line-clamp-2 w-33 text-center text-sm font-semibold">
+              <p className="text-primary mt-2 line-clamp-2 w-33 text-center text-sm font-semibold break-words md:mt-4">
                 {wine.name}
               </p>
-              <p className="my-2 line-clamp-1 text-xs text-gray-600">
+              <p className="mt-2 line-clamp-1 text-xs text-gray-600 md:mt-4">
                 {wine.region}
               </p>
             </div>
+            {isMobile && <div className="h-8" />}
           </SwiperSlide>
         ))}
       </Swiper>
