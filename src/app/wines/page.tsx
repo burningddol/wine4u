@@ -2,6 +2,8 @@ import { fetchRecommendedWines, fetchWines } from '@/libs/api/wines/getAPIData';
 import RecommendedWineList from './_components/RecommendedWines';
 import WineList from './_components/WineList';
 
+export const revalidate = 1; // 어차피 사용자적어서 서버부담없으니 1초로함
+
 export default async function WinesPage() {
   const [recommendedWines, wines] = await Promise.all([
     fetchRecommendedWines(10),
