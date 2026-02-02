@@ -28,7 +28,7 @@ export default function WineSearchBar({ value, onChange, openFilter }: Props) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="와인을 검색해 보세요"
-          className="w-full rounded-2xl border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:border-purple-500"
+          className="w-full rounded-sm border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:border-purple-500"
         />
       </div>
       {isNotDesktop && (
