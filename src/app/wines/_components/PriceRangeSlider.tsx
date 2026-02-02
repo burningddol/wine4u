@@ -10,8 +10,8 @@ interface Props {
   onChange: (min: number, max: number) => void;
 }
 
-const MIN_PRICE = 0;
-const MAX_PRICE = 100_000;
+export const MIN_PRICE = 0;
+export const MAX_PRICE = 100_000;
 const STEP = 1_000;
 
 export default function PriceRangeSlider({

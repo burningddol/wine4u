@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { WineFilterValues, WineType } from '@/types/wines/types';
 import { INITIAL_FILTER } from '../_libs/hooks/useWineList';
 import { cn } from '@/libs/api/utils';
-import PriceRangeSlider from './PriceRangeSlider';
+import PriceRangeSlider, { MAX_PRICE, MIN_PRICE } from './PriceRangeSlider';
 
 interface Props {
   currentFilter: WineFilterValues;
@@ -47,32 +47,23 @@ export default function WineFilter({
   };
 
   // 데스크탑이면 바로 적용, 모바일 필터모달이면 버튼 클릭 시 적용
-  const handleType = (value: WineType) => {
-    setTempFilter((prev) => ({
-      ...prev,
-      type: prev.type === value ? undefined : value,
-    }));
+  const updateFilter = (update: Partial<WineFilterValues>) => {
+    setTempFilter((prev) => ({ ...prev, ...update }));
     if (isDesktop) {
-      setCurrentFilter((prev) => ({
-        ...prev,
-        type: prev.type === value ? undefined : value,
-      }));
+      setCurrentFilter((prev) => ({ ...prev, ...update }));
     }
+  };
+
+  const handleType = (value: WineType) => {
+    updateFilter({ type: tempFilter.type === value ? undefined : value });
   };
 
   const handleRating = (isChecked: boolean, value: number | undefined) => {
-    const nextRating = isChecked ? undefined : value;
-    setTempFilter((prev) => ({ ...prev, rating: nextRating }));
-    if (isDesktop) {
-      setCurrentFilter((prev) => ({ ...prev, rating: nextRating }));
-    }
+    updateFilter({ rating: isChecked ? undefined : value });
   };
 
   const handlePriceChange = (minPrice: number, maxPrice: number) => {
-    setTempFilter((prev) => ({ ...prev, minPrice, maxPrice }));
-    if (isDesktop) {
-      setCurrentFilter((prev) => ({ ...prev, minPrice, maxPrice }));
-    }
+    updateFilter({ minPrice, maxPrice });
   };
 
   return (
@@ -102,8 +93,8 @@ export default function WineFilter({
       <hr className="my-6 border-gray-200" />
 
       <PriceRangeSlider
-        minValue={tempFilter.minPrice ?? 0}
-        maxValue={tempFilter.maxPrice ?? 100_000}
+        minValue={tempFilter.minPrice ?? MIN_PRICE}
+        maxValue={tempFilter.maxPrice ?? MAX_PRICE}
         onChange={handlePriceChange}
       />
 

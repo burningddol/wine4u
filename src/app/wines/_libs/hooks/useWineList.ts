@@ -91,7 +91,6 @@ export function useWineList(initialData: WineListResponse) {
     setSearch,
     filter,
     setFilter,
-    isLoading,
     hasMore,
     observerRef,
   };
