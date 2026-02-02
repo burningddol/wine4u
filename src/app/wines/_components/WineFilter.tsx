@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { WineFilterValues, WineType } from '@/types/wines/types';
 import { INITIAL_FILTER } from '../_libs/hooks/useWineList';
 import { cn } from '@/libs/api/utils';
+import PriceRangeSlider from './PriceRangeSlider';
 
 interface Props {
   currentFilter: WineFilterValues;
@@ -67,11 +68,18 @@ export default function WineFilter({
     }
   };
 
+  const handlePriceChange = (minPrice: number, maxPrice: number) => {
+    setTempFilter((prev) => ({ ...prev, minPrice, maxPrice }));
+    if (isDesktop) {
+      setCurrentFilter((prev) => ({ ...prev, minPrice, maxPrice }));
+    }
+  };
+
   return (
-    <div className="flex flex-col">
+    <div className="flex w-75 flex-col">
       <section>
         <h3 className="mb-3 text-lg font-bold">타입</h3>
-        <div className="flex gap-2">
+        <div className={cn('flex gap-2', isDesktop && 'flex-col')}>
           {WINE_TYPES.map(({ label, value }) => {
             const isPressed = value === tempFilter.type;
             return (
@@ -80,7 +88,7 @@ export default function WineFilter({
                 aria-pressed={isPressed}
                 onClick={() => handleType(value)}
                 className={cn(
-                  'flex cursor-pointer items-center gap-1.5 rounded-full border px-4 py-2 text-sm',
+                  'inline-flex w-fit cursor-pointer items-center gap-1.5 self-start rounded-full border px-4 py-2 text-sm whitespace-nowrap',
                   isPressed ? 'bg-black text-white' : 'bg-white',
                 )}
               >
@@ -93,6 +101,13 @@ export default function WineFilter({
 
       <hr className="my-6 border-gray-200" />
 
+      <PriceRangeSlider
+        minValue={tempFilter.minPrice ?? 0}
+        maxValue={tempFilter.maxPrice ?? 100_000}
+        onChange={handlePriceChange}
+      />
+
+      <hr className="my-6 border-gray-200" />
       <section>
         <h3 className="mb-3 text-lg font-bold">평점</h3>
         <div className="flex flex-col gap-3">
@@ -108,10 +123,14 @@ export default function WineFilter({
                   className={cn(
                     'flex h-5 w-5 cursor-pointer items-center justify-center rounded border',
                     isChecked
-                      ? 'border-black bg-black'
+                      ? 'border-black bg-white'
                       : 'border-gray-300 bg-white',
                   )}
-                />
+                >
+                  {isChecked && (
+                    <span className="h-3 w-3 rounded-xs bg-black" />
+                  )}
+                </button>
                 <span className="text-base text-gray-800">{label}</span>
               </label>
             );
