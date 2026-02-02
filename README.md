@@ -14,6 +14,16 @@ pnpm dev
 bun dev
 ```
 
+```bash
+npm install --legacy-peer-deps sass (scss)
+npm install --legacy-peer-deps axios (데이터 페칭)
+npm install --legacy-peer-deps zustand (상태관리)
+npm install --legacy-peer-deps zod (폼 유효성 검사)
+npm install --legacy-peer-deps react-hook-form (폼 유효성 검사, zod와 궁합이 좋음 선택사항)
+npm install --legacy-peer-deps swiper (swiper 슬라이더)
+npm install --legacy-peer-deps framer-motion (framer motion 애니메이션)
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
