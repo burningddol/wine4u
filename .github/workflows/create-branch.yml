@@ -1,0 +1,26 @@
+name: Create Branch on Issue
+on:
+  issues:
+    types: [opened, assigned]
+
+jobs:
+  create_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create branch name from issue title
+        id: branch_name
+        run: |
+          # 이슈 제목.
+          TITLE="${{ github.event.issue.title }}"
+          # 1. 영문/숫자 외 문자를 '-'로 치환 (대문자 유지) 
+          # 2. 연속된 '-'를 하나로 3. 앞뒤 '-' 제거
+          CLEAN_TITLE=$(echo "$TITLE" | sed 's/[^a-zA-Z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+          echo "formatted_title=$CLEAN_TITLE" >> $GITHUB_OUTPUT
+
+      - name: Create branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          
+          branch: '${{ steps.branch_name.outputs.formatted_title }}'
