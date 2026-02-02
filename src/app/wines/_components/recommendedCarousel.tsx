@@ -62,6 +62,7 @@ export default function RecommendedCarousel({
                   alt={wine.name}
                   fill
                   className="object-contain"
+                  sizes="(max-width: 768px) 150px, 201px"
                 />
               </div>
               <p className="text-primary mt-3 line-clamp-2 w-33 text-center text-sm font-semibold">
