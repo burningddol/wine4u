@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>ds</div>;
+  return <div className="text-3xl font-bold underline text-error">ds</div>;
 }
