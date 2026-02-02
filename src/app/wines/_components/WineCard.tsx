@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import { Wine } from '@/types/wines/types';
 import StarRating from '@/components/StarRating';
+import { memo } from 'react';
 
 interface Props {
   wine: Wine;
 }
 
-export default function WineCard({ wine }: Props) {
+function WineCard({ wine }: Props) {
   return (
     <div className="flex max-w-[370px] flex-col">
       <div className="flex h-[332px] w-full items-center justify-center bg-gray-100 xl:h-[360px]">
@@ -44,3 +45,5 @@ export default function WineCard({ wine }: Props) {
     </div>
   );
 }
+
+export default memo(WineCard);
