@@ -124,14 +124,16 @@ export default function SignUpForm({
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-18">
-      <Image
-        src="/auth/logo.svg"
-        width={104}
-        height={30}
-        alt="logo"
-        className="align-contents-center"
-      />
+    <div className="flex w-full flex-col items-center gap-9 md:gap-18">
+      <Link href="/">
+        <Image
+          src="/auth/logo.svg"
+          width={104}
+          height={30}
+          alt="logo"
+          className="align-contents-center"
+        />
+      </Link>
       <Formik<SignUpFormValues>
         initialValues={{
           email: '',

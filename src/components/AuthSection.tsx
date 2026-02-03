@@ -26,7 +26,7 @@ export default function AuthSection() {
   };
 
   if (user === 'isPending') {
-    return <span>로딩중...</span>;
+    return <span className="text-white">로딩중이미지 추가</span>;
   }
 
   if (user) {
@@ -36,7 +36,7 @@ export default function AuthSection() {
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         <Image
-          src="/icons/user_icon.svg"
+          src={user.image ?? '/icons/user_icon.svg'}
           alt="유저 아이콘"
           width={40}
           height={40}

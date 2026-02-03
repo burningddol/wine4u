@@ -3,6 +3,7 @@
 import { useField } from 'formik';
 import { InputHTMLAttributes, useState } from 'react';
 import Image from 'next/image';
+import { cn } from '@/libs/utils';
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -33,9 +34,10 @@ export default function CustomInput({
           {...props}
           onBlur={handleBlur}
           type={forPassword ? passwordState : props.type}
-          className={`h-14 w-full rounded-sm border border-1 bg-white px-6 text-base focus:outline-none ${
-            hasError ? 'border-[#ff0000]' : 'border-gray-300'
-          }`}
+          className={cn(
+            'h-14 w-full rounded-sm border border-1 bg-white px-6 text-base outline-none focus:ring-0',
+            hasError ? 'border-[#ff0000]' : 'border-gray-300',
+          )}
         />
         {forPassword && (
           <button
