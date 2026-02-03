@@ -187,20 +187,20 @@ export default function Character({
           fill="rgba(0,0,0,0.07)"
         />
 
-        {/* Grape decorations (replacing ears) */}
+        {/* Grape decorations  */}
         <g ref={ears}>
-          {/* Left grape cluster */}
+          {/* Left grape  */}
           <g>
             <circle cx={28} cy={-2} r={6} fill={WINE_RED} />
             <circle cx={36} cy={-4} r={5} fill={WINE_RED} />
-            <circle cx={32} cy={3} r={5} fill={WINE_LIGHT} />
+
             <circle cx={30} cy={-2} r={2} fill="rgba(255,255,255,0.3)" />
           </g>
-          {/* Right grape cluster */}
+          {/* Right grape  */}
           <g>
             <circle cx={92} cy={-2} r={6} fill={WINE_RED} />
             <circle cx={84} cy={-4} r={5} fill={WINE_RED} />
-            <circle cx={88} cy={3} r={5} fill={WINE_LIGHT} />
+
             <circle cx={90} cy={-2} r={2} fill="rgba(255,255,255,0.3)" />
           </g>
         </g>
@@ -233,7 +233,7 @@ export default function Character({
 
         {/* Face */}
         <g ref={face}>
-          {/* Eyes (no dark patches - wine glass style) */}
+          {/* Eyes  */}
           <Eye
             side="left"
             state={eyeState}
@@ -251,7 +251,7 @@ export default function Character({
             pupilR={pupilR}
           />
 
-          {/* Nose - small heart shape */}
+          {/* Nose  */}
           <path
             d="M55 54 C52 51, 48 54, 55 59 C62 54, 58 51, 55 54"
             fill={WINE_RED}
@@ -260,7 +260,7 @@ export default function Character({
           {/* Mouth */}
           <Mouth role={role} focused={focused} />
 
-          {/* Cheek blush - wine colored */}
+          {/*  blush  */}
           {focused && (
             <>
               <ellipse
