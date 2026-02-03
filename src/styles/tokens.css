@@ -7,7 +7,7 @@
 
     --black: 30 4% 10%;
     --white: 0 0% 100%;
-    
+
     --error: 0 100% 63%;
 
     --gray100: 0 0% 98%;
@@ -39,15 +39,17 @@
   --color-black: hsl(var(--black));
   --color-white: hsl(var(--white));
   --color-error: hsl(var(--error));
-  
+
   --color-gray-100: hsl(var(--gray100));
   --color-gray-300: hsl(var(--gray300));
   --color-gray-600: hsl(var(--gray600));
   --color-gray-800: hsl(var(--gray800));
-  
+
   --color-border: hsl(var(--border));
   --color-muted: hsl(var(--muted));
-  
+
   --radius-md: var(--radius-md);
   --shadow-soft: var(--shadow-soft);
+
+  --background-image-winesHero: url('/wines/mainBG.png');
 }

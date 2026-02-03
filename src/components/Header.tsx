@@ -1,9 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="w-full mt-6 h-[110px]">
+    <header className="h-[110px] w-full md:mt-[27px] xl:mt-[40px]">
       <div className="mx-auto h-[70px] max-w-[1140px] rounded-2xl bg-[#101318] px-[60px]">
         <nav className="flex h-full items-center justify-between">
           <Link href="/">
