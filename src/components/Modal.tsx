@@ -37,7 +37,7 @@ export default function Modal({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className="relative max-h-[85vh] overflow-y-auto rounded-2xl bg-white px-6 py-8"
+        className="scrollbar-ghost relative max-h-[85vh] overflow-y-auto rounded-sm bg-white py-8 pr-6 pl-7"
         style={{ width, height }}
       >
         <div className="mb-6 flex items-center justify-between">

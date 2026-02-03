@@ -67,7 +67,7 @@ export default function WineFilter({
   };
 
   return (
-    <div className="flex w-75 flex-col">
+    <div className={cn('flex flex-col', isDesktop ? 'w-75' : 'w-full')}>
       <section>
         <h3 className="mb-3 text-lg font-bold">타입</h3>
         <div className={cn('flex gap-2', isDesktop && 'flex-col')}>
