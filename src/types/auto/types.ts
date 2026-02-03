@@ -11,6 +11,15 @@ export interface LoginData {
   password: string;
 }
 
+export interface LoginedUser {
+  id: number;
+  image?: string;
+  nickname: string;
+  updatedAt?: string;
+  createdAt?: string;
+  teamId?: string;
+}
+
 export interface User {
   id: number;
   email?: string;

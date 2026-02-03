@@ -11,6 +11,7 @@ import { LoginFormValues, loginSchema } from '../_libs/authSchema';
 import { LoginData, SignUpData } from '@/types/auto/types';
 import { postLoginData, postSignUpData } from '../_libs/authApi';
 import { useToast } from '@/components/Toast';
+import { useUser } from '@/components/UserProvider';
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
@@ -36,6 +37,8 @@ export default function LoginForm({
 }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  const { setUser } = useUser();
 
   const { showToast } = useToast();
 
@@ -78,10 +81,12 @@ export default function LoginForm({
     };
     try {
       const data = await postLoginData(LoginData);
+      setUser(data.user);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
       showToast('로그인에 성공했습니다', 'success');
+
       router.replace('/');
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || '로그인에 실패했습니다';

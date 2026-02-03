@@ -11,6 +11,7 @@ import { SignUpFormValues, signUpSchema } from '../_libs/authSchema';
 import { SignUpData } from '@/types/auto/types';
 import { postSignUpData } from '../_libs/authApi';
 import { useToast } from '@/components/Toast';
+import { useUser } from '@/components/UserProvider';
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
@@ -36,6 +37,8 @@ export default function SignUpForm({
 }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  const { setUser } = useUser();
 
   const { showToast } = useToast();
 
@@ -101,6 +104,8 @@ export default function SignUpForm({
     };
     try {
       const data = await postSignUpData(signUpData);
+      setUser(data.user);
+
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 

@@ -2,10 +2,12 @@ import axios from '@/libs/api/axios';
 import {
   AccessToken,
   LoginData,
+  LoginedUser,
   SignUpData,
   UserLogin,
   UserSignUp,
 } from '@/types/auto/types';
+import { User } from '@/types/wines/types';
 
 export async function postSignUpData(
   signUpData: SignUpData,
@@ -18,6 +20,13 @@ export async function postSignUpData(
 
 export async function postLoginData(LoginData: LoginData): Promise<UserLogin> {
   const res = await axios.post('/auth/signIn', LoginData);
+  const data = res.data;
+
+  return data;
+}
+
+export async function getUserData(): Promise<LoginedUser | any> {
+  const res = await axios.get('/users/me');
   const data = res.data;
 
   return data;
