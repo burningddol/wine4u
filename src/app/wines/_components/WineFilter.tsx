@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { WineFilterValues, WineType } from '@/types/wines/types';
 import { INITIAL_FILTER } from '../_libs/hooks/useWineList';
-import { cn } from '@/libs/api/utils';
+import { cn } from '@/libs/utils';
 import PriceRangeSlider, { MAX_PRICE, MIN_PRICE } from './PriceRangeSlider';
 
 interface Props {

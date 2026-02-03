@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 import 'swiper/css';
 import 'swiper/css/scrollbar';
-import { cn } from '@/libs/api/utils';
+import { cn } from '@/libs/utils';
 
 interface Props {
   recommendedWines: RecommendedWines;

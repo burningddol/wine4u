@@ -8,7 +8,7 @@ import WineSearchBar from './WineSearchBar';
 import WineFilter from './WineFilter';
 import Modal from '@/components/Modal';
 import { useDeviceTypeStore } from '@/libs/zustand';
-import { cn } from '@/libs/api/utils';
+import { cn } from '@/libs/utils';
 
 interface Props {
   wines: WineListResponse;
