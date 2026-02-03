@@ -8,6 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        slideIn: {
+          from: { transform: 'translate(-50%, 100%)', opacity: '0' },
+          to: { transform: 'translate(-50%, 0)', opacity: '1' },
+        },
+        slideOut: {
+          from: { transform: 'translate(-50%, 0)', opacity: '1' },
+          to: { transform: 'translate(-50%, 100%)', opacity: '0' },
+        },
+      },
+      animation: {
+        slideIn: 'slideIn 0.3s ease forwards',
+        slideOut: 'slideOut 0.3s ease forwards',
+      },
       colors: {
         background: 'hsl(var(--bg))',
         foreground: 'hsl(var(--fg))',
