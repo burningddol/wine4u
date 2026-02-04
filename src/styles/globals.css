@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "./tokens.css";
+@import 'tailwindcss';
+@import './tokens.css';
 
 @layer base {
   html,
@@ -11,14 +11,23 @@
     /* 전역 기본 정책 */
     background-color: hsl(var(--bg));
     color: hsl(var(--fg));
-    font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto,
+    font-family:
+      var(--font-sans),
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
       sans-serif;
     text-rendering: optimizeLegibility;
   }
 
   a {
-    @apply hover:underline;
     color: hsl(var(--primary));
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 
   :focus-visible {
@@ -33,6 +42,26 @@
 
   code,
   pre {
-    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:
+      var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   }
+}
+
+.scrollbar-ghost::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-ghost::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-ghost::-webkit-scrollbar-thumb {
+  min-height: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-ghost:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
 }
