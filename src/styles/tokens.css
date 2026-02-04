@@ -52,4 +52,29 @@
   --shadow-soft: var(--shadow-soft);
 
   --background-image-winesHero: url('/wines/mainBG.png');
+
+  --animate-slideIn: slideIn 0.3s ease forwards;
+  --animate-slideOut: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
 }
