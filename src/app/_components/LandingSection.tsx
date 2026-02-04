@@ -6,6 +6,8 @@ import { RenderModel } from './RenderModel';
 import { useScrollProgress } from '../_libs/useScrollProgress';
 import { useDeviceType } from '../wines/_libs/hooks/useDeviceType';
 import { useDeviceTypeStore } from '@/libs/zustand';
+import { cn } from '@/libs/utils';
+import Link from 'next/link';
 
 interface LandingSectionProps {
   children: ReactNode;
@@ -47,13 +49,24 @@ export default function LandingSection({ children }: LandingSectionProps) {
       </div>
 
       <div
-        className="relative transition-opacity duration-500"
+        className="transition-opacity duration-500"
         style={{
           opacity: isComplete ? 1 : 0,
-          pointerEvents: isComplete ? 'auto' : 'none',
+          pointerEvents: 'none',
         }}
       >
         {children}
+
+        <Link
+          href="/wines"
+          className={cn(
+            'fixed bottom-28 left-1/2 h-12.5 w-71 -translate-x-1/2 cursor-pointer rounded-sm bg-black text-white',
+            isComplete ? 'pointer-events-auto' : 'pointer-none',
+            'flex items-center justify-center no-underline',
+          )}
+        >
+          와인 보러가기
+        </Link>
       </div>
     </>
   );

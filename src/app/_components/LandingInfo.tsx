@@ -9,7 +9,7 @@ interface LandingInfoProps {
 
 export default function LandingInfo({ progress }: LandingInfoProps) {
   const translateY = -progress * 150;
-  const showChevron = progress < 0.02;
+  const showChevron = progress < 0.05;
 
   return (
     <motion.div
@@ -61,7 +61,7 @@ export default function LandingInfo({ progress }: LandingInfoProps) {
 
       {showChevron && (
         <motion.button
-          className="pointer-events-auto absolute bottom-8 cursor-pointer text-2xl text-gray-400 transition-colors hover:text-white md:bottom-12"
+          className="pointer-events-auto absolute bottom-12 cursor-pointer text-4xl text-gray-400 transition-colors hover:text-white md:bottom-14"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
           onClick={() => {
