@@ -4,20 +4,23 @@ import { useGLTF } from '@react-three/drei';
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { applyRotationY } from '../_libs/useModelMotion';
+import { useCameraController } from '../_libs/useCameraController';
 
-export function WineModel() {
+interface WineModelProps {
+  progress: number;
+}
+
+export function WineModel({ progress }: WineModelProps) {
   const { scene } = useGLTF('/main/wine_objects.glb');
   const objRef = useRef<THREE.Object3D>(null);
+  useCameraController(progress);
 
   useFrame((_, delta) => {
     const obj = objRef.current;
     if (!obj) return;
 
-    const dt = Math.min(delta, 1 / 30); // 33ms 이상은 잘라서 부드럽게
     const speed = 0.3;
-
-    applyRotationY(obj, speed, dt);
+    obj.rotation.y += speed * Math.min(delta, 1 / 30);
   });
 
   return (

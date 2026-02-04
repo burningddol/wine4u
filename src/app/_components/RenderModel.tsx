@@ -1,43 +1,35 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-
-import LightObject from './LightObject';
 import { Suspense } from 'react';
+import LightObject from './LightObject';
 import { WineModel } from './WineModel';
-import { OrbitControls } from '@react-three/drei';
-import { useDeviceTypeStore } from '@/libs/zustand';
-import { useDeviceType } from '../wines/_libs/hooks/useDeviceType';
 
-export function RenderModel() {
-  useDeviceType();
-  const { deviceType } = useDeviceTypeStore();
-  const cameraZ = deviceType === 'desktop' ? 14 : 15;
+import { DeviceType } from '@/libs/zustand';
 
-  if (deviceType === 'mobile') return;
+interface RenderModelProps {
+  deviceType: DeviceType;
+  progress: number;
+}
+
+export function RenderModel({ deviceType, progress }: RenderModelProps) {
+  if (deviceType === 'mobile') return null;
+
+  const opacity = progress > 0.85 ? 1 - (progress - 0.85) / 0.15 : 1;
 
   return (
-    <Canvas
-      dpr={[1, 1.5]}
-      gl={{ powerPreference: 'high-performance' }}
-      camera={{ position: [0, 5, cameraZ], fov: 55, near: 0.1, far: 200 }}
-      style={{
-        background: '#101318',
-        touchAction: 'none',
-      }}
-    >
-      <Suspense fallback={null}>
-        <LightObject />
-        <OrbitControls
-          target={[0, 0, 0]}
-          enablePan={false}
-          enableZoom={false}
-          enableRotate={true}
-          maxDistance={130}
-          maxPolarAngle={Math.PI / 2}
-        />
-        <WineModel />
-      </Suspense>
-    </Canvas>
+    <div style={{ opacity }} className="h-full w-full">
+      <Canvas
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: 'high-performance' }}
+        camera={{ position: [0, 5, 14], fov: 55, near: 0.1, far: 200 }}
+        style={{ background: '#101318', touchAction: 'none' }}
+      >
+        <Suspense fallback={null}>
+          <LightObject progress={progress} />
+          <WineModel progress={progress} />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 }
