@@ -38,7 +38,7 @@ export default function MyWinesPage() {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-wrap gap-x-19 w-full gap-y-10 py-10 px-8">
         {displayWines.map((wine) => (
           <WineCard key={wine.id} wine={wine} />
         ))}
@@ -49,24 +49,24 @@ export default function MyWinesPage() {
 
 function WineCard({ wine }: { wine: any }) {
   return (
-    <article className="border border-gray-300 rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer group">
+    <article className="flex flex-col gap-6 w-[calc(50%-38px)] overflow-hidden cursor-pointer group">
       {/* 와인 이미지 */}
       <div className="aspect-square bg-gray-100 flex items-center justify-center relative">
         <span className="text-5xl">🍷</span>
       </div>
 
       {/* 와인 정보 */}
-      <div className="p-4">
-        <h3 className="font-bold text-black mb-1 text-lg">{wine.wineName}</h3>
-        <p className="text-sm text-gray-600 mb-2">
-          {wine.type} • {wine.region}
-        </p>
-        <div className="flex items-center justify-between">
-          <p className="text-lg font-bold text-primary">
-            ₩{wine.price.toLocaleString()}
+      <div className="flex flex-col gap-6 pb-5">
+        <div className="relative flex flex-col gap-[6px]">
+          <h3 className="w-2/3 text-2xl font-bold">{wine.wineName}</h3>
+          <p className="text-md font-normal text-gray-300 mb-2">
+            {wine.region}
           </p>
-          <span className="text-xs text-gray-500">{wine.registeredDate}</span>
+          <div className="absolute top-0 right-0">삭제</div>
         </div>
+        <p className="text-2xl font-bold">
+          ₩{wine.price.toLocaleString()}
+        </p>
       </div>
     </article>
   );

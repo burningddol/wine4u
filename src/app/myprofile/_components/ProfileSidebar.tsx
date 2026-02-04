@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function ProfileSidebar() {
   return (
-    <aside className="w-[280px]">
+    <aside className="w-[280px] sticky top-0 self-start">
       <div className="flex flex-col gap-12 py-7 px-5">
         <div className="flex flex-col items-center gap-7">
           <Image
@@ -12,7 +12,7 @@ export default function ProfileSidebar() {
             height={160}
             alt="profile"
           />
-          <span className="text-2xl font-bold text-black">닉네임</span>
+          <span className="text-2xl font-bold">닉네임</span>
         </div>
 
         <div className="flex flex-col gap-4">
