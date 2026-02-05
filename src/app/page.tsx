@@ -1,7 +1,12 @@
+import LandingSection from './_components/LandingSection';
+import FeatureSection from './_components/FeatureSection';
+
 export default function Home() {
   return (
     <div>
-      <button className="fix top-[50%] left-[50%]">ㄷㄷㄷ</button>
+      <LandingSection>
+        <FeatureSection />
+      </LandingSection>
     </div>
   );
 }
