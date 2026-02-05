@@ -1,14 +1,14 @@
-'use client';
+"use client";
 import {
   createContext,
   useContext,
   useState,
   useCallback,
   ReactNode,
-} from 'react';
-import { cn } from '@/libs/utils';
+} from "react";
+import { cn } from "@/libs/utils";
 
-type ToastType = 'error' | 'success';
+type ToastType = "error" | "success";
 
 interface ToastData {
   message: string;
@@ -32,7 +32,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const [isClosed, setIsClosed] = useState<boolean>(false);
 
   const showToast = useCallback(
-    (message: string, type: ToastType = 'error') => {
+    (message: string, type: ToastType = "error") => {
       setToast({ message, type });
       setTimeout(() => setIsClosed(true), TOAST_DURATION - 300);
       setTimeout(() => {
@@ -49,12 +49,12 @@ export function ToastProvider({ children }: ToastProviderProps) {
       {toast && (
         <div
           className={cn(
-            'fixed bottom-30 left-1/2 z-[10000]',
-            'rounded-xl px-7 py-[14px]',
+            "fixed bottom-30 left-1/2 z-[10000]",
+            "rounded-xl px-7 py-[14px]",
             "font-['pretendard'] text-[15px] font-medium text-white",
-            'shadow-[0_6px_20px_rgba(0,0,0,0.15)]',
-            toast.type === 'error' ? 'bg-[#e74c3c]' : 'bg-[#0d0e0db2]',
-            isClosed ? 'animate-slideOut' : 'animate-slideIn',
+            "shadow-[0_6px_20px_rgba(0,0,0,0.15)]",
+            toast.type === "error" ? "bg-[#e74c3c]" : "bg-[#0d0e0db2]",
+            isClosed ? "animate-slideOut" : "animate-slideIn",
           )}
         >
           {toast.message}
@@ -67,7 +67,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
 export function useToast(): ToastContextValue {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+    throw new Error("useToast must be used within a ToastProvider");
   }
   return context;
 }
