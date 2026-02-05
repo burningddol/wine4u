@@ -1,6 +1,6 @@
-import WineDetail from '../_components/_detail/WineDetail';
-import WineTaste from '../_components/_detail/WineTaste';
-import { MockData } from '../_components/_detail/MockData';
+import WineDetail from './_components/WineDetail';
+import { MockData } from '../_libs/Mock/MockData';
+import TasteBarGroup from './_components/TasteBarGroup';
 
 export default async function WinesPage() {
   const wineData = MockData[0];
@@ -18,10 +18,7 @@ export default async function WinesPage() {
             <h2 className="mb-2 text-xl font-bold">어떤 맛이 나나요?</h2>
             <h3 className="text-gray-600">( {wineData.reviewCount}명 참여 )</h3>
           </div>
-          <WineTaste label="바디감" value={4} />
-          <WineTaste label="탄닌" value={2.5} />
-          <WineTaste label="당도" value={5.3} />
-          <WineTaste label="산미" value={3.7} />
+          <TasteBarGroup></TasteBarGroup>
         </div>
         <div className="mx-10 flex min-w-[480px] flex-col gap-4">
           <div className="flex flex-row justify-between">
