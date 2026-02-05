@@ -1,19 +1,43 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import '@/styles/globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ToastProvider } from '@/components/Toast';
 import { UserProvider } from '@/components/UserProvider';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const sfProDisplay = localFont({
+  src: [
+    {
+      path: '../../public/fonts/SF-Pro-Display-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/SF-Pro-Display-Semibold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/SF-Pro-Display-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-sans',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+const sfProRounded = localFont({
+  src: [
+    {
+      path: '../../public/fonts/SF-Pro-Rounded-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-rounded',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -29,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
+        className={`${sfProDisplay.variable} ${sfProRounded.variable} flex min-h-screen flex-col antialiased`}
       >
         <UserProvider>
           <ToastProvider>

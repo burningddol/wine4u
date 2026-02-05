@@ -1,6 +1,70 @@
 @import 'tailwindcss';
 @import './tokens.css';
 
+/* Pretendard 폰트 (한글) */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+
 @layer base {
   html,
   body {
@@ -12,18 +76,21 @@
     background-color: hsl(var(--bg));
     color: hsl(var(--fg));
     font-family:
-      var(--font-sans),
-      system-ui,
+      var(--font-sans), /* SF Pro (영문) */
+      'Pretendard', /* 한글 */
       -apple-system,
-      Segoe UI,
-      Roboto,
+      system-ui,
       sans-serif;
     text-rendering: optimizeLegibility;
   }
 
   a {
-    @apply hover:underline;
     color: hsl(var(--primary));
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 
   :focus-visible {
@@ -60,4 +127,60 @@
 
 .scrollbar-ghost:hover::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.25);
+}
+
+@layer utilities {
+  /* Pretendard Text Styles */
+  .text-3xl {
+    font-size: 32px;
+    line-height: 42px;
+  }
+
+  .text-2xl {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .text-xl {
+    font-size: 20px;
+    line-height: 32px;
+  }
+
+  .text-2lg {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .text-lg {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .text-md {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .text-sm {
+    font-size: 13px;
+    line-height: 22px;
+  }
+
+  /* Text-xs - weight별로 line-height가 다름 */
+  .text-xs-semibold {
+    font-size: 12px;
+    line-height: 20px;    font-weight: 500;
+    font-weight: 600;
+  }
+
+  .text-xs-medium {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+
+  .text-xs-regular {
+    font-size: 12px;
+    line-height: 18px;
+  }
 }
