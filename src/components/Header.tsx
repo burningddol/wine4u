@@ -13,8 +13,8 @@ export default function Header() {
 
   if (HIDE_ON.includes(pathname)) return null;
   return (
-    <header className="h-[110px] w-full md:mt-[27px] xl:mt-[40px]">
-      <div className="mx-auto h-[70px] max-w-[1140px] rounded-sm bg-[#101318] px-[50px]">
+    <header className="fixed top-0 left-1/2 z-100 h-[70px] w-full -translate-x-1/2">
+      <div className="mx-auto h-[70px] bg-[#101318] px-[50px]">
         <nav className="flex h-full items-center justify-between">
           <Link href="/">
             <Image src="/logo.svg" alt="WINE logo" width={52} height={15} />
