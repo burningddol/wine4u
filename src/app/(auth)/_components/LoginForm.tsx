@@ -8,8 +8,8 @@ import { useRouter } from "next/navigation";
 import type { FocusTarget } from "./Character";
 import Image from "next/image";
 import { LoginFormValues, loginSchema } from "../_libs/authSchema";
-import { LoginData, SignUpData } from "@/types/auth/types";
-import { postLoginData, postSignUpData } from "../_libs/authApi";
+import { LoginData } from "@/types/auth/types";
+import { postLoginData } from "../../../libs/api/auth/getAPIAuth";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 
@@ -82,8 +82,6 @@ export default function LoginForm({
     try {
       const data = await postLoginData(LoginData);
       setUser(data.user);
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
 
       showToast("로그인에 성공했습니다", "success");
 
