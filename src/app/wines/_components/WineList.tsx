@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { WineListResponse } from '@/types/wines/types';
-import { useWineList } from '../_libs/hooks/useWineList';
-import WineCard from './WineCard';
-import WineSearchBar from './WineSearchBar';
-import WineFilter from './WineFilter';
-import Modal from '@/components/Modal';
-import { useDeviceTypeStore } from '@/libs/zustand';
-import { cn } from '@/libs/utils';
+import { useState } from "react";
+import { WineListResponse } from "@/types/wines/types";
+import { useWineList } from "../_libs/hooks/useWineList";
+import WineCard from "./WineCard";
+import WineSearchBar from "./WineSearchBar";
+import WineFilter from "./WineFilter";
+import { useModal } from "@/components/ModalProvider";
+import { useDeviceTypeStore } from "@/libs/zustand";
+import { cn } from "@/libs/utils";
 
 interface Props {
   wines: WineListResponse;
@@ -17,22 +17,34 @@ interface Props {
 export default function WineList({ wines }: Props) {
   const { list, search, setSearch, filter, setFilter, hasMore, observerRef } =
     useWineList(wines);
-
-  const [isOpenFilter, setIsOpenFilter] = useState(false);
   const { deviceType } = useDeviceTypeStore();
-  const isDesktop = deviceType === 'desktop';
+  const isDesktop = deviceType === "desktop";
+
+  const { showModal } = useModal();
+
+  const openFilterModal = () => {
+    showModal(
+      <WineFilter
+        currentFilter={filter}
+        setCurrentFilter={setFilter}
+        isDesktop={isDesktop}
+      />,
+      "필터",
+      375,
+      641,
+    );
+  };
 
   return (
     <div
       className={cn(
-        'm-auto mt-8 w-full md:mt-32 xl:mt-42',
-        isDesktop ? 'flex max-w-[1145px] gap-12' : '',
+        "m-auto mt-8 w-full md:mt-32 xl:mt-42",
+        isDesktop ? "flex max-w-[1145px] gap-12" : "",
       )}
     >
       {isDesktop && (
         <div>
           <WineFilter
-            onClose={() => setIsOpenFilter(false)}
             currentFilter={filter}
             setCurrentFilter={setFilter}
             isDesktop={isDesktop}
@@ -47,7 +59,7 @@ export default function WineList({ wines }: Props) {
         <WineSearchBar
           value={search}
           onChange={setSearch}
-          openFilter={() => setIsOpenFilter(true)}
+          openFilter={openFilterModal}
         />
 
         <section className="relative container m-auto w-full py-5 md:max-w-[680px] xl:max-w-[801px]">
@@ -61,21 +73,6 @@ export default function WineList({ wines }: Props) {
             <div ref={observerRef} className="absolute bottom-100 py-30" />
           )}
         </section>
-        {isOpenFilter && (
-          <Modal
-            title="필터"
-            width={375}
-            height={641}
-            onClose={() => setIsOpenFilter(false)}
-          >
-            <WineFilter
-              onClose={() => setIsOpenFilter(false)}
-              currentFilter={filter}
-              setCurrentFilter={setFilter}
-              isDesktop={isDesktop}
-            />
-          </Modal>
-        )}
       </div>
     </div>
   );
