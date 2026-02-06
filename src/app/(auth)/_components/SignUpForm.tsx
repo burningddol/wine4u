@@ -9,7 +9,7 @@ import type { FocusTarget } from "./Character";
 import Image from "next/image";
 import { SignUpFormValues, signUpSchema } from "../_libs/authSchema";
 import { SignUpData } from "@/types/auth/types";
-import { postSignUpData } from "../_libs/authApi";
+import { postSignUpData } from "../../../libs/api/auth/getAPIAuth";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 
@@ -105,9 +105,6 @@ export default function SignUpForm({
     try {
       const data = await postSignUpData(signUpData);
       setUser(data.user);
-
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
 
       showToast("회원가입에 성공했습니다", "success");
       router.replace("/");

@@ -7,7 +7,6 @@ import {
   UserLogin,
   UserSignUp,
 } from "@/types/auth/types";
-import { User } from "@/types/wines/types";
 
 export async function postSignUpData(
   signUpData: SignUpData,
