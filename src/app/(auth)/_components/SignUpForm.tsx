@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Form, Formik, FormikHelpers } from 'formik';
-import CustomInput from './CustomInput';
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import type { FocusTarget } from './Character';
-import Image from 'next/image';
-import { SignUpFormValues, signUpSchema } from '../_libs/authSchema';
-import { SignUpData } from '@/types/auto/types';
-import { postSignUpData } from '../_libs/authApi';
-import { useToast } from '@/components/Toast';
-import { useUser } from '@/components/UserProvider';
+import { Form, Formik, FormikHelpers } from "formik";
+import CustomInput from "./CustomInput";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { FocusTarget } from "./Character";
+import Image from "next/image";
+import { SignUpFormValues, signUpSchema } from "../_libs/authSchema";
+import { SignUpData } from "@/types/auto/types";
+import { postSignUpData } from "../../../libs/api/auth/getAPIAuth";
+import { useToast } from "@/components/Toast";
+import { useUser } from "@/components/UserProvider";
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
@@ -44,48 +44,48 @@ export default function SignUpForm({
 
   const customProps: CustomProps[] = [
     {
-      label: '이메일',
-      name: 'email',
-      type: 'email',
-      placeholder: 'codeit@email.com',
-      autoComplete: 'email',
-      onFocus: () => onFocusChange('email'),
-      onBlur: () => onFocusChange('none'),
+      label: "이메일",
+      name: "email",
+      type: "email",
+      placeholder: "codeit@email.com",
+      autoComplete: "email",
+      onFocus: () => onFocusChange("email"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
     {
-      label: '닉네임',
-      name: 'nickname',
-      type: 'text',
-      placeholder: '닉네임을 입력해주세요',
-      autoComplete: 'username',
-      onFocus: () => onFocusChange('nickname'),
-      onBlur: () => onFocusChange('none'),
+      label: "닉네임",
+      name: "nickname",
+      type: "text",
+      placeholder: "닉네임을 입력해주세요",
+      autoComplete: "username",
+      onFocus: () => onFocusChange("nickname"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
     {
-      label: '비밀번호',
-      name: 'password',
-      type: 'password',
-      placeholder: '비밀번호를 입력하세요',
-      autoComplete: 'new-password',
+      label: "비밀번호",
+      name: "password",
+      type: "password",
+      placeholder: "비밀번호를 입력하세요",
+      autoComplete: "new-password",
       forPassword: true,
-      onFocus: () => onFocusChange('password'),
-      onBlur: () => onFocusChange('none'),
+      onFocus: () => onFocusChange("password"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
     {
-      label: '비밀번호 확인',
-      name: 'confirmPassword',
-      type: 'password',
-      placeholder: '비밀번호를 다시 한 번 입력하세요',
-      autoComplete: 'new-password',
+      label: "비밀번호 확인",
+      name: "confirmPassword",
+      type: "password",
+      placeholder: "비밀번호를 다시 한 번 입력하세요",
+      autoComplete: "new-password",
       forPassword: true,
-      onFocus: () => onFocusChange('password'),
-      onBlur: () => onFocusChange('none'),
+      onFocus: () => onFocusChange("password"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
@@ -106,17 +106,14 @@ export default function SignUpForm({
       const data = await postSignUpData(signUpData);
       setUser(data.user);
 
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-
-      showToast('회원가입에 성공했습니다', 'success');
-      router.replace('/');
+      showToast("회원가입에 성공했습니다", "success");
+      router.replace("/");
     } catch (e: any) {
       const errorMessage =
-        e.response?.data?.message || '회원가입에 실패했습니다';
+        e.response?.data?.message || "회원가입에 실패했습니다";
 
       console.log(errorMessage);
-      showToast(errorMessage, 'error');
+      showToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
       actions.resetForm();
@@ -136,10 +133,10 @@ export default function SignUpForm({
       </Link>
       <Formik<SignUpFormValues>
         initialValues={{
-          email: '',
-          nickname: '',
-          password: '',
-          confirmPassword: '',
+          email: "",
+          nickname: "",
+          password: "",
+          confirmPassword: "",
         }}
         validationSchema={signUpSchema}
         onSubmit={onSubmit}
@@ -155,7 +152,7 @@ export default function SignUpForm({
               disabled={isSubmitting || !isValid || !dirty}
               type="submit"
             >
-              {isLoading ? '제출중...' : '회원가입'}
+              {isLoading ? "제출중..." : "회원가입"}
             </button>
 
             <span className="mt-2.5 flex items-center justify-center text-sm font-normal text-gray-800">

@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useCallback, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
-import { useUser } from './UserProvider';
-import useOutsideClick from '@/app/(auth)/_libs/useOutsideClick';
-import { cn } from '@/libs/utils';
+import { useUser } from "./UserProvider";
+import { logout } from "@/libs/api/auth/getAPIAuth";
+import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
+import { cn } from "@/libs/utils";
 
 export default function AuthSection() {
   const { user, setUser } = useUser();
@@ -18,14 +19,17 @@ export default function AuthSection() {
 
   const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen);
 
-  const handleLogout = (e: React.MouseEvent) => {
+  const handleLogout = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
     setUser(null);
   };
 
-  if (user === 'isPending') {
+  if (user === "isPending") {
     return <span className="text-white">로딩중이미지 추가</span>;
   }
 
@@ -36,7 +40,7 @@ export default function AuthSection() {
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         <Image
-          src={user.image ?? '/icons/user_icon.svg'}
+          src={user.image ?? "/icons/user_icon.svg"}
           alt="유저 아이콘"
           width={40}
           height={40}
@@ -44,8 +48,8 @@ export default function AuthSection() {
         {isDropdownOpen && (
           <ul
             className={cn(
-              'absolute top-[60px] left-[-49px] flex h-[102px] w-[139px] cursor-pointer flex-col items-center justify-center',
-              'rounded-sm border border-gray-300 bg-white p-1 text-base font-normal text-gray-500',
+              "absolute top-[60px] left-[-49px] flex h-[102px] w-[139px] cursor-pointer flex-col items-center justify-center",
+              "rounded-sm border border-gray-300 bg-white p-1 text-base font-normal text-gray-500",
             )}
             ref={dropdownRef}
           >
