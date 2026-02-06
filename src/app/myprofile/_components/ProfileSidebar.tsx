@@ -1,9 +1,9 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function ProfileSidebar() {
   return (
-    <aside className="w-[280px] sticky top-0 self-start">
-      <div className="flex flex-col gap-12 py-7 px-5">
+    <aside className="sticky top-[70px] w-[280px] self-start">
+      <div className="flex flex-col gap-12 px-5 py-7">
         <div className="flex flex-col items-center gap-7">
           <Image
             src="/images/profile.png"
@@ -22,10 +22,10 @@ export default function ProfileSidebar() {
           <input
             id="nickname"
             type="text"
-            className="w-full p-2 border rounded-md border-gray-300"
+            className="w-full rounded-md border border-gray-300 p-2"
             placeholder="닉네임을 입력해주세요."
           />
-          <button className="w-full p-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
+          <button className="bg-primary hover:bg-opacity-90 w-full rounded-md p-2 text-white transition">
             변경하기
           </button>
         </div>
