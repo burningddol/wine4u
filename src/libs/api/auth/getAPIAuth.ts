@@ -31,3 +31,15 @@ export async function getUserData(): Promise<LoginedUser | null> {
 export async function logout(): Promise<void> {
   await axios.post("/auth/logout");
 }
+
+export interface KakaoLoginData {
+  redirectUri: string;
+  token: string;
+}
+
+export async function postKakaoLoginData(
+  kakaoData: KakaoLoginData,
+): Promise<AuthResponse> {
+  const res = await axios.post("/auth/signIn/KAKAO", kakaoData);
+  return res.data;
+}

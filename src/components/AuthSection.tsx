@@ -44,6 +44,7 @@ export default function AuthSection() {
           alt="유저 아이콘"
           width={40}
           height={40}
+          className="h-10 w-10 rounded-full"
         />
         {isDropdownOpen && (
           <ul
