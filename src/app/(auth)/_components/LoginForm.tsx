@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Form, Formik, FormikHelpers } from 'formik';
-import CustomInput from './CustomInput';
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import type { FocusTarget } from './Character';
-import Image from 'next/image';
-import { LoginFormValues, loginSchema } from '../_libs/authSchema';
-import { LoginData, SignUpData } from '@/types/auto/types';
-import { postLoginData, postSignUpData } from '../_libs/authApi';
-import { useToast } from '@/components/Toast';
-import { useUser } from '@/components/UserProvider';
+import { Form, Formik, FormikHelpers } from "formik";
+import CustomInput from "./CustomInput";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { FocusTarget } from "./Character";
+import Image from "next/image";
+import { LoginFormValues, loginSchema } from "../_libs/authSchema";
+import { LoginData, SignUpData } from "@/types/auth/types";
+import { postLoginData, postSignUpData } from "../_libs/authApi";
+import { useToast } from "@/components/ToastProvider";
+import { useUser } from "@/components/UserProvider";
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
@@ -44,26 +44,26 @@ export default function LoginForm({
 
   const customProps: CustomProps[] = [
     {
-      label: '이메일',
-      name: 'email',
-      type: 'email',
-      placeholder: 'codeit@email.com',
-      autoComplete: 'email',
-      onFocus: () => onFocusChange('email'),
-      onBlur: () => onFocusChange('none'),
+      label: "이메일",
+      name: "email",
+      type: "email",
+      placeholder: "codeit@email.com",
+      autoComplete: "email",
+      onFocus: () => onFocusChange("email"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
 
     {
-      label: '비밀번호',
-      name: 'password',
-      type: 'password',
-      placeholder: '비밀번호를 입력하세요',
-      autoComplete: 'new-password',
+      label: "비밀번호",
+      name: "password",
+      type: "password",
+      placeholder: "비밀번호를 입력하세요",
+      autoComplete: "new-password",
       forPassword: true,
-      onFocus: () => onFocusChange('password'),
-      onBlur: () => onFocusChange('none'),
+      onFocus: () => onFocusChange("password"),
+      onBlur: () => onFocusChange("none"),
       onKeyDown: () => onTypingChange(true),
       onKeyUp: () => onTypingChange(false),
     },
@@ -82,17 +82,17 @@ export default function LoginForm({
     try {
       const data = await postLoginData(LoginData);
       setUser(data.user);
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
 
-      showToast('로그인에 성공했습니다', 'success');
+      showToast("로그인에 성공했습니다", "success");
 
-      router.replace('/');
+      router.replace("/");
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || '로그인에 실패했습니다';
+      const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
 
       console.log(errorMessage);
-      showToast(errorMessage, 'error');
+      showToast(errorMessage, "error");
     } finally {
       setIsLoading(false);
       actions.resetForm();
@@ -112,8 +112,8 @@ export default function LoginForm({
       </Link>
       <Formik<LoginFormValues>
         initialValues={{
-          email: '',
-          password: '',
+          email: "",
+          password: "",
         }}
         validationSchema={loginSchema}
         onSubmit={onSubmit}
@@ -129,7 +129,7 @@ export default function LoginForm({
               disabled={isSubmitting || !isValid || !dirty}
               type="submit"
             >
-              {isLoading ? '제출중...' : '로그인'}
+              {isLoading ? "제출중..." : "로그인"}
             </button>
 
             <span className="mt-2.5 flex items-center justify-center text-sm font-normal text-gray-800">

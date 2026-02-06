@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { getUserData } from '@/app/(auth)/_libs/authApi';
-import { LoginedUser } from '@/types/auto/types';
+import { getUserData } from "@/app/(auth)/_libs/authApi";
+import { LoginedUser } from "@/types/auth/types";
 
 import {
   createContext,
@@ -9,11 +9,11 @@ import {
   useState,
   ReactNode,
   useEffect,
-} from 'react';
+} from "react";
 
 interface UserContextValue {
-  user: LoginedUser | null | 'isPending';
-  setUser: (user: LoginedUser | null | 'isPending') => void;
+  user: LoginedUser | null | "isPending";
+  setUser: (user: LoginedUser | null | "isPending") => void;
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -25,13 +25,13 @@ interface UserProviderProps {
 export function UserProvider({ children }: UserProviderProps) {
   const [access, setAccess] = useState<string | null>(null);
   const [refresh, setRefresh] = useState<string | null>(null);
-  const [user, setUser] = useState<LoginedUser | null | 'isPending'>(
-    'isPending',
+  const [user, setUser] = useState<LoginedUser | null | "isPending">(
+    "isPending",
   );
 
   const getMe = async (access: string | null) => {
     if (access || refresh) {
-      setUser('isPending');
+      setUser("isPending");
 
       try {
         const data = await getUserData();
@@ -46,8 +46,8 @@ export function UserProvider({ children }: UserProviderProps) {
   };
 
   useEffect(() => {
-    setAccess(localStorage.getItem('accessToken'));
-    setRefresh(localStorage.getItem('refreshToken'));
+    setAccess(localStorage.getItem("accessToken"));
+    setRefresh(localStorage.getItem("refreshToken"));
   }, []);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export function UserProvider({ children }: UserProviderProps) {
 export function useUser(): UserContextValue {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 }
