@@ -8,9 +8,9 @@ import { useRouter } from "next/navigation";
 import type { FocusTarget } from "./Character";
 import Image from "next/image";
 import { LoginFormValues, loginSchema } from "../_libs/authSchema";
-import { LoginData } from "@/types/auto/types";
+import { LoginData } from "@/types/auth/types";
 import { postLoginData } from "../../../libs/api/auth/getAPIAuth";
-import { useToast } from "@/components/Toast";
+import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 
 interface SignUpFormProps {

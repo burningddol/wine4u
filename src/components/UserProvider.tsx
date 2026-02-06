@@ -1,7 +1,7 @@
 "use client";
 
 import { getUserData } from "@/libs/api/auth/getAPIAuth";
-import { LoginedUser } from "@/types/auto/types";
+import { LoginedUser } from "@/types/auth/types";
 import {
   createContext,
   useContext,
