@@ -12,6 +12,7 @@ import { cn } from "@/libs/utils";
 import Image from "next/image";
 import { useUser } from "@/components/UserProvider";
 import { useToast } from "@/components/ToastProvider";
+import ChatBot from "./chatBot/ChatBot";
 
 interface Props {
   wines: WineListResponse;
@@ -108,6 +109,8 @@ export default function WineList({ wines }: Props) {
           )}
         </section>
       </div>
+
+      <ChatBot user={user} />
     </div>
   );
 }
