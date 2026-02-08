@@ -61,7 +61,7 @@ export async function fetchWines({
     throw new Error(`Failed to fetch wines: ${res.status}`);
   }
 
-  return res.json();
+  return await res.json();
 }
 
 export async function getImageURL(file: File): Promise<ImageURL | null> {
@@ -82,4 +82,23 @@ export async function postWine(wine: PostWineValue) {
   } catch (e) {
     console.log(`Failed to post wine: ${e}`);
   }
+}
+
+export async function postWineBotMessage(message: string): Promise<string> {
+  const wineData = await fetchWines({ limit: 10000 });
+  const wineList = wineData.list.map((w) => ({ id: w.id, name: w.name }));
+  const res = await axios.post("/winebot", { wineList, message });
+  return res.data.answer;
+}
+
+interface WineByAI {
+  id: number;
+  name: string;
+  image: string;
+}
+
+export async function getWineById(id: number): Promise<WineByAI> {
+  const res = await axios.get(`/wines/${id}`);
+
+  return res.data;
 }
