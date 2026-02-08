@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useField, useFormikContext } from "formik";
 import Image from "next/image";
 import { cn } from "@/libs/utils";
-import { WineRegisterFormValues } from "../_libs/wineRegisterSchema";
+import { WineRegisterFormValues } from "../../_libs/wineRegisterSchema";
 
 export default function ImageUploadField() {
   const fileInputRef = useRef<HTMLInputElement>(null);

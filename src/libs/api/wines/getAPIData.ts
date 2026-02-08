@@ -5,7 +5,7 @@ import {
   WineType,
 } from "@/types/wines/types";
 import axios from "../axios";
-import { PostWineValue } from "@/app/wines/_components/WineRegisterForm";
+import { PostWineValue } from "@/app/wines/_components/register/WineRegisterForm";
 
 const API_BASE = "https://winereview-api.vercel.app/14-2";
 

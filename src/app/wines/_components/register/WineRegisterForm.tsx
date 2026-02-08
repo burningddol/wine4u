@@ -6,7 +6,7 @@ import { cn } from "@/libs/utils";
 import {
   wineRegisterSchema,
   WineRegisterFormValues,
-} from "../_libs/wineRegisterSchema";
+} from "../../_libs/wineRegisterSchema";
 import ImageUploadField from "./ImageUploadField";
 import TextInput from "./TextInput";
 import WineTypeSelector from "./WineTypeSelector";

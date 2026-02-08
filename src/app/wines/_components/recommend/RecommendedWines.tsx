@@ -1,7 +1,7 @@
 'use client';
 
 import { RecommendedWines } from '@/types/wines/types';
-import { useDeviceType } from '../_libs/hooks/useDeviceType';
+import { useDeviceType } from '../../_libs/hooks/useDeviceType';
 import { useDeviceTypeStore } from '@/libs/zustand';
 import RecommendedCarousel from './RecommendedCarousel';
 

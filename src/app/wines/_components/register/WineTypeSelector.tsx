@@ -2,7 +2,7 @@ import { useField, useFormikContext } from "formik";
 import Image from "next/image";
 import { cn } from "@/libs/utils";
 import { WineType } from "@/types/wines/types";
-import { WineRegisterFormValues } from "../_libs/wineRegisterSchema";
+import { WineRegisterFormValues } from "../../_libs/wineRegisterSchema";
 
 const WINE_TYPES: { label: string; value: WineType; icon: string }[] = [
   { label: "Red", value: "RED", icon: "/wines/red.png" },

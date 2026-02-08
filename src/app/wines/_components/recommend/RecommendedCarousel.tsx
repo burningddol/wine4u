@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Scrollbar } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { RecommendedWines } from "@/types/wines/types";
-import { DeviceType } from "../_libs/hooks/useDeviceType";
+import { DeviceType } from "../../_libs/hooks/useDeviceType";
 import Image from "next/image";
 
 import "swiper/css";
