@@ -10,6 +10,8 @@ import { useModal } from "@/components/ModalProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
 import { cn } from "@/libs/utils";
 import Image from "next/image";
+import { useUser } from "@/components/UserProvider";
+import { useToast } from "@/components/ToastProvider";
 
 interface Props {
   wines: WineListResponse;
@@ -29,9 +31,12 @@ export default function WineList({ wines }: Props) {
   const { deviceType } = useDeviceTypeStore();
   const isDesktop = deviceType === "desktop";
 
+  const { user } = useUser();
   const { showModal } = useModal();
+  const { showToast } = useToast();
 
   const openRegisterModal = () => {
+    if (!user) return showToast("로그인이 필요합니다", "error");
     const width = deviceType === "mobile" ? 375 : 460;
     showModal(
       <WineRegisterForm onSuccess={refetch} />,
