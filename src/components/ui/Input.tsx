@@ -1,14 +1,17 @@
 "use client";
 
-import type { InputHTMLAttributes, ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import { useId } from "react";
+import { cn } from "@/libs/utils";
 
 type InputSize = "sm" | "md" | "lg";
 
-interface InputProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "size" | "className"
-> {
+interface InputProps
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "size" | "className"
+  > {
+  ref?: Ref<HTMLInputElement>;
   label?: string;
   /** 에러 메시지 (유효성 검사 실패 시) */
   error?: string;
@@ -33,14 +36,21 @@ export function Input({
   rightIcon,
   size = "md",
   className,
-  id,
+  id: idProp,
+  name,
+  value,
+  ref,
   ...props
 }: InputProps) {
-  const inputId = id ?? props.name;
+  const generatedId = useId();
+  const inputId = idProp ?? name ?? generatedId;
   const describedById = error ? `${inputId}-error` : undefined;
 
   const hasLeftIcon = !!leftIcon;
   const hasRightIcon = !!rightIcon;
+
+  // 제어 컴포넌트로 일관 유지: value가 undefined여도 빈 문자열로 넘겨 uncontrolled → controlled 전환 경고 방지
+  const safeValue = value !== undefined && value !== null ? String(value) : "";
 
   return (
     <div className="flex flex-col gap-1">
@@ -57,10 +67,13 @@ export function Input({
           </span>
         )}
         <input
+          ref={ref}
           id={inputId}
+          name={name}
           aria-invalid={!!error}
           aria-describedby={describedById}
-          className={twMerge(
+          value={safeValue}
+          className={cn(
             "w-full rounded-sm border border-gray-200 bg-white transition-colors ease-in placeholder:text-gray-300",
             "focus-visible:border-primary focus-visible:ring-1",
             sizeClass[size],

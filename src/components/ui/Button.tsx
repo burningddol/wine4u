@@ -1,8 +1,7 @@
 "use client";
 
-import type { ButtonHTMLAttributes } from "react";
-import { twMerge } from "tailwind-merge";
-import Image from "next/image";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "@/libs/utils";
 
 type ButtonVariant = "primary" | "secondary" | "outline";
 type ButtonSize = "sm" | "md" | "lg";
@@ -11,6 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  children?: ReactNode;
 }
 
 const base =
@@ -33,11 +33,13 @@ export function Button({
   size = "sm",
   fullWidth,
   className,
+  children,
   ...props
 }: ButtonProps) {
   return (
     <button
-      className={twMerge(
+      type="button"
+      className={cn(
         base,
         variantClass[variant],
         sizeClass[size],
@@ -45,6 +47,8 @@ export function Button({
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 }
