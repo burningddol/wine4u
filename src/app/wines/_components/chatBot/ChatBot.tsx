@@ -89,7 +89,7 @@ export default function ChatBot({ user }: ChatBotProps) {
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "fixed right-10 bottom-10 z-[100] flex h-12 w-12 cursor-pointer items-center justify-center",
+          "fixed right-5 bottom-5 z-[100] flex h-12 w-12 cursor-pointer items-center justify-center md:right-10 md:bottom-10 md:h-14 md:w-14",
           "bg-primary shadow-soft rounded-full text-white",
           "transition-transform hover:scale-105",
         )}
@@ -106,9 +106,9 @@ export default function ChatBot({ user }: ChatBotProps) {
             exit={{ opacity: 0, x: 50, y: 100, scale: 0.7 }}
             transition={{ duration: 0.2 }}
             className={cn(
-              "fixed right-10 bottom-24 z-[100]",
+              "fixed right-5 bottom-20 z-[100] md:right-10 md:bottom-28",
               "flex h-[500px] flex-col",
-              "w-[calc(100vw-2rem)] md:w-[350px]",
+              "w-[350px]",
               "border-border shadow-soft overflow-hidden rounded-sm border bg-white",
             )}
           >
