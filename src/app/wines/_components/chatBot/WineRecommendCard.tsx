@@ -12,7 +12,7 @@ interface Props {
 
 export default function WineRecommendCard({ wine }: Props) {
   return (
-    <div className="max-w-[80%] self-start overflow-hidden rounded-2xl border border-gray-300 bg-white">
+    <div className="max-w-[80%] self-start overflow-hidden rounded-sm border border-gray-300 bg-white">
       <div className="relative h-[120px] w-full bg-gray-100">
         <Image
           src={wine.image}
@@ -26,7 +26,7 @@ export default function WineRecommendCard({ wine }: Props) {
 
         <Link
           href={`/wines/${wine.id}`}
-          className="bg-primary mt-1 rounded-lg py-2 text-center text-sm font-bold text-white"
+          className="bg-primary mt-1 rounded-sm py-2 text-center text-sm font-bold text-white"
         >
           와인 보러가기
         </Link>
