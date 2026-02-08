@@ -1,55 +1,60 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import ProfileSidebar from './_components/ProfileSidebar';
+import { useState } from "react";
+import ProfileSidebar from "./_components/ProfileSidebar";
+import { ProfileTabProvider, useProfileTab, type ProfileTabKey } from "./_contexts/ProfileTabContext";
+
+const navTabs: { key: ProfileTabKey; label: string }[] = [
+  { key: "reviews", label: "내가 쓴 후기" },
+  { key: "register", label: "내가 등록한 와인" },
+];
+
+function ProfileTabNav() {
+  const { activeTab, setActiveTab } = useProfileTab();
+  return (
+    <nav
+      className="sticky top-[70px] z-10 border-b border-gray-200 bg-white px-10"
+      role="tablist"
+    >
+      <div className="flex gap-1">
+        {navTabs.map((tab) => {
+          const isActive = activeTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActiveTab(tab.key)}
+              className={`relative cursor-pointer px-4 pt-9 pb-5 text-xl font-bold transition-colors ${
+                isActive ? "text-primary" : "text-gray-600 hover:text-black"
+              } ${isActive ? "border-primary -mb-[1px] border-b-2" : ""}`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
 
 export default function MyProfileLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
-  const navLinks = [
-    { href: '/myprofile/reviews', label: `내가 쓴 후기 ${0}` },
-    { href: '/myprofile/register', label: `내가 등록한 와인 ${0}` },
-  ];
-
   return (
-    <div className="flex w-full max-w-[1140px] min-h-screen mx-auto">
-      {/* 프로필 사이드바 */}
-      <ProfileSidebar />
+    <ProfileTabProvider>
+      <div className="mx-auto flex min-h-screen w-full max-w-[1140px]">
+        <ProfileSidebar />
 
-      {/* 메인 콘텐츠 */}
-      <main className="flex-1 border-l border-gray-200">
-        {/* 네비게이션 탭 */}
-        <nav className="sticky top-0 z-10 bg-white border-b border-gray-200 px-10">
-          <div className="flex gap-8">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`pt-9 pb-5 text-xl font-bold ${
-                    isActive
-                      ? 'text-primary'
-                      : 'text-gray-600 hover:text-black'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
+        <main className="flex-1 border-l border-gray-200">
+          <ProfileTabNav />
 
-        {/* 콘텐츠 */}
-        <div className="py-10 px-8">
-          {children}
-        </div>
-      </main>
-    </div>
+          <div className="px-8 pt-32 pb-10">{children}</div>
+        </main>
+      </div>
+    </ProfileTabProvider>
   );
 }
