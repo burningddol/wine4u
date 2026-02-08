@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useDeviceTypeStore } from '@/libs/zustand';
+import Image from "next/image";
+import { useDeviceTypeStore } from "@/libs/zustand";
 
 interface Props {
   value: string;
   onChange: (value: string) => void;
   openFilter: () => void;
+  openRegisterModal: () => void;
 }
 
-export default function WineSearchBar({ value, onChange, openFilter }: Props) {
+export default function WineSearchBar({
+  value,
+  onChange,
+  openFilter,
+  openRegisterModal,
+}: Props) {
   const { deviceType } = useDeviceTypeStore();
-  const isNotDesktop = deviceType !== 'desktop';
+  const isNotDesktop = deviceType !== "desktop";
 
   return (
     <div className="m-auto w-full md:max-w-[680px] xl:max-w-[801px]">
@@ -21,14 +27,14 @@ export default function WineSearchBar({ value, onChange, openFilter }: Props) {
           width={20}
           height={20}
           alt=""
-          className="absolute top-3 left-3.5"
+          className="absolute top-3.5 left-3.5"
         />
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="와인을 검색해 보세요"
-          className="w-full rounded-sm border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:border-purple-500"
+          className="w-full rounded-sm border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:ring-0"
         />
       </div>
       {isNotDesktop && (
@@ -40,7 +46,10 @@ export default function WineSearchBar({ value, onChange, openFilter }: Props) {
           >
             <Image src="/wines/filter.svg" width={18} height={18} alt="" />
           </button>
-          <button className="bg-primary h-10 w-40 cursor-pointer rounded-sm px-6 py-2.5 text-sm font-bold text-white md:h-12 md:w-54">
+          <button
+            onClick={openRegisterModal}
+            className="bg-primary h-10 w-40 cursor-pointer rounded-sm px-6 py-2.5 text-sm font-bold text-white md:h-12 md:w-54"
+          >
             와인 등록하기
           </button>
         </div>

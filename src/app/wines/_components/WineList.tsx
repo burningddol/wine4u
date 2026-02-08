@@ -6,6 +6,7 @@ import { useWineList } from "../_libs/hooks/useWineList";
 import WineCard from "./WineCard";
 import WineSearchBar from "./WineSearchBar";
 import WineFilter from "./WineFilter";
+import WineRegisterForm from "./WineRegisterForm";
 import { useModal } from "@/components/ModalProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
 import { cn } from "@/libs/utils";
@@ -15,12 +16,17 @@ interface Props {
 }
 
 export default function WineList({ wines }: Props) {
-  const { list, search, setSearch, filter, setFilter, hasMore, observerRef } =
+  const { list, search, setSearch, filter, setFilter, hasMore, observerRef, refetch } =
     useWineList(wines);
   const { deviceType } = useDeviceTypeStore();
   const isDesktop = deviceType === "desktop";
 
   const { showModal } = useModal();
+
+  const openRegisterModal = () => {
+    const width = deviceType === "mobile" ? 375 : 460;
+    showModal(<WineRegisterForm onSuccess={refetch} />, "와인 등록", width, 700);
+  };
 
   const openFilterModal = () => {
     showModal(
@@ -49,7 +55,10 @@ export default function WineList({ wines }: Props) {
             setCurrentFilter={setFilter}
             isDesktop={isDesktop}
           />
-          <button className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white">
+          <button
+            onClick={openRegisterModal}
+            className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white"
+          >
             와인 등록하기
           </button>
         </div>
@@ -60,6 +69,7 @@ export default function WineList({ wines }: Props) {
           value={search}
           onChange={setSearch}
           openFilter={openFilterModal}
+          openRegisterModal={openRegisterModal}
         />
 
         <section className="relative container m-auto w-full py-5 md:max-w-[680px] xl:max-w-[801px]">

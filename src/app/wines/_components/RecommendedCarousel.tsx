@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar } from 'swiper/modules';
-import type { Swiper as SwiperType } from 'swiper';
-import { RecommendedWines } from '@/types/wines/types';
-import { DeviceType } from '../_libs/hooks/useDeviceType';
-import Image from 'next/image';
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Scrollbar } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import { RecommendedWines } from "@/types/wines/types";
+import { DeviceType } from "../_libs/hooks/useDeviceType";
+import Image from "next/image";
 
-import 'swiper/css';
-import 'swiper/css/scrollbar';
-import { cn } from '@/libs/utils';
+import "swiper/css";
+import "swiper/css/scrollbar";
+import { cn } from "@/libs/utils";
 
 interface Props {
   recommendedWines: RecommendedWines;
@@ -32,7 +32,7 @@ export default function RecommendedCarousel({
   const [isEnd, setIsEnd] = useState(false);
 
   const slidesPerView = SLIDES_PER_VIEW[deviceType];
-  const isMobile = deviceType === 'mobile';
+  const isMobile = deviceType === "mobile";
 
   const handleSlideChange = (swiper: SwiperType) => {
     setIsBeginning(swiper.isBeginning);
@@ -68,7 +68,7 @@ export default function RecommendedCarousel({
               <p className="text-primary mt-2 line-clamp-2 w-33 text-center text-sm font-semibold break-words md:mt-4">
                 {wine.name}
               </p>
-              <p className="mt-2 line-clamp-1 text-xs text-gray-600 md:mt-4">
+              <p className="mt-2 line-clamp-1 text-xs text-gray-600 md:mt-2">
                 {wine.region}
               </p>
             </div>
@@ -83,23 +83,23 @@ export default function RecommendedCarousel({
             onClick={() => swiperInstance?.slidePrev()}
             disabled={isBeginning}
             className={cn(
-              'shadow-soft absolute top-1/2 -left-10 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white',
-              'disabled:cursor-default disabled:opacity-30',
+              "shadow-soft absolute top-1/2 -left-10 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white",
+              "disabled:cursor-default disabled:opacity-30",
             )}
             aria-label="이전"
           >
-            {'<'}
+            {"<"}
           </button>
           <button
             onClick={() => swiperInstance?.slideNext()}
             disabled={isEnd}
             className={cn(
-              'shadow-soft absolute top-1/2 -right-10 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white',
-              'disabled:cursor-default disabled:opacity-30',
+              "shadow-soft absolute top-1/2 -right-10 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white",
+              "disabled:cursor-default disabled:opacity-30",
             )}
             aria-label="다음"
           >
-            {'>'}
+            {">"}
           </button>
         </>
       )}

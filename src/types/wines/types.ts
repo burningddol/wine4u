@@ -1,4 +1,4 @@
-export type WineType = 'RED' | 'WHITE' | 'SPARKLING';
+export type WineType = "RED" | "WHITE" | "SPARKLING";
 
 export interface User {
   id: number;
@@ -65,4 +65,8 @@ export interface WineFilterValues {
   minPrice?: number;
   maxPrice?: number;
   rating?: number;
+}
+
+export interface ImageURL {
+  url: string;
 }
