@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Range, getTrackBackground } from 'react-range';
+import { Range, getTrackBackground } from "react-range";
 
 interface Props {
   min?: number;
@@ -24,9 +24,9 @@ export default function PriceRangeSlider({
   return (
     <section>
       <h3 className="mb-3 text-lg font-bold">가격</h3>
-      <div className="text-md mb-4 flex justify-between font-medium text-gray-800">
-        <span>₩ {minValue.toLocaleString()}</span>
-        <span>₩ {maxValue.toLocaleString()}</span>
+      <div className="mb-4 flex justify-between text-lg text-gray-800">
+        <span> {minValue.toLocaleString()} ₩</span>
+        <span> {maxValue.toLocaleString()} ₩</span>
       </div>
 
       <Range
@@ -48,7 +48,7 @@ export default function PriceRangeSlider({
               style={{
                 background: getTrackBackground({
                   values: [minValue, maxValue],
-                  colors: ['#eceef1', '#16171a', '#eceef1'],
+                  colors: ["#eceef1", "#16171a", "#eceef1"],
                   min,
                   max,
                 }),

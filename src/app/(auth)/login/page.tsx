@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import CharacterGroup from '../_components/CharacterGroup';
-import { useCursorTracking } from '../_libs/useCursorTracking';
-import type { FocusTarget } from '../_components/Character';
-import SignUpForm from '../_components/SignUpForm';
-import LoginForm from '../_components/LoginForm';
+import { useState, useCallback } from "react";
+import CharacterGroup from "../_components/CharacterGroup";
+import { useCursorTracking } from "../_libs/useCursorTracking";
+import type { FocusTarget } from "../_components/Character";
+
+import LoginForm from "../_components/LoginForm";
 
 export default function LoginPage() {
   const { cursor, ref: charGroupRef } = useCursorTracking();
-  const [focusTarget, setFocusTarget] = useState<FocusTarget>('none');
+  const [focusTarget, setFocusTarget] = useState<FocusTarget>("none");
   const [isTyping, setIsTyping] = useState(false);
 
   const handleFocusChange = useCallback((target: FocusTarget) => {

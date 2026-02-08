@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { cn } from '@/libs/utils';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { cn } from "@/libs/utils";
 
 interface FeatureArticleProps {
   title: string;
@@ -15,7 +15,7 @@ interface FeatureArticleProps {
 
 export default function FeatureArticle({
   title,
-  titleWidth = 'w-40',
+  titleWidth = "w-50",
   descriptions,
   imageSrc,
   imageAlt,
@@ -23,17 +23,19 @@ export default function FeatureArticle({
 }: FeatureArticleProps) {
   const textContent = (
     <motion.p
-      className="mx-auto mb-6 xl:mb-0"
+      className="mx-10 mb-6 self-start md:mx-12 xl:mx-auto xl:mb-0 xl:self-auto"
       initial={{ opacity: 0, x: reverse ? 100 : -100 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <span className={`mb-3 block ${titleWidth} text-lg font-bold break-keep`}>
+      <span
+        className={`mb-3 block ${titleWidth} text-2xl font-bold break-keep`}
+      >
         {title}
       </span>
       {descriptions.map((desc, index) => (
-        <span key={index} className="block text-sm text-gray-500">
+        <span key={index} className="block text-gray-500">
           {desc}
         </span>
       ))}
@@ -46,7 +48,7 @@ export default function FeatureArticle({
       initial={{ opacity: 0, x: reverse ? -100 : 100 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
     >
       <Image src={imageSrc} fill alt={imageAlt} />
     </motion.div>
@@ -55,10 +57,10 @@ export default function FeatureArticle({
   return (
     <article
       className={cn(
-        'mt-20 flex justify-between xl:items-center',
+        "relative mt-20 flex justify-between xl:items-center",
         reverse
-          ? 'flex-col-reverse items-start xl:flex-row'
-          : 'flex-col items-end xl:flex-row',
+          ? "flex-col-reverse items-start xl:flex-row"
+          : "flex-col items-end xl:flex-row",
       )}
     >
       {reverse ? (
