@@ -57,13 +57,13 @@ export default function RootLayout({
         className={`${sfProDisplay.variable} ${sfProRounded.variable} flex min-h-screen flex-col antialiased`}
       >
         <UserProvider>
-          <ModalProvider>
-            <ToastProvider>
+          <ToastProvider>
+            <ModalProvider>
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
-            </ToastProvider>
-          </ModalProvider>
+            </ModalProvider>
+          </ToastProvider>
         </UserProvider>
       </body>
     </html>
