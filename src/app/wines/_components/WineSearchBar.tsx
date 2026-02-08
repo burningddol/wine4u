@@ -20,7 +20,7 @@ export default function WineSearchBar({
   const isNotDesktop = deviceType !== "desktop";
 
   return (
-    <div className="m-auto w-full md:max-w-[680px] xl:max-w-[801px]">
+    <div className="m-auto w-full px-2 md:max-w-[680px] md:px-0 xl:max-w-[801px]">
       <div className="relative">
         <Image
           src="/wines/input.svg"
@@ -34,11 +34,11 @@ export default function WineSearchBar({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="와인을 검색해 보세요"
-          className="w-full rounded-sm border border-gray-300 py-3 pr-4 pl-11 text-sm outline-none focus:ring-0"
+          className="text-md w-full rounded-sm border border-gray-300 py-3 pr-4 pl-11 outline-none focus:ring-0"
         />
       </div>
       {isNotDesktop && (
-        <div className="mt-10 flex items-center justify-between">
+        <div className="mt-8 flex items-center justify-between md:mt-10">
           <button
             onClick={openFilter}
             aria-label="필터 열기"
@@ -48,7 +48,7 @@ export default function WineSearchBar({
           </button>
           <button
             onClick={openRegisterModal}
-            className="bg-primary h-10 w-40 cursor-pointer rounded-sm px-6 py-2.5 text-sm font-bold text-white md:h-12 md:w-54"
+            className="bg-primary h-11 w-40 cursor-pointer rounded-sm px-6 py-2.5 text-[15px] font-bold text-white md:h-12 md:w-54 md:text-base"
           >
             와인 등록하기
           </button>

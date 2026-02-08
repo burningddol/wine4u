@@ -9,14 +9,23 @@ import WineRegisterForm from "./register/WineRegisterForm";
 import { useModal } from "@/components/ModalProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
 import { cn } from "@/libs/utils";
+import Image from "next/image";
 
 interface Props {
   wines: WineListResponse;
 }
 
 export default function WineList({ wines }: Props) {
-  const { list, search, setSearch, filter, setFilter, hasMore, observerRef, refetch } =
-    useWineList(wines);
+  const {
+    list,
+    search,
+    setSearch,
+    filter,
+    setFilter,
+    hasMore,
+    observerRef,
+    refetch,
+  } = useWineList(wines);
   const { deviceType } = useDeviceTypeStore();
   const isDesktop = deviceType === "desktop";
 
@@ -24,7 +33,12 @@ export default function WineList({ wines }: Props) {
 
   const openRegisterModal = () => {
     const width = deviceType === "mobile" ? 375 : 460;
-    showModal(<WineRegisterForm onSuccess={refetch} />, "와인 등록", width, 700);
+    showModal(
+      <WineRegisterForm onSuccess={refetch} />,
+      "와인 등록",
+      width,
+      700,
+    );
   };
 
   const openFilterModal = () => {
@@ -44,11 +58,11 @@ export default function WineList({ wines }: Props) {
     <div
       className={cn(
         "m-auto mt-8 w-full md:mt-32 xl:mt-42",
-        isDesktop ? "flex max-w-[1145px] gap-12" : "",
+        isDesktop ? "flex max-w-[1145px] items-start gap-12" : "",
       )}
     >
       {isDesktop && (
-        <div>
+        <div className="mb-50">
           <WineFilter
             currentFilter={filter}
             setCurrentFilter={setFilter}
@@ -56,14 +70,14 @@ export default function WineList({ wines }: Props) {
           />
           <button
             onClick={openRegisterModal}
-            className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white"
+            className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-lg font-bold text-white"
           >
             와인 등록하기
           </button>
         </div>
       )}
 
-      <div>
+      <div className="relative mx-auto h-full w-full md:max-w-[680px] xl:max-w-[801px]">
         <WineSearchBar
           value={search}
           onChange={setSearch}
@@ -71,12 +85,18 @@ export default function WineList({ wines }: Props) {
           openRegisterModal={openRegisterModal}
         />
 
-        <section className="relative container m-auto w-full py-5 md:max-w-[680px] xl:max-w-[801px]">
-          <div className="grid grid-cols-1 items-start justify-items-center gap-5 md:grid-cols-2 xl:gap-16">
-            {list.map((wine) => (
-              <WineCard key={wine.id} wine={wine} />
-            ))}
-          </div>
+        <section className="mt-14 h-full w-full">
+          {list.length === 0 ? (
+            <div className="relative m-auto h-[200px] md:h-[250px] xl:mt-30">
+              <Image src="/wines/noReview.svg" fill alt="노리뷰사진" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 items-start justify-items-center gap-5 md:grid-cols-2 xl:gap-16">
+              {list.map((wine) => (
+                <WineCard key={wine.id} wine={wine} />
+              ))}
+            </div>
+          )}
 
           {hasMore && (
             <div ref={observerRef} className="absolute bottom-100 py-30" />
