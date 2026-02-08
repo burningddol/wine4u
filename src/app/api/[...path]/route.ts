@@ -4,22 +4,32 @@ import { tryRefresh } from "../_libs/refresh";
 
 const API_BASE = "https://winereview-api.vercel.app/14-2";
 
-async function proxy(req: NextRequest, path: string[], method: string) {
+type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
+type RouteParams = { params: Promise<{ path: string[] }> };
+
+async function proxy(req: NextRequest, path: string[], method: HttpMethod) {
   const cookieStore = await cookies();
-  let token = cookieStore.get("access_token")?.value;
+  const token = cookieStore.get("access_token")?.value;
+
   const targetUrl = `${API_BASE}/${path.join("/")}${new URL(req.url).search}`;
+  const contentType = req.headers.get("content-type") ?? "";
+  const isMultipart = contentType.includes("multipart/form-data");
 
-  const headers: HeadersInit = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  //img 폼데이터 용
+  const headers: HeadersInit = {
+    "Content-Type": isMultipart ? contentType : "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
 
-  const body =
-    method === "GET"
-      ? undefined
+  let body: BodyInit | undefined;
+  if (method !== "GET") {
+    body = isMultipart
+      ? await req.blob()
       : JSON.stringify(await req.json().catch(() => ({})));
+  }
 
   let res = await fetch(targetUrl, { method, headers, body });
 
-  //access토큰 만료시 refreshing
   if (res.status === 401) {
     const newToken = await tryRefresh(cookieStore);
     if (newToken) {
@@ -28,25 +38,26 @@ async function proxy(req: NextRequest, path: string[], method: string) {
     }
   }
 
-  return NextResponse.json(await res.json().catch(() => ({})), {
-    status: res.status,
-  });
+  const data = await res.json().catch(() => ({}));
+  return NextResponse.json(data, { status: res.status });
 }
 
-type RouteParams = { params: Promise<{ path: string[] }> };
-
 export async function GET(req: NextRequest, { params }: RouteParams) {
-  return proxy(req, (await params).path, "GET");
+  const { path } = await params;
+  return proxy(req, path, "GET");
 }
 
 export async function POST(req: NextRequest, { params }: RouteParams) {
-  return proxy(req, (await params).path, "POST");
+  const { path } = await params;
+  return proxy(req, path, "POST");
 }
 
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
-  return proxy(req, (await params).path, "PATCH");
+  const { path } = await params;
+  return proxy(req, path, "PATCH");
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
-  return proxy(req, (await params).path, "DELETE");
+  const { path } = await params;
+  return proxy(req, path, "DELETE");
 }

@@ -1,10 +1,13 @@
 import {
+  ImageURL,
   RecommendedWines,
   WineListResponse,
   WineType,
-} from '@/types/wines/types';
+} from "@/types/wines/types";
+import axios from "../axios";
+import { PostWineValue } from "@/app/wines/_components/register/WineRegisterForm";
 
-const API_BASE = 'https://winereview-api.vercel.app/14-2';
+const API_BASE = "https://winereview-api.vercel.app/14-2";
 
 export interface FetchWinesParams {
   limit: number;
@@ -19,12 +22,9 @@ export interface FetchWinesParams {
 export async function fetchRecommendedWines(
   limit: number,
 ): Promise<RecommendedWines> {
-  const res = await fetch(
-    `${API_BASE}/wines/recommended?limit=${limit}`,
-    {
-      next: { revalidate: 10 },
-    },
-  );
+  const res = await fetch(`${API_BASE}/wines/recommended?limit=${limit}`, {
+    next: { revalidate: 10 },
+  });
 
   if (!res.ok) {
     throw new Error(`Failed to fetch recommended wines: ${res.status}`);
@@ -44,14 +44,14 @@ export async function fetchWines({
   name,
 }: FetchWinesParams): Promise<WineListResponse> {
   const params = new URLSearchParams();
-  params.append('limit', limit.toString());
+  params.append("limit", limit.toString());
 
-  if (cursor) params.append('cursor', cursor.toString());
-  if (type) params.append('type', type);
-  if (minPrice !== undefined) params.append('minPrice', minPrice.toString());
-  if (maxPrice !== undefined) params.append('maxPrice', maxPrice.toString());
-  if (rating !== undefined) params.append('rating', rating.toString());
-  if (name) params.append('name', name);
+  if (cursor) params.append("cursor", cursor.toString());
+  if (type) params.append("type", type);
+  if (minPrice !== undefined) params.append("minPrice", minPrice.toString());
+  if (maxPrice !== undefined) params.append("maxPrice", maxPrice.toString());
+  if (rating !== undefined) params.append("rating", rating.toString());
+  if (name) params.append("name", name);
 
   const res = await fetch(`${API_BASE}/wines?${params.toString()}`, {
     next: { revalidate: 1 },
@@ -62,4 +62,24 @@ export async function fetchWines({
   }
 
   return res.json();
+}
+
+export async function getImageURL(file: File): Promise<ImageURL | null> {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const res = await axios.post("/images/upload", formData);
+    return res.data;
+  } catch (e) {
+    console.log(`Failed to load ImageURL: ${e}`);
+    return null;
+  }
+}
+
+export async function postWine(wine: PostWineValue) {
+  try {
+    await axios.post("/wines", wine);
+  } catch (e) {
+    console.log(`Failed to post wine: ${e}`);
+  }
 }

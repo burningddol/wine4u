@@ -46,6 +46,23 @@ export function useWineList(initialData: WineListResponse) {
 
   const observerRef = useInfiniteScroll(loadMore, hasMore);
 
+  const refetch = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await fetchWines({
+        limit: WINES_PER_PAGE,
+        name: debouncedSearch || undefined,
+        ...filter,
+      });
+      setList(data.list);
+      setCursor(data.nextCursor);
+    } catch (e) {
+      console.error('Failed to refetch wine list:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [debouncedSearch, filter]);
+
   // 검색어/필터 변경 시 목록 새로고침 (첫 마운트 제외)
   useEffect(() => {
     if (isInitialMount.current) {
@@ -93,5 +110,6 @@ export function useWineList(initialData: WineListResponse) {
     setFilter,
     hasMore,
     observerRef,
+    refetch,
   };
 }

@@ -162,17 +162,17 @@
 
   .text-lg {
     font-size: 16px;
-    line-height: 26px;
+    line-height: 24px;
   }
 
   .text-md {
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
   }
 
   .text-sm {
     font-size: 13px;
-    line-height: 22px;
+    line-height: 20px;
   }
 
   /* Text-xs - weight별로 line-height가 다름 */

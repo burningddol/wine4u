@@ -21,10 +21,10 @@ export async function POST(
     return NextResponse.json({ success: true });
   }
 
-  // 로그인/회원가입
+  // 로그인/회원가입 (signIn/KAKAO도 포함)
   if (endpoint === "signIn" || endpoint === "signUp") {
     const body = await request.json();
-    const res = await fetch(`${API_BASE}/auth/${endpoint}`, {
+    const res = await fetch(`${API_BASE}/auth/${path.join("/")}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

@@ -12,6 +12,7 @@ import { LoginData } from "@/types/auth/types";
 import { postLoginData } from "../../../libs/api/auth/getAPIAuth";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
+import { cn } from "@/libs/utils";
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
@@ -69,6 +70,10 @@ export default function LoginForm({
     },
   ];
 
+  const handleKakaoLogin = () => {
+    window.location.href = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL!;
+  };
+
   const onSubmit = async (
     values: LoginFormValues,
     actions: FormikHelpers<LoginFormValues>,
@@ -123,14 +128,41 @@ export default function LoginForm({
             ))}
 
             <button
-              className="bg-primary h-14 w-full cursor-pointer rounded-sm text-xl font-normal text-white disabled:cursor-not-allowed disabled:opacity-50"
+              className={cn(
+                "bg-primary h-14 w-full cursor-pointer rounded-sm",
+                "text-xl font-normal text-white",
+                "disabled:cursor-not-allowed disabled:opacity-50",
+              )}
               disabled={isSubmitting || !isValid || !dirty}
               type="submit"
             >
               {isLoading ? "제출중..." : "로그인"}
             </button>
 
-            <span className="mt-2.5 flex items-center justify-center text-sm font-normal text-gray-800">
+            <button
+              className={cn(
+                "mt-2 flex h-14 w-full cursor-pointer",
+                "items-center justify-center gap-2 border border-1",
+                "rounded-sm bg-white text-xl font-normal text-black",
+              )}
+              type="button"
+              onClick={handleKakaoLogin}
+            >
+              <Image
+                src="/auth/kakao.svg"
+                width={24}
+                height={24}
+                alt="카카오 로고"
+              />
+              카카오 간편로그인
+            </button>
+
+            <span
+              className={cn(
+                "mt-2.5 flex items-center justify-center",
+                "text-sm font-normal text-gray-800",
+              )}
+            >
               처음 방문하셨나요?
               <Link href="/signup" className="ml-1 text-[#1b18fc] underline">
                 회원가입
