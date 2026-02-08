@@ -11,6 +11,7 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import { cn } from "@/libs/utils";
+import Link from "next/link";
 
 interface Props {
   recommendedWines: RecommendedWines;
@@ -55,23 +56,37 @@ export default function RecommendedCarousel({
       >
         {recommendedWines.map((wine) => (
           <SwiperSlide key={wine.id}>
-            <div className="flex h-full flex-col items-center rounded-md bg-transparent md:h-[320px]">
-              <div className="relative h-[165px] w-full md:h-[228px]">
-                <Image
-                  src={wine.image}
-                  alt={wine.name}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 150px, 201px"
-                />
+            <Link href={`/wines/${wine.id}`} className="no-underline">
+              <div className="flex h-full flex-col items-center justify-start rounded-md bg-transparent md:h-[320px]">
+                <div
+                  className={cn(
+                    "group relative flex h-[200px] w-[200px] items-center justify-center md:h-[270px] md:w-[270px]",
+                    "overflow-hidden bg-transparent xl:h-[270px] xl:w-[270px]",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "relative h-[150px] w-[150px] md:h-[220px] md:w-[220px] xl:h-[220px] xl:w-[220px]",
+                      "transition-transform duration-300 group-hover:scale-110",
+                    )}
+                  >
+                    <Image
+                      src={wine.image}
+                      alt={wine.name}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 150px, 201px"
+                    />
+                  </div>
+                </div>
+                <p className="text-primary line-clamp-2 w-33 text-center text-sm font-semibold break-words">
+                  {wine.name}
+                </p>
+                <p className="mt-1 line-clamp-1 text-xs text-gray-600 xl:mt-2">
+                  {wine.region}
+                </p>
               </div>
-              <p className="text-primary mt-2 line-clamp-2 w-33 text-center text-sm font-semibold break-words md:mt-4">
-                {wine.name}
-              </p>
-              <p className="mt-2 line-clamp-1 text-xs text-gray-600 md:mt-2">
-                {wine.region}
-              </p>
-            </div>
+            </Link>
             {isMobile && <div className="h-8" />}
           </SwiperSlide>
         ))}
