@@ -120,6 +120,27 @@ export async function getMyWines(params?: {
   }
 }
 
+export async function deleteMyWine(wineId: number): Promise<void> {
+  try {
+    await axios.delete(`/wines/${wineId}`);
+  } catch (err: unknown) {
+    if (Axios.isAxiosError(err) && err.response != null) {
+      const status = err.response.status;
+      const data = err.response.data as Record<string, unknown> | undefined;
+      const message =
+        data != null && typeof data.message === "string"
+          ? data.message
+          : data != null && Array.isArray(data.message)
+            ? (data.message as string[]).join(", ")
+            : data != null && typeof data.error === "string"
+              ? data.error
+              : "와인 삭제에 실패했습니다.";
+      throw new Error(`${message} (${status})`);
+    }
+    throw err;
+  }
+}
+
 export async function updateUserNickname(
   nickname: string,
   image?: string | null,

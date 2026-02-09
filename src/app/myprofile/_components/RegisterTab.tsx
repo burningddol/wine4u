@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { getMyWines, type MyWineItem } from "@/app/myprofile/_libs/profileApi";
+import {
+  deleteMyWine,
+  getMyWines,
+  type MyWineItem,
+} from "@/app/myprofile/_libs/profileApi";
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/components/ModalProvider";
 import { useToast } from "@/components/ToastProvider";
@@ -87,7 +91,12 @@ export default function RegisterTab() {
   return (
     <div className="flex w-full flex-wrap gap-x-19 gap-y-10">
       {wines.map((wine) => (
-        <WineCard key={wine.id} wine={wine} showToast={showToast} />
+        <WineCard
+          key={wine.id}
+          wine={wine}
+          showToast={showToast}
+          onDeleteSuccess={loadWines}
+        />
       ))}
     </div>
   );
@@ -96,11 +105,14 @@ export default function RegisterTab() {
 function WineCard({
   wine,
   showToast,
+  onDeleteSuccess,
 }: {
   wine: MyWineItem;
   showToast: (message: string, type: "success" | "error") => void;
+  onDeleteSuccess: () => void;
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const closeDropdown = useCallback(() => setIsDropdownOpen(false), []);
   const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen);
@@ -108,14 +120,25 @@ function WineCard({
   const handleEdit = useCallback(() => {
     closeDropdown();
     showToast("수정 기능은 준비 중입니다.", "error");
-    // TODO: 와인 수정 모달
   }, [closeDropdown, showToast]);
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     closeDropdown();
-    showToast("삭제 기능은 준비 중입니다.", "error");
-    // TODO: 삭제
-  }, [closeDropdown, showToast]);
+    if (isDeleting) return;
+    setIsDeleting(true);
+    try {
+      await deleteMyWine(wine.id);
+      showToast("와인이 삭제되었습니다.", "success");
+      onDeleteSuccess();
+    } catch (e) {
+      showToast(
+        e instanceof Error ? e.message : "와인 삭제에 실패했습니다.",
+        "error",
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [closeDropdown, wine.id, onDeleteSuccess, showToast, isDeleting]);
 
   return (
     <article className="group flex w-[calc(50%-38px)] cursor-pointer flex-col gap-6 overflow-hidden">
