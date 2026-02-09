@@ -9,6 +9,8 @@ import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
 import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm";
+import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
+import { cn } from "@/libs/utils";
 
 export default function RegisterTab() {
   const { showModal } = useModal();
@@ -37,7 +39,8 @@ export default function RegisterTab() {
   }, []);
 
   const openRegisterModal = useCallback(() => {
-    if (!user || user === "isPending") return showToast("로그인이 필요합니다", "error");
+    if (!user || user === "isPending")
+      return showToast("로그인이 필요합니다", "error");
     const width = deviceType === "mobile" ? 375 : 460;
     showModal(
       <WineRegisterForm onSuccess={loadWines} />,
@@ -74,11 +77,7 @@ export default function RegisterTab() {
     return (
       <div className="py-12 text-center">
         <p className="text-gray-600">등록된 와인이 없습니다.</p>
-        <Button
-          type="button"
-          className="mt-4"
-          onClick={openRegisterModal}
-        >
+        <Button type="button" className="mt-4" onClick={openRegisterModal}>
           와인 등록하기
         </Button>
       </div>
@@ -88,13 +87,36 @@ export default function RegisterTab() {
   return (
     <div className="flex w-full flex-wrap gap-x-19 gap-y-10">
       {wines.map((wine) => (
-        <WineCard key={wine.id} wine={wine} />
+        <WineCard key={wine.id} wine={wine} showToast={showToast} />
       ))}
     </div>
   );
 }
 
-function WineCard({ wine }: { wine: MyWineItem }) {
+function WineCard({
+  wine,
+  showToast,
+}: {
+  wine: MyWineItem;
+  showToast: (message: string, type: "success" | "error") => void;
+}) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const closeDropdown = useCallback(() => setIsDropdownOpen(false), []);
+  const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen);
+
+  const handleEdit = useCallback(() => {
+    closeDropdown();
+    showToast("수정 기능은 준비 중입니다.", "error");
+    // TODO: 와인 수정 모달
+  }, [closeDropdown, showToast]);
+
+  const handleDelete = useCallback(() => {
+    closeDropdown();
+    showToast("삭제 기능은 준비 중입니다.", "error");
+    // TODO: 삭제
+  }, [closeDropdown, showToast]);
+
   return (
     <article className="group flex w-[calc(50%-38px)] cursor-pointer flex-col gap-6 overflow-hidden">
       <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-gray-100">
@@ -117,10 +139,64 @@ function WineCard({ wine }: { wine: MyWineItem }) {
           <p className="text-md mb-2 font-normal text-gray-300">
             {wine.region}
           </p>
-          <div className="absolute top-0 right-0">삭제</div>
+
+          <div
+            className="absolute top-0 right-0"
+            ref={dropdownRef as unknown as React.RefObject<HTMLDivElement>}
+          >
+            <button
+              type="button"
+              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDropdownOpen((prev) => !prev);
+              }}
+              aria-label="메뉴 열기"
+            >
+              <span className="flex flex-col gap-0.5">
+                <span className="h-1 w-1 rounded-full bg-current" />
+                <span className="h-1 w-1 rounded-full bg-current" />
+                <span className="h-1 w-1 rounded-full bg-current" />
+              </span>
+            </button>
+
+            {isDropdownOpen && (
+              <ul
+                className={cn(
+                  "absolute top-9 right-0 z-10 flex min-w-[120px] flex-col rounded-sm border border-gray-300 bg-white py-1 shadow-sm",
+                  "text-base font-normal text-gray-700",
+                )}
+              >
+                <li>
+                  <button
+                    type="button"
+                    className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit();
+                    }}
+                  >
+                    수정하기
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete();
+                    }}
+                  >
+                    삭제하기
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
         </div>
         <p className="text-2xl font-bold">
-          ₩{Number(wine.price).toLocaleString()}
+          {Number(wine.price).toLocaleString()}원
         </p>
       </div>
     </article>

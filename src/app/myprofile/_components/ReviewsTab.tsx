@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { getMyReviews } from "@/app/myprofile/_libs/profileApi";
 import type { MyReviewItem } from "@/types/myprofile/types";
 import { Button } from "@/components/ui/Button";
+import TasteBarGroup from "@/app/wines/[id]/_components/TasteBarGroup";
 
 function formatDate(value: string): string {
   try {
@@ -53,13 +54,9 @@ export default function ReviewsTab() {
     return (
       <div className="py-12 text-center">
         <p className="text-error">{error}</p>
-        <button
-          type="button"
-          onClick={loadReviews}
-          className="bg-primary hover:bg-primary/90 mt-4 rounded-md px-4 py-2 text-white"
-        >
+        <Button type="button" className="mt-4" onClick={loadReviews}>
           다시 시도
-        </button>
+        </Button>
       </div>
     );
   }
@@ -137,12 +134,10 @@ export default function ReviewsTab() {
                 </div>
               </div>
 
-              <div className="">
-                <p className="text-lg leading-relaxed">{review.content}</p>
-              </div>
+              <p className="text-lg leading-relaxed">{review.content}</p>
             </div>
 
-            <div className="">와인 테이스팅</div>
+            <TasteBarGroup />
           </div>
 
           <div className="flex items-center">
