@@ -82,7 +82,7 @@ export default function WinesPage({
         </div>
       </div>
       <div className="solid m-0 mx-auto w-[1100px] border-b"></div>
-      <div className="m-0 mx-auto flex h-400 w-[1100px] gap-10">
+      <div className="m-0 mx-auto flex w-[1100px] gap-10">
         <div className="h-full w-[778px]">
           <div className="felx-row flex">
             <h2 className="mb-2 text-xl font-bold">리뷰목록</h2>

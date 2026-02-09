@@ -14,10 +14,10 @@ export default function ReviewCard({ review }: ReviewCardProps) {
   const userImage = review.user?.image || "/user_icon.svg";
   return (
     <div className="my-5">
-      <StarRating rating={review.rating}></StarRating>
+      <StarRating rating={review.rating} />
       <div className="m-2 flex flex-row">
         <div className="relative h-14 w-14 overflow-hidden rounded-full">
-          <Image src={userImage} alt="프로필이미지" fill></Image>
+          <Image src={userImage} alt="프로필이미지" fill />
         </div>
         <div className="m-2 flex flex-col">
           <h3>{review.user.nickname}</h3>
@@ -27,10 +27,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       <ReviewAroma aroma={review.aroma} />
       <h3 className="my-4">{review.content}</h3>
       <div className="relative w-full">
-        <div className="relative"></div>
         <div className="flex w-full flex-col items-center">
           <DropDown>
-            <TasteBarGroup reviews={[review]} layout="grid"></TasteBarGroup>
+            <TasteBarGroup reviews={[review]} layout="grid" />
           </DropDown>
           <button className="rounded-sm border-1">Like</button>
         </div>

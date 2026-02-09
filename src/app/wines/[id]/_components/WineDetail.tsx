@@ -19,7 +19,6 @@ export default function WineDetail({ wine }: WineDetailProps) {
   return (
     <div className="m-auto my-0 flex min-h-[450px] max-w-[1100px]">
       <div className="relative min-h-[450px] min-w-[500px] overflow-hidden">
-        와인디테일
         <Image
           src={`/winedetail/type_${wine.type}.png`}
           alt="와인 타입 이미지"
