@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { ReactNode, useRef } from 'react';
-import LandingInfo from './LandingInfo';
-import { RenderModel } from './RenderModel';
-import { useScrollProgress } from '../_libs/useScrollProgress';
-import { useDeviceType } from '../wines/_libs/hooks/useDeviceType';
-import { useDeviceTypeStore } from '@/libs/zustand';
-import { cn } from '@/libs/utils';
-import Link from 'next/link';
+import { ReactNode, useRef } from "react";
+import LandingInfo from "./LandingInfo";
+import { RenderModel } from "./RenderModel";
+import { useScrollProgress } from "../_libs/useScrollProgress";
+import { useDeviceType } from "../wines/_libs/hooks/useDeviceType";
+import { useDeviceTypeStore } from "@/libs/zustand";
+import { cn } from "@/libs/utils";
+import Link from "next/link";
 
 interface LandingSectionProps {
   children: ReactNode;
@@ -20,7 +20,7 @@ export default function LandingSection({ children }: LandingSectionProps) {
   useDeviceType();
   const { deviceType } = useDeviceTypeStore();
 
-  const scrollHeight = deviceType !== 'mobile' ? SCROLL_HEIGHT_VH : 101;
+  const scrollHeight = deviceType !== "mobile" ? SCROLL_HEIGHT_VH : 101;
 
   const { progress, isComplete } = useScrollProgress(
     containerRef,
@@ -37,7 +37,7 @@ export default function LandingSection({ children }: LandingSectionProps) {
         <div
           className="sticky top-0 h-screen w-full overflow-hidden pt-[70px]"
           style={{
-            background: '#101318',
+            background: "#101318",
           }}
         >
           <div className="absolute inset-0">
@@ -52,7 +52,7 @@ export default function LandingSection({ children }: LandingSectionProps) {
         className="transition-opacity duration-500"
         style={{
           opacity: isComplete ? 1 : 0,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}
       >
         {children}
@@ -60,9 +60,9 @@ export default function LandingSection({ children }: LandingSectionProps) {
         <Link
           href="/wines"
           className={cn(
-            'fixed bottom-28 left-1/2 h-12.5 w-71 -translate-x-1/2 cursor-pointer rounded-sm bg-black text-white',
-            isComplete ? 'pointer-events-auto' : 'pointer-none',
-            'flex items-center justify-center no-underline',
+            "fixed bottom-28 left-1/2 h-12.5 w-71 -translate-x-1/2 cursor-pointer rounded-sm bg-black text-lg text-white",
+            isComplete ? "pointer-events-auto" : "pointer-none",
+            "flex items-center justify-center no-underline",
           )}
         >
           와인 보러가기

@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { getUserData } from '@/app/(auth)/_libs/authApi';
-import { LoginedUser } from '@/types/auto/types';
-
+import { getUserData } from "@/libs/api/auth/getAPIAuth";
+import { LoginedUser } from "@/types/auth/types";
 import {
   createContext,
   useContext,
   useState,
   ReactNode,
   useEffect,
-} from 'react';
+  useCallback,
+} from "react";
 
 interface UserContextValue {
-  user: LoginedUser | null | 'isPending';
-  setUser: (user: LoginedUser | null | 'isPending') => void;
+  user: LoginedUser | null | "isPending";
+  setUser: (user: LoginedUser | null | "isPending") => void;
+  refreshUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -23,39 +24,26 @@ interface UserProviderProps {
 }
 
 export function UserProvider({ children }: UserProviderProps) {
-  const [access, setAccess] = useState<string | null>(null);
-  const [refresh, setRefresh] = useState<string | null>(null);
-  const [user, setUser] = useState<LoginedUser | null | 'isPending'>(
-    'isPending',
+  const [user, setUser] = useState<LoginedUser | null | "isPending">(
+    "isPending",
   );
 
-  const getMe = async (access: string | null) => {
-    if (access || refresh) {
-      setUser('isPending');
-
-      try {
-        const data = await getUserData();
-        setUser(data);
-      } catch (e) {
-        console.log(e);
-        setUser(null);
-      }
-    } else {
+  const refreshUser = useCallback(async () => {
+    setUser("isPending");
+    try {
+      const userData = await getUserData();
+      setUser(userData);
+    } catch {
       setUser(null);
     }
-  };
-
-  useEffect(() => {
-    setAccess(localStorage.getItem('accessToken'));
-    setRefresh(localStorage.getItem('refreshToken'));
   }, []);
 
   useEffect(() => {
-    getMe(access);
-  }, [access]);
+    refreshUser();
+  }, [refreshUser]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, refreshUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -64,7 +52,7 @@ export function UserProvider({ children }: UserProviderProps) {
 export function useUser(): UserContextValue {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 }
