@@ -4,17 +4,41 @@ import type {
   User,
   MyReviewItem,
   MyReviewsResponse,
-  UpdateProfileBody,
-  UpdateProfileResponse,
 } from "@/types/myprofile/types";
+import { promises } from "dns";
 
 const DEFAULT_REVIEWS_LIMIT = 20;
 
-// 닉네임 변경
-export async function updateUserNickname(nickname: string): Promise<User> {
-  const res = await axios.patch("/users/me", { nickname });
+// 닉네임, 이미지 변경
+export async function updateProfile(body: {
+  nickname?: string;
+  image?: string;
+}): Promise<User> {
+  const res = await axios.patch("/users/me", body);
   return res.data;
 }
+
+export async function updateUserNickname(nickname: string): Promise<User> {
+  return updateProfile({ nickname });
+}
+
+export async function updateUserImageUrl(image: string): Promise<User> {
+  return updateProfile({ image });
+}
+
+export async function updateImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("image", file);
+  const res = await axios.post("/images/upload", formData);
+  return res.data.url;
+}
+
+export async function updateUserImageFile(file: File): Promise<User> {
+  const imageUrl = await updateImage(file);
+  return updateUserImageUrl(imageUrl);
+}
+
+//
 
 export async function getMyReviews(params?: {
   cursor?: number;
@@ -122,36 +146,6 @@ export async function getMyWines(params?: {
             ? (data.message as string[]).join(", ")
             : "등록 와인 목록 API가 요청 형식을 거부했습니다. 백엔드 경로/파라미터를 확인해 주세요.";
       throw new Error(`${msg} (400)`);
-    }
-    throw err;
-  }
-}
-
-export async function updateUserImage(
-  imageUrl: string,
-): Promise<UpdateProfileResponse> {
-  try {
-    const res = await axios.patch<UpdateProfileResponse>(
-      "/users/me",
-      { image: imageUrl },
-      { headers: { "Content-Type": "application/json" } },
-    );
-    return res.data;
-  } catch (err: unknown) {
-    if (Axios.isAxiosError(err) && err.response != null) {
-      const status = err.response.status;
-      const data = err.response.data as Record<string, unknown> | undefined;
-      const message =
-        data != null && typeof data.message === "string"
-          ? data.message
-          : data != null && Array.isArray(data.message)
-            ? (data.message as string[]).join(", ")
-            : data != null && typeof data.error === "string"
-              ? data.error
-              : status === 403
-                ? "현재 API 서버에서 프로필 이미지 수정을 허용하지 않습니다. API 제공처 설정 이슈입니다."
-                : "이미지 변경에 실패했습니다.";
-      throw new Error(status ? `${message} (${status})` : message);
     }
     throw err;
   }

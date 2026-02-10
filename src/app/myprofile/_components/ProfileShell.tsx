@@ -5,7 +5,8 @@
 import { useState, useEffect } from "react";
 import type { User } from "@/types/myprofile/types";
 import { getUserData } from "@/libs/api/auth/getAPIAuth";
-import { updateUserNickname } from "../_libs/profileApi";
+import { updateUserNickname, updateUserImageFile } from "../_libs/profileApi";
+import { useUser } from "@/components/UserProvider";
 
 import ProfileSidebar from "./ProfileSidebar";
 import ProfileTabs from "./ProfileTabs";
@@ -13,40 +14,38 @@ import ProfileTabPanel from "./ProfileTabPanel";
 import { useToast } from "@/components/ToastProvider";
 
 export default function ProfileShell() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useUser();
   const [nickname, setNickname] = useState("");
-  const [loading, setLoading] = useState(true);
 
   const [isSubmission, setIsSubmission] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const [isImageUpdating, setIsImageUpdating] = useState(false);
+
   const { showToast } = useToast();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await getUserData();
-        setUser(data as User);
-        setNickname(data?.nickname ?? "");
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    if (user && user !== "isPending") setNickname(user.nickname ?? "");
+  }, [user]);
+
+  if (user === "isPending") {
+    return <div>로딩중 ...</div>;
+  }
+
+  if (!user) {
+    return <div>로그인 후 이용 ...</div>;
+  }
 
   const handleSubmit = async () => {
-    if (!user) return;
-
     const nextNickname = nickname.trim();
 
     try {
       setIsSubmission(true);
       setErrorMessage(null);
+
       const updatedUser = await updateUserNickname(nextNickname);
+
       setUser(updatedUser);
-      setNickname(updatedUser.nickname);
       showToast("닉네임 변경에 성공했습니다.", "success");
     } catch (any: any) {
       showToast(any.message ?? "닉네임 변경에 실패했습니다.", "error");
@@ -55,13 +54,22 @@ export default function ProfileShell() {
     }
   };
 
-  if (loading) {
-    return <div>로딩중 ...</div>;
-  }
+  const handleImageChange = async (file: File) => {
+    if (!user) return;
 
-  if (!user) {
-    return <div>로그인 후 이용 ...</div>;
-  }
+    try {
+      setIsImageUpdating(true);
+
+      const updatedUser = await updateUserImageFile(file);
+
+      setUser(updatedUser);
+      showToast("프로필 사진이 변경되었습니다.", "success");
+    } catch (any: any) {
+      showToast("프로필 사진 변경이 실패했습니다.", "error");
+    } finally {
+      setIsImageUpdating(false);
+    }
+  };
 
   return (
     <>
@@ -74,6 +82,8 @@ export default function ProfileShell() {
           onSubmit={handleSubmit}
           isSubmission={isSubmission}
           errorMessage={errorMessage}
+          onImageChange={handleImageChange}
+          isImageUpdating={isImageUpdating}
         />
 
         {/* 우측 (탭 내용) */}

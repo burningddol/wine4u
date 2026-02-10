@@ -4,18 +4,18 @@
 
 import Image from "next/image";
 
-import { User } from "@/types/myprofile/types";
+import { useRef } from "react";
+import { LoginedUser } from "@/types/auth/types";
 import NicknameForm from "./NicknameForm";
 
 interface ProfileSidebarProps {
-  user: User;
+  user: LoginedUser;
   nickname: string;
   onNicknameChange: (value: string) => void;
   onSubmit: () => void;
   isSubmission?: boolean;
   errorMessage?: string | null;
-
-  onImageClick?: () => void;
+  onImageChange: (file: File) => void;
   isImageUpdating?: boolean;
 }
 
@@ -26,26 +26,31 @@ export default function ProfileSidebar({
   onSubmit,
   isSubmission = false,
   errorMessage = null,
-  onImageClick,
+  onImageChange,
   isImageUpdating = false,
 }: ProfileSidebarProps) {
   const userImage = user.image || "/user_icon.svg";
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const canClickImage = Boolean(onImageClick);
+  const handleClickImage = () => {
+    inputRef.current?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    onImageChange(file);
+  };
 
   return (
     <aside className="w-full shrink-0 self-start px-6 md:sticky md:top-[70px] md:w-[290px]">
       <div className="flex flex-col gap-5 py-7 md:gap-12">
         <div className="flex flex-col items-center gap-4 md:gap-7">
           <div
-            role={canClickImage ? "button" : undefined}
-            tabIndex={canClickImage ? 0 : undefined}
-            className={`relative overflow-hidden rounded-full md:h-[160px] md:w-[160px] ${
-              canClickImage
-                ? "focus-visible:ring-primary cursor-pointer ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                : ""
-            }`}
-            onClick={onImageClick}
+            className="focus-visible:ring-primary relative cursor-pointer overflow-hidden rounded-full ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-[160px] md:w-[160px]"
+            role="button"
+            tabIndex={0}
+            onClick={handleClickImage}
           >
             <Image
               src={userImage}
@@ -54,12 +59,20 @@ export default function ProfileSidebar({
               height={160}
               className="h-full w-full object-cover"
             />
-            {userImage && canClickImage && !isImageUpdating && (
-              <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 text-sm font-medium text-white transition-colors hover:bg-black/40">
-                사진 변경
-              </span>
-            )}
-            {userImage && isImageUpdating && (
+
+            <span className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 text-sm font-medium text-white transition-colors hover:bg-black/40">
+              사진 변경
+            </span>
+
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/jpeg, image/png, image/jpg, image/webp, image/gif"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+
+            {isImageUpdating && (
               <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 text-sm text-white">
                 변경 중...
               </div>
