@@ -5,7 +5,6 @@ import type {
   MyReviewItem,
   MyReviewsResponse,
 } from "@/types/myprofile/types";
-import { promises } from "dns";
 
 const DEFAULT_REVIEWS_LIMIT = 20;
 
@@ -38,53 +37,19 @@ export async function updateUserImageFile(file: File): Promise<User> {
   return updateUserImageUrl(imageUrl);
 }
 
-//
-
+// 내가 쓴 후기
 export async function getMyReviews(params?: {
-  cursor?: number;
   limit?: number;
+  cursor?: number | null;
 }): Promise<MyReviewsResponse> {
-  const searchParams = new URLSearchParams();
-  const limit = params?.limit ?? DEFAULT_REVIEWS_LIMIT;
-  searchParams.set("limit", String(limit));
-  if (params?.cursor != null) searchParams.set("cursor", String(params.cursor));
-  const query = searchParams.toString();
-  const url = `/users/me/reviews?${query}`;
-  try {
-    const res = await axios.get(url);
-    const raw = res.data as Record<string, unknown> | unknown[];
-    const list: MyReviewItem[] = Array.isArray(raw)
-      ? (raw as MyReviewItem[])
-      : ((raw?.list ?? raw?.data ?? raw?.reviews ?? []) as MyReviewItem[]);
-    const nextCursor =
-      typeof raw === "object" &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      "nextCursor" in raw
-        ? (raw.nextCursor as number | null)
-        : null;
-    const totalCount =
-      typeof raw === "object" &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      "totalCount" in raw &&
-      typeof (raw as Record<string, unknown>).totalCount === "number"
-        ? ((raw as Record<string, unknown>).totalCount as number)
-        : undefined;
-    return { list, nextCursor, totalCount };
-  } catch (err: unknown) {
-    if (Axios.isAxiosError(err) && err.response?.status === 400) {
-      const data = err.response.data as Record<string, unknown> | undefined;
-      const msg =
-        data != null && typeof data.message === "string"
-          ? data.message
-          : data != null && Array.isArray(data.message)
-            ? (data.message as string[]).join(", ")
-            : "리뷰 목록 API가 요청 형식을 거부했습니다. 백엔드 경로/파라미터를 확인해 주세요.";
-      throw new Error(`${msg} (400)`);
-    }
-    throw err;
-  }
+  const res = await axios.get<MyReviewsResponse>("/users/me/reviews", {
+    params: {
+      limit: params?.limit ?? DEFAULT_REVIEWS_LIMIT,
+      cursor: params?.cursor ?? null,
+    },
+  });
+
+  return res.data;
 }
 
 export interface MyWineItem {
