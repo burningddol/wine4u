@@ -85,7 +85,7 @@ export default function RegisterTab() {
   }
 
   return (
-    <div className="flex w-full flex-wrap gap-x-19 gap-y-10">
+    <div className="flex w-full flex-wrap gap-x-19 gap-y-10 px-8 py-10">
       {wines.map((wine) => (
         <WineCard key={wine.id} wine={wine} showToast={showToast} />
       ))}
