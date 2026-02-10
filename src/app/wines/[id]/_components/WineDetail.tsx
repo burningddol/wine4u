@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import StarRating from '@/components/StarRating';
+import Image from "next/image";
+import StarRating from "@/components/StarRating";
 
 interface WineDetailProps {
   wine: {
@@ -19,9 +19,8 @@ export default function WineDetail({ wine }: WineDetailProps) {
   return (
     <div className="m-auto my-0 flex min-h-[450px] max-w-[1100px]">
       <div className="relative min-h-[450px] min-w-[500px] overflow-hidden">
-        와인디테일
         <Image
-          src={`/wines/${wine.type}.png`}
+          src={`/winedetail/type_${wine.type}.png`}
           alt="와인 타입 이미지"
           fill
           sizes="max-width: 768px "
@@ -36,7 +35,7 @@ export default function WineDetail({ wine }: WineDetailProps) {
       </div>
       <div className="relative ml-[50px] min-h-[400px] min-w-[550px]">
         <div className="mx-0 mt-30 flex flex-row">
-          <StarRating rating={wine.avgRating}></StarRating>
+          <StarRating rating={wine.avgRating} />
           <span className="ml-5">{wine.reviewCount}개의 후기</span>
         </div>
         <div className="mt-5 text-4xl font-bold">{wine.name}</div>

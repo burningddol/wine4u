@@ -10,7 +10,7 @@ const WINE_INFO = {
   바디감: { low: "가벼워요", mid: "적당해요", high: "진해요" },
   당도: { low: "드라이해요", mid: "중간단맛", high: "달아요" },
   산미: { low: "안셔요", mid: "새콤해요", high: "많이셔요" },
-  탄닌: { low: "부드러워요", mid: "적당해요", high: "많이셔요" },
+  탄닌: { low: "부드러워요", mid: "적당해요", high: "떫어요" },
 } as const;
 
 const getTasteText = (label: string, value: number) => {

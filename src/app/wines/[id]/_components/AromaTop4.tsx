@@ -1,10 +1,12 @@
-import { MockData2 } from "@/libs/Mock/MockData";
+import { WineTasteAroma } from "@/types/detail/types";
 import Image from "next/image";
-
-export default function AromaTop4() {
+interface AromaTop4Props {
+  reviews: WineTasteAroma[];
+}
+export default function AromaTop4({ reviews }: AromaTop4Props) {
   // flatMap으로 aroma 해당하는 한 배열로 합치기
-  const allAromas = MockData2.flatMap((review) => review.aroma);
 
+  const allAromas = reviews.flatMap((reviews) => reviews.aroma);
   //reduce로 {"AROMA":2} 재배열, 초기값 {}
   const counts = allAromas.reduce((acc: Record<string, number>, curr) => {
     acc[curr] = (acc[curr] || 0) + 1;
@@ -20,7 +22,11 @@ export default function AromaTop4() {
       {getTop4.map((aroma) => (
         <div key={aroma} className="flex flex-col gap-4">
           <div className="relative ml-4 h-30 w-30 overflow-hidden rounded-md">
-            <Image src={`/aroma/${aroma}.jpg`} alt={`${aroma}향`} fill></Image>
+            <Image
+              src={`/winedetail/${aroma}.jpg`}
+              alt={`${aroma}향`}
+              fill
+            ></Image>
           </div>
           <span className="text-center">{aroma}</span>
         </div>
