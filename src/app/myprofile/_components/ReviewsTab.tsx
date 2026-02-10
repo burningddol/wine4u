@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import { getMyReviews } from "@/app/myprofile/_libs/profileApi";
 import type { MyReviewItem } from "@/types/myprofile/types";
 import { Button } from "@/components/ui/Button";
-import TasteBarGroup from "@/app/wines/[id]/_components/TasteBarGroup";
 
 function formatDate(value: string): string {
   try {
@@ -137,7 +136,7 @@ export default function ReviewsTab() {
               <p className="text-lg leading-relaxed">{review.content}</p>
             </div>
 
-            <TasteBarGroup />
+            <div>테이스팅</div>
           </div>
 
           <div className="flex items-center">
