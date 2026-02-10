@@ -11,45 +11,58 @@ interface NicknameFormProps {
   nickname: string;
   onNicknameChange: (value: string) => void;
   onSubmit: () => void;
+  isSubmission?: boolean;
+  errorMessage?: string | null;
 }
 
 export default function NicknameForm({
+  user,
   nickname,
   onNicknameChange,
   onSubmit,
+  isSubmission = false,
+  errorMessage = null,
 }: NicknameFormProps) {
-  const displayNickname = nickname !== "" ? nickname : nickname;
-  const hasChanged = nickname !== "" && nickname !== nickname;
+  const trimmedNickname = nickname.trim();
+  const hasChanged =
+    trimmedNickname.length > 0 && trimmedNickname !== user.nickname;
 
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onNicknameChange(e.target.value);
-  };
+  // const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   onNicknameChange(e.target.value);
+  // };
 
-  const handleSaveNickname = () => {
-    if (!hasChanged) return;
-    onSubmit();
-  };
+  // const handleSaveNickname = () => {
+  //   if (!hasChanged) return;
+  //   onSubmit();
+  // };
 
   return (
     <>
-      <div className="flex flex-col items-center gap-2">
-        <Input
-          name="nickname"
-          label="닉네임"
-          value={displayNickname}
-          onChange={handleNicknameChange}
-          placeholder="닉네임을 입력해주세요."
-        />
-      </div>
-      <div className="flex flex-shrink-0 gap-2">
-        <Button
-          type="button"
-          onClick={handleSaveNickname}
-          disabled={!hasChanged}
-        >
-          변경하기
-        </Button>
-      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!hasChanged || isSubmission) return;
+          onSubmit();
+        }}
+      >
+        <div className="flex flex-col items-center gap-2">
+          <Input
+            name="nickname"
+            label="닉네임"
+            value={nickname}
+            onChange={(e) => onNicknameChange(e.target.value)}
+            placeholder="닉네임을 입력해주세요."
+          />
+        </div>
+
+        {errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
+
+        <div className="flex flex-shrink-0 gap-2">
+          <Button type="submit" disabled={!hasChanged || isSubmission}>
+            {isSubmission ? "변경 중..." : "변경하기"}
+          </Button>
+        </div>
+      </form>
     </>
   );
 }

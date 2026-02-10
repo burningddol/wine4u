@@ -5,18 +5,22 @@
 import { useState, useEffect } from "react";
 import type { User } from "@/types/myprofile/types";
 import { getUserData } from "@/libs/api/auth/getAPIAuth";
+import { updateUserNickname } from "../_libs/profileApi";
 
 import ProfileSidebar from "./ProfileSidebar";
 import ProfileTabs from "./ProfileTabs";
 import ProfileTabPanel from "./ProfileTabPanel";
-import { useProfileTab } from "../_contexts/ProfileTabContext";
+import { useToast } from "@/components/ToastProvider";
 
 export default function ProfileShell() {
-  const { activeTab } = useProfileTab();
-
   const [user, setUser] = useState<User | null>(null);
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [isSubmission, setIsSubmission] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     (async () => {
@@ -32,8 +36,23 @@ export default function ProfileShell() {
     })();
   }, []);
 
-  const handleSubmit = () => {
-    // TODO: 닉네임 변경
+  const handleSubmit = async () => {
+    if (!user) return;
+
+    const nextNickname = nickname.trim();
+
+    try {
+      setIsSubmission(true);
+      setErrorMessage(null);
+      const updatedUser = await updateUserNickname(nextNickname);
+      setUser(updatedUser);
+      setNickname(updatedUser.nickname);
+      showToast("닉네임 변경에 성공했습니다.", "success");
+    } catch (any: any) {
+      showToast(any.message ?? "닉네임 변경에 실패했습니다.", "error");
+    } finally {
+      setIsSubmission(false);
+    }
   };
 
   if (loading) {
@@ -49,10 +68,12 @@ export default function ProfileShell() {
       <div className="mx-auto flex min-h-screen w-full max-w-[1140px] flex-col md:mt-17.5 md:flex-row">
         {/* 좌측 (마이프로필 사진+닉네임변경) */}
         <ProfileSidebar
-          user={user as User}
+          user={user}
           nickname={nickname}
           onNicknameChange={setNickname}
           onSubmit={handleSubmit}
+          isSubmission={isSubmission}
+          errorMessage={errorMessage}
         />
 
         {/* 우측 (탭 내용) */}

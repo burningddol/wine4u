@@ -12,6 +12,9 @@ interface ProfileSidebarProps {
   nickname: string;
   onNicknameChange: (value: string) => void;
   onSubmit: () => void;
+  isSubmission?: boolean;
+  errorMessage?: string | null;
+
   onImageClick?: () => void;
   isImageUpdating?: boolean;
 }
@@ -21,6 +24,8 @@ export default function ProfileSidebar({
   nickname,
   onNicknameChange,
   onSubmit,
+  isSubmission = false,
+  errorMessage = null,
   onImageClick,
   isImageUpdating = false,
 }: ProfileSidebarProps) {

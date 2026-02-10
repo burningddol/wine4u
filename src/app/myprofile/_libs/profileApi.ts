@@ -1,6 +1,7 @@
 import Axios from "axios";
 import axios from "@/libs/api/axios";
 import type {
+  User,
   MyReviewItem,
   MyReviewsResponse,
   UpdateProfileBody,
@@ -8,6 +9,12 @@ import type {
 } from "@/types/myprofile/types";
 
 const DEFAULT_REVIEWS_LIMIT = 20;
+
+// 닉네임 변경
+export async function updateUserNickname(nickname: string): Promise<User> {
+  const res = await axios.patch("/users/me", { nickname });
+  return res.data;
+}
 
 export async function getMyReviews(params?: {
   cursor?: number;
@@ -115,39 +122,6 @@ export async function getMyWines(params?: {
             ? (data.message as string[]).join(", ")
             : "등록 와인 목록 API가 요청 형식을 거부했습니다. 백엔드 경로/파라미터를 확인해 주세요.";
       throw new Error(`${msg} (400)`);
-    }
-    throw err;
-  }
-}
-
-export async function updateUserNickname(
-  nickname: string,
-  image?: string | null,
-): Promise<UpdateProfileResponse> {
-  try {
-    const body: UpdateProfileBody = { nickname };
-    if (image != null && image !== "") body.image = image;
-    const res = await axios.patch<UpdateProfileResponse>("/users/me", body, {
-      headers: { "Content-Type": "application/json" },
-    });
-    return res.data;
-  } catch (err: unknown) {
-    if (Axios.isAxiosError(err) && err.response != null) {
-      const status = err.response.status;
-      const data = err.response.data as Record<string, unknown> | undefined;
-      const message =
-        status === 403
-          ? "현재 API 서버에서 허용하지 않습니다."
-          : status === 405
-            ? "현재 API 서버에서 닉네임 수정 기능(PATCH /users/me)을 지원하지 않습니다."
-            : data != null && typeof data.message === "string"
-              ? data.message
-              : data != null && Array.isArray(data.message)
-                ? (data.message as string[]).join(", ")
-                : data != null && typeof data.error === "string"
-                  ? data.error
-                  : "닉네임 변경에 실패했습니다.";
-      throw new Error(status ? `${message} (${status})` : message);
     }
     throw err;
   }
