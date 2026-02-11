@@ -4,6 +4,7 @@ interface WineTasteProps {
   label: string;
   value: number; // 0 ~ 5 (6단계이므로 인덱스는 0~5)
   fillColor?: string;
+  onChange?: (newValue: number) => void;
 }
 
 const WINE_INFO = {
@@ -26,31 +27,45 @@ export default function WineTaste({
   label,
   value,
   fillColor = "#333236",
+  onChange, // 리뷰남기기 모달
 }: WineTasteProps) {
   const uid = useId();
+  const isInputMode = !!onChange; //리뷰남기기 모달내 와인 맛
+  const config = WINE_INFO[label as keyof typeof WINE_INFO];
   const maxSteps = 6; // 맛 6단계
   const tasteText = getTasteText(label, value); // 각 영역별 text 추출
 
   return (
-    <div className="flex w-full items-center justify-between gap-4 py-2">
-      <div className="flex h-8 w-14 items-center justify-center rounded-sm bg-gray-200 text-center text-gray-800">
-        {label}
-      </div>
+    <div className="justify-betwe en flex w-full items-center gap-4 py-2">
+      {isInputMode && <span className="w-10 text-sm font-bold">{label}</span>}
+
+      {!isInputMode && (
+        <div className="flex h-8 w-14 shrink-0 items-center justify-center rounded-sm bg-gray-200 text-sm text-gray-800">
+          {label}
+        </div>
+      )}
+
       <div className="block h-5 w-px bg-gray-400"></div>
+      {isInputMode && config && (
+        <span className="w-15 shrink-0 text-xs text-gray-400">
+          {config.low}
+        </span>
+      )}
+
       <div className="flex h-3 flex-1 gap-1">
         {Array.from({ length: maxSteps }, (_, i) => {
-          // 각 칸이 얼마나 채워질지 계산 (0~100)
           const fill = Math.min(Math.max((value - i) * 100, 0), 100);
           const gradientId = `${uid}-pill-${i}`;
 
           return (
             <div
               key={i}
+              onClick={() => onChange?.(i + 1)}
               className={`bg-winesHero relative h-full flex-1 ${
                 i === 0 ? "rounded-l-full" : "" // 맨 앞만 왼쪽 둥글게
               } ${
                 i === maxSteps - 1 ? "rounded-r-full" : "" // 맨 뒤만 오른쪽 둥글게
-              } overflow-hidden`} // 내부에서 채워지는 색이 둥근 모서리에 맞춰 잘리도록
+              } overflow-hidden ${onChange ? "cursor-pointer" : ""} `}
             >
               {/* 실제 채워지는 게이지 (SVG) */}
               <svg className="h-full w-full" aria-hidden="true">
@@ -65,7 +80,13 @@ export default function WineTaste({
             </div>
           );
         })}
-        <div className="h-20 w-20 text-right">{tasteText}</div>
+        {isInputMode && config ? (
+          <span className="shrink-0 text-xs text-gray-400">{config.high}</span>
+        ) : (
+          <div className="w-20 text-right text-sm">
+            {getTasteText(label, value)}
+          </div>
+        )}
       </div>
     </div>
   );
