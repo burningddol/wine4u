@@ -18,16 +18,20 @@ export interface FieldConfig {
   focusTarget: FocusTarget;
 }
 
+interface BottomInfo {
+  submitLabel: string;
+  text: string;
+  linkText: string;
+  linkHref: string;
+}
+
 interface AuthFormProps<T extends Record<string, string>> {
   fields: FieldConfig[];
   initialValues: T;
   validationSchema: any;
   onSubmit: (values: T, actions: FormikHelpers<T>) => Promise<void>;
   isLoading: boolean;
-  submitLabel: string;
-  bottomText: string;
-  bottomLinkText: string;
-  bottomLinkHref: string;
+  bottomInfo: BottomInfo;
   onFocusChange: (target: FocusTarget) => void;
   onTypingChange: (typing: boolean) => void;
   extraButtons?: ReactNode;
@@ -39,10 +43,7 @@ export default function AuthForm<T extends Record<string, string>>({
   validationSchema,
   onSubmit,
   isLoading,
-  submitLabel,
-  bottomText,
-  bottomLinkText,
-  bottomLinkHref,
+  bottomInfo,
   onFocusChange,
   onTypingChange,
   extraButtons,
@@ -90,7 +91,7 @@ export default function AuthForm<T extends Record<string, string>>({
               disabled={isSubmitting || !isValid || !dirty}
               type="submit"
             >
-              {isLoading ? "제출중..." : submitLabel}
+              {isLoading ? "제출중..." : bottomInfo.submitLabel}
             </button>
 
             {extraButtons}
@@ -101,12 +102,12 @@ export default function AuthForm<T extends Record<string, string>>({
                 "text-sm font-normal text-gray-800",
               )}
             >
-              {bottomText}
+              {bottomInfo.text}
               <Link
-                href={bottomLinkHref}
+                href={bottomInfo.linkHref}
                 className="ml-1 text-[#1b18fc] underline"
               >
-                {bottomLinkText}
+                {bottomInfo.linkText}
               </Link>
             </span>
           </Form>
