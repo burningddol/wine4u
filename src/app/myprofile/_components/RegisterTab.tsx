@@ -38,9 +38,8 @@ export default function RegisterTab() {
     }
   }, []);
 
-  const openRegisterModal = useCallback(() => {
-    if (!user || user === "isPending")
-      return showToast("로그인이 필요합니다", "error");
+  const openRegisterModal = () => {
+    if (!user) return showToast("로그인이 필요합니다", "error");
     const width = deviceType === "mobile" ? 375 : 460;
     showModal(
       <WineRegisterForm onSuccess={loadWines} />,
@@ -48,7 +47,7 @@ export default function RegisterTab() {
       width,
       700,
     );
-  }, [user, deviceType, showModal, showToast, loadWines]);
+  };
 
   useEffect(() => {
     loadWines();
