@@ -18,6 +18,13 @@ interface LoginFormProps {
   onTypingChange: (typing: boolean) => void;
 }
 
+const LOGIN_BOTTOM_INFO = {
+  submitLabel: "로그인",
+  text: "처음 방문하셨나요?",
+  linkText: "회원가입",
+  linkHref: "/signup",
+} as const;
+
 const LOGIN_FIELDS: FieldConfig[] = [
   {
     label: "이메일",
@@ -82,10 +89,7 @@ export default function LoginForm({
       validationSchema={loginSchema}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      submitLabel="로그인"
-      bottomText="처음 방문하셨나요?"
-      bottomLinkText="회원가입"
-      bottomLinkHref="/signup"
+      bottomInfo={LOGIN_BOTTOM_INFO}
       onFocusChange={onFocusChange}
       onTypingChange={onTypingChange}
       extraButtons={
