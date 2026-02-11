@@ -1,95 +1,66 @@
 "use client";
 
-import { Form, Formik, FormikHelpers } from "formik";
-import CustomInput from "./CustomInput";
+import { FormikHelpers } from "formik";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FocusTarget } from "./Character";
-import Image from "next/image";
 import { SignUpFormValues, signUpSchema } from "../_libs/authSchema";
 import { SignUpData } from "@/types/auth/types";
 import { postSignUpData } from "../../../libs/api/auth/getAPIAuth";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
+import AuthForm, { FieldConfig } from "./AuthForm";
 
 interface SignUpFormProps {
   onFocusChange: (target: FocusTarget) => void;
   onTypingChange: (typing: boolean) => void;
 }
 
-interface CustomProps {
-  label: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  autoComplete: string;
-  forPassword?: boolean;
-  onFocus: () => void;
-  onBlur: () => void;
-  onKeyDown: () => void;
-  onKeyUp: () => void;
-}
+const SIGNUP_FIELDS: FieldConfig[] = [
+  {
+    label: "이메일",
+    name: "email",
+    type: "email",
+    placeholder: "codeit@email.com",
+    autoComplete: "email",
+    focusTarget: "email",
+  },
+  {
+    label: "닉네임",
+    name: "nickname",
+    type: "text",
+    placeholder: "닉네임을 입력해주세요",
+    autoComplete: "username",
+    focusTarget: "nickname",
+  },
+  {
+    label: "비밀번호",
+    name: "password",
+    type: "password",
+    placeholder: "비밀번호를 입력하세요",
+    autoComplete: "new-password",
+    forPassword: true,
+    focusTarget: "password",
+  },
+  {
+    label: "비밀번호 확인",
+    name: "confirmPassword",
+    type: "password",
+    placeholder: "비밀번호를 다시 한 번 입력하세요",
+    autoComplete: "new-password",
+    forPassword: true,
+    focusTarget: "password",
+  },
+];
 
 export default function SignUpForm({
   onFocusChange,
   onTypingChange,
 }: SignUpFormProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
   const { setUser } = useUser();
-
   const { showToast } = useToast();
-
-  const customProps: CustomProps[] = [
-    {
-      label: "이메일",
-      name: "email",
-      type: "email",
-      placeholder: "codeit@email.com",
-      autoComplete: "email",
-      onFocus: () => onFocusChange("email"),
-      onBlur: () => onFocusChange("none"),
-      onKeyDown: () => onTypingChange(true),
-      onKeyUp: () => onTypingChange(false),
-    },
-    {
-      label: "닉네임",
-      name: "nickname",
-      type: "text",
-      placeholder: "닉네임을 입력해주세요",
-      autoComplete: "username",
-      onFocus: () => onFocusChange("nickname"),
-      onBlur: () => onFocusChange("none"),
-      onKeyDown: () => onTypingChange(true),
-      onKeyUp: () => onTypingChange(false),
-    },
-    {
-      label: "비밀번호",
-      name: "password",
-      type: "password",
-      placeholder: "비밀번호를 입력하세요",
-      autoComplete: "new-password",
-      forPassword: true,
-      onFocus: () => onFocusChange("password"),
-      onBlur: () => onFocusChange("none"),
-      onKeyDown: () => onTypingChange(true),
-      onKeyUp: () => onTypingChange(false),
-    },
-    {
-      label: "비밀번호 확인",
-      name: "confirmPassword",
-      type: "password",
-      placeholder: "비밀번호를 다시 한 번 입력하세요",
-      autoComplete: "new-password",
-      forPassword: true,
-      onFocus: () => onFocusChange("password"),
-      onBlur: () => onFocusChange("none"),
-      onKeyDown: () => onTypingChange(true),
-      onKeyUp: () => onTypingChange(false),
-    },
-  ];
 
   const onSubmit = async (
     values: SignUpFormValues,
@@ -105,13 +76,11 @@ export default function SignUpForm({
     try {
       const data = await postSignUpData(signUpData);
       setUser(data.user);
-
       showToast("회원가입에 성공했습니다", "success");
       router.replace("/");
     } catch (e: any) {
       const errorMessage =
         e.response?.data?.message || "회원가입에 실패했습니다";
-
       console.log(errorMessage);
       showToast(errorMessage, "error");
     } finally {
@@ -121,49 +90,23 @@ export default function SignUpForm({
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-9 md:gap-18">
-      <Link href="/">
-        <Image
-          src="/auth/logo.svg"
-          width={104}
-          height={30}
-          alt="logo"
-          className="align-contents-center"
-        />
-      </Link>
-      <Formik<SignUpFormValues>
-        initialValues={{
-          email: "",
-          nickname: "",
-          password: "",
-          confirmPassword: "",
-        }}
-        validationSchema={signUpSchema}
-        onSubmit={onSubmit}
-      >
-        {({ isSubmitting, isValid, dirty }) => (
-          <Form className="flex w-full flex-col">
-            {customProps.map((props, index) => (
-              <CustomInput key={index} {...props} />
-            ))}
-
-            <button
-              className="bg-primary h-14 w-full cursor-pointer rounded-sm text-xl font-normal text-white disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isSubmitting || !isValid || !dirty}
-              type="submit"
-            >
-              {isLoading ? "제출중..." : "회원가입"}
-            </button>
-
-            <span className="mt-2.5 flex items-center justify-center text-sm font-normal text-gray-800">
-              계정이 이미 있으신가요?
-              <Link href="/login" className="ml-1 text-[#1b18fc] underline">
-                로그인
-              </Link>
-            </span>
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <AuthForm<SignUpFormValues>
+      fields={SIGNUP_FIELDS}
+      initialValues={{
+        email: "",
+        nickname: "",
+        password: "",
+        confirmPassword: "",
+      }}
+      validationSchema={signUpSchema}
+      onSubmit={onSubmit}
+      isLoading={isLoading}
+      submitLabel="회원가입"
+      bottomText="계정이 이미 있으신가요?"
+      bottomLinkText="로그인"
+      bottomLinkHref="/login"
+      onFocusChange={onFocusChange}
+      onTypingChange={onTypingChange}
+    />
   );
 }
