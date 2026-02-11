@@ -54,16 +54,19 @@ export default function AuthSection() {
             )}
             ref={dropdownRef}
           >
-            <li className="h-full w-full content-center rounded-sm hover:bg-gray-200">
-              <Link
-                href="/myprofile"
-                className="text-gray-700 no-underline"
-                prefetch
-                onClick={(e) => e.stopPropagation()}
-              >
+            <Link
+              href="/myprofile"
+              className="h-full w-full text-gray-700 no-underline"
+              prefetch
+              onClick={(e) => {
+                e.stopPropagation();
+                closeDropdown();
+              }}
+            >
+              <li className="h-full w-full content-center rounded-sm hover:bg-gray-200">
                 마이페이지
-              </Link>
-            </li>
+              </li>{" "}
+            </Link>
 
             <li
               className="h-full w-full content-center rounded-sm text-gray-700 hover:bg-gray-200"
