@@ -26,15 +26,17 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       </div>
       <ReviewAroma aroma={review.aroma} />
       <h3 className="my-4">{review.content}</h3>
-      <div className="relative w-full">
-        <div className="flex w-full flex-col items-center">
+      <div className="relative flex w-full flex-col items-end">
+        <div className="flex w-full flex-row items-center">
           <DropDown>
             <TasteBarGroup reviews={[review]} layout="grid" />
           </DropDown>
-          <button className="rounded-sm border-1">Like</button>
         </div>
+        <button className="absolute bottom-0 left-0 rounded-sm border border-gray-300 px-3 py-1">
+          Like
+        </button>
       </div>
-      <div className="solid m-0 mx-auto w-9/10 border-b"></div>
+      <div className="solid m-0 mx-auto mt-5 w-9/10 border-b"></div>
     </div>
   );
 }

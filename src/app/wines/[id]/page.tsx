@@ -1,4 +1,4 @@
-"use client"; // 최상단에 반드시 추가
+"use client";
 
 import { useEffect, useState, use } from "react";
 import WineDetail from "./_components/WineDetail";
@@ -10,6 +10,8 @@ import ReviewBarGroup from "./_components/RatingBarGroup";
 import { getWineDetail } from "@/libs/api/wineDetail/getAPIData";
 import { WineDetail as WineDetailType } from "@/types/detail/types";
 import { WineTasteAroma } from "@/types/detail/types";
+import { useModal } from "@/components/ModalProvider";
+import ReviewForm from "./_components/Review/ReviewForm";
 
 export default function WinesPage({
   params,
@@ -17,7 +19,7 @@ export default function WinesPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-
+  const { showModal } = useModal();
   const [wineData, setWineData] = useState<WineDetailType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +60,6 @@ export default function WinesPage({
     return (
       <div className="p-10 text-center text-white">데이터가 없습니다.</div>
     );
-  //const reviews = MockData2;
 
   return (
     <div>
@@ -97,7 +98,12 @@ export default function WinesPage({
             <h3>/5.0</h3>
           </div>
           <ReviewBarGroup reviews={reviews}></ReviewBarGroup>
-          <button className="h-12 w-70 rounded-sm bg-black text-white">
+          <button
+            onClick={() =>
+              showModal(<ReviewForm wine={wineData} />, "리뷰 등록", 550, 1000)
+            }
+            className="h-12 w-70 cursor-pointer rounded-sm bg-black text-white"
+          >
             리뷰남기기
           </button>
         </div>
