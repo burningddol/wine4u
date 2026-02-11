@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { fetchWines } from '@/libs/api/wines/getAPIData';
-import { Wine, WineFilterValues, WineListResponse } from '@/types/wines/types';
-import useDebounce from './useDebounce';
-import useInfiniteScroll from './useInfiniteScroll';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchWines } from "@/libs/api/wines/getAPIData";
+import { Wine, WineFilterValues, WineListResponse } from "@/types/wines/types";
+import useDebounce from "./useDebounce";
+import useInfiniteScroll from "./useInfiniteScroll";
+import { useRouter } from "next/navigation";
 
 export const INITIAL_FILTER: WineFilterValues = {
   type: undefined,
@@ -14,7 +15,7 @@ export const INITIAL_FILTER: WineFilterValues = {
 const WINES_PER_PAGE = 6;
 
 export function useWineList(initialData: WineListResponse) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
   const isInitialMount = useRef(true);
 
@@ -22,6 +23,8 @@ export function useWineList(initialData: WineListResponse) {
   const [list, setList] = useState<Wine[]>(initialData.list);
   const [cursor, setCursor] = useState<number | null>(initialData.nextCursor);
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
 
   const hasMore = cursor !== null;
 
@@ -38,7 +41,7 @@ export function useWineList(initialData: WineListResponse) {
       setList((prev) => [...prev, ...data.list]);
       setCursor(data.nextCursor);
     } catch (error) {
-      console.error('Failed to load more:', error);
+      console.error("Failed to load more:", error);
     } finally {
       setIsLoading(false);
     }
@@ -56,8 +59,9 @@ export function useWineList(initialData: WineListResponse) {
       });
       setList(data.list);
       setCursor(data.nextCursor);
+      router.refresh();
     } catch (e) {
-      console.error('Failed to refetch wine list:', e);
+      console.error("Failed to refetch wine list:", e);
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +89,7 @@ export function useWineList(initialData: WineListResponse) {
       })
       .catch((e) => {
         if (cancelled) return;
-        console.error('Failed to refresh wine list:', e);
+        console.error("Failed to refresh wine list:", e);
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);

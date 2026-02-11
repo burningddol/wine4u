@@ -1,5 +1,9 @@
-import { redirect } from 'next/navigation';
+import ProfileShell from "./_components/ProfileShell";
 
 export default function MyProfilePage() {
-  redirect('/myprofile/reviews');
+  return (
+    <>
+      <ProfileShell />
+    </>
+  );
 }
