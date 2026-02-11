@@ -67,51 +67,18 @@ export interface MyWinesResponse {
   totalCount?: number;
 }
 
+// 내가 등록한 와인
 const DEFAULT_WINES_LIMIT = 20;
 
 export async function getMyWines(params?: {
-  cursor?: number;
   limit?: number;
+  cursor?: number | null;
 }): Promise<MyWinesResponse> {
-  const searchParams = new URLSearchParams();
-  const limit = params?.limit ?? DEFAULT_WINES_LIMIT;
-  searchParams.set("limit", String(limit));
-  if (params?.cursor != null) searchParams.set("cursor", String(params.cursor));
-  const query = searchParams.toString();
-  const url = `/users/me/wines?${query}`;
-  try {
-    const res = await axios.get(url);
-    const raw = res.data as Record<string, unknown> | unknown[];
-    const list: MyWineItem[] = Array.isArray(raw)
-      ? (raw as MyWineItem[])
-      : ((raw?.list ?? raw?.data ?? raw?.wines ?? []) as MyWineItem[]);
-    const nextCursor =
-      typeof raw === "object" &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      "nextCursor" in raw
-        ? (raw.nextCursor as number | null)
-        : null;
-    const totalCount =
-      typeof raw === "object" &&
-      raw !== null &&
-      !Array.isArray(raw) &&
-      "totalCount" in raw &&
-      typeof (raw as Record<string, unknown>).totalCount === "number"
-        ? ((raw as Record<string, unknown>).totalCount as number)
-        : undefined;
-    return { list, nextCursor, totalCount };
-  } catch (err: unknown) {
-    if (Axios.isAxiosError(err) && err.response?.status === 400) {
-      const data = err.response.data as Record<string, unknown> | undefined;
-      const msg =
-        data != null && typeof data.message === "string"
-          ? data.message
-          : data != null && Array.isArray(data.message)
-            ? (data.message as string[]).join(", ")
-            : "등록 와인 목록 API가 요청 형식을 거부했습니다. 백엔드 경로/파라미터를 확인해 주세요.";
-      throw new Error(`${msg} (400)`);
-    }
-    throw err;
-  }
+  const res = await axios.get<MyWinesResponse>("/users/me/wines", {
+    params: {
+      limit: params?.limit ?? DEFAULT_WINES_LIMIT,
+      cursor: params?.cursor ?? null,
+    },
+  });
+  return res.data;
 }
