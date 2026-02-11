@@ -16,6 +16,13 @@ interface SignUpFormProps {
   onTypingChange: (typing: boolean) => void;
 }
 
+const SIGNUP_BOTTOM_INFO = {
+  submitLabel: "회원가입",
+  text: "계정이 이미 있으신가요?",
+  linkText: "로그인",
+  linkHref: "/login",
+} as const;
+
 const SIGNUP_FIELDS: FieldConfig[] = [
   {
     label: "이메일",
@@ -101,10 +108,7 @@ export default function SignUpForm({
       validationSchema={signUpSchema}
       onSubmit={onSubmit}
       isLoading={isLoading}
-      submitLabel="회원가입"
-      bottomText="계정이 이미 있으신가요?"
-      bottomLinkText="로그인"
-      bottomLinkHref="/login"
+      bottomInfo={SIGNUP_BOTTOM_INFO}
       onFocusChange={onFocusChange}
       onTypingChange={onTypingChange}
     />
