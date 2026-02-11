@@ -3,8 +3,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { User } from "@/types/myprofile/types";
-import { getUserData } from "@/libs/api/auth/getAPIAuth";
 import { updateUserNickname, updateUserImageFile } from "../_libs/profileApi";
 import { useUser } from "@/components/UserProvider";
 

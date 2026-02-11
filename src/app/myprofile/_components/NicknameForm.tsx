@@ -27,15 +27,6 @@ export default function NicknameForm({
   const hasChanged =
     trimmedNickname.length > 0 && trimmedNickname !== user.nickname;
 
-  // const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   onNicknameChange(e.target.value);
-  // };
-
-  // const handleSaveNickname = () => {
-  //   if (!hasChanged) return;
-  //   onSubmit();
-  // };
-
   return (
     <>
       <form
