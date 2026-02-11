@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/libs/utils";
 
 type ButtonVariant = "primary" | "secondary" | "outline";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -23,6 +23,7 @@ const variantClass: Record<ButtonVariant, string> = {
 };
 
 const sizeClass: Record<ButtonSize, string> = {
+  xs: "px-3 py-0.5",
   sm: "px-5 py-2.5 text-sm",
   md: "px-6.5 py-3 text-lg font-bold",
   lg: "px-8 py-3.5 text-lg font-bold",
