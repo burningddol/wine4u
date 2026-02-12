@@ -4,20 +4,25 @@ interface AromaProps {
 }
 
 const AROMA_LIST = [
-  "APPLE",
   "CHERRY",
-  "CHOCOLATE",
-  "COCONUT",
-  "FLOWER",
-  "GRAPE",
-  "HERB",
-  "MINERAL",
+  "BERRY",
   "OAK",
-  "ORANGE",
+  "VANILLA",
+  "PEPPER",
+  "BAKING",
+  "GRASS",
+  "APPLE",
   "PEACH",
-  "SOIL",
-  "TOAST",
+  "CITRUS",
   "TROPICAL",
+  "MINERAL",
+  "FLOWER",
+  "TOBACCO",
+  "EARTH",
+  "CHOCOLATE",
+  "SPICE",
+  "CARAMEL",
+  "LEATHER",
 ];
 
 export default function ReviewFormAroma({
@@ -26,10 +31,10 @@ export default function ReviewFormAroma({
 }: AromaProps) {
   return (
     <div className="mt-6">
-      <h3 className="mb-3 text-sm font-bold text-gray-800">
+      <h3 className="mb-3 text-xl font-bold text-gray-800">
         기억에 남는 향이 있나요?
       </h3>
-      <div className="flex flex-wrap gap-2">
+      <div className="mx-2 mt-2 flex flex-wrap gap-2 gap-y-3">
         {AROMA_LIST.map((aroma) => {
           const isSelected = selectedAromas.includes(aroma);
           return (
@@ -37,7 +42,7 @@ export default function ReviewFormAroma({
               key={aroma}
               type="button"
               onClick={() => onToggleAroma(aroma)}
-              className={`rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+              className={`h-10 rounded-full border px-4 py-2 text-xs font-bold transition-all ${
                 isSelected
                   ? "cursor-pointer border-black bg-black text-white"
                   : "cursor-pointer border-gray-200 bg-white hover:border-gray-400"
