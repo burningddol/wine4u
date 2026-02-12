@@ -1,46 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**🍷 WHYNE**
 
-## Getting Started
+이미지추가 
 
-First, run the development server:
+**📖 프로젝트 소개**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> WINE4U는 사용자가 다양한 와인 리뷰를 확인하고, 구매 여부를 쉽게 판단할 수 있는 와인 리뷰 플랫폼입니다.
+> 또한 AI봇의 와인추천기능으로 적절한 와인선택에 기여될 수 있는 플랫폼입니다. 
 
-```bash
-npm install --legacy-peer-deps sass (scss)
-npm install --legacy-peer-deps axios (데이터 페칭)
-npm install --legacy-peer-deps zustand (상태관리)
-npm install --legacy-peer-deps zod (폼 유효성 검사)
-npm install --legacy-peer-deps react-hook-form (폼 유효성 검사, zod와 궁합이 좋음 선택사항)
-npm install --legacy-peer-deps swiper (swiper 슬라이더)
-npm install --legacy-peer-deps framer-motion (framer motion 애니메이션)
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**🎯 목표**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> 주어진 요구사항을 충족하는 것을 넘어, 경쟁력 있는 특별한 UI / UX를 도입하고, 사용자에게 최적의 와인 선택 경험을 제공하는 것
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+**👥 팀 소개**
 
-To learn more about Next.js, take a look at the following resources:
+| 팀장 | 팀원 | 팀원 |
+|:---:|:---:|:---:|
+| <b>김준석</b><br>`리드FE`<br><br>랜딩페이지<br>로그인페이지<br>회원가입페이지<br>와인목록페이지 |<b>박예성</b><br>`FE`<br><br>와인상세페이지 | <b>이지선</b><br>`FE`<br><br>마이페이지 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**기술 스택**
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Skills | For |
+|:--|:--|
+| **Frontend** | 22 |
+| **33** | 33 |
+| **22** |22|
+| **11** | 11 |
+| **11** | 11 |
