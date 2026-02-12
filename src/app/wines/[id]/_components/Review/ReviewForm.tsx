@@ -2,24 +2,20 @@
 import { WineDetail as WineDetailType } from "@/types/detail/types";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import TasteBarGroup from "../TasteBarGroup";
 import ReviewFormAroma from "./ReviewFormAroma";
+import { useModal } from "@/components/ModalProvider";
+import { postWineReview } from "@/libs/api/wineDetail/getAPIData";
 
 interface ReviewFormProps {
   wine: WineDetailType;
 }
 
-interface ReviewFormValues {
-  rating: number;
-  content: string;
-  body: number;
-  tannin: number;
-  sweetness: number;
-  acidity: number;
-  aromas: string[];
-}
-
 export default function ReviewForm({ wine }: ReviewFormProps) {
+  const router = useRouter();
+  const { onClose } = useModal();
+
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState("");
   const [selectedAromas, setSelectedAromas] = useState<string[]>([]);
@@ -31,19 +27,36 @@ export default function ReviewForm({ wine }: ReviewFormProps) {
   });
 
   const handleSubmit = async () => {
-    if (rating === 0 || !content.trim()) {
-      return;
+    if (rating === 0) return alert("별점을 선택해주세요!");
+    if (!content.trim()) return alert("후기를 작성해주세요!");
+
+    try {
+      const selectedReview = {
+        rating: rating,
+        lightBold: tastes.body,
+        smoothTannic: tastes.tannins,
+        drySweet: tastes.sweetness,
+        softAcidic: tastes.acidity,
+        aroma: selectedAromas,
+        content: content,
+        wineId: wine.id,
+      };
+      console.log("실제 전송 데이터:", JSON.stringify(selectedReview, null, 2));
+      await postWineReview(selectedReview);
+
+      alert("리뷰가 등록되었습니다.");
+      onClose();
+      //router.refresh() 문제
+      /*setTimeout(() => {
+        router.refresh();
+      }, 1500);*/
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+      console.error("리뷰 등록 실패:", err);
+      alert("리뷰 등록 중 오류가 발생했습니다.");
     }
-
-    const selectedReview = {
-      wineId: wine.id,
-      rating,
-      content,
-      aromas: selectedAromas,
-      ...tastes,
-    };
-
-    console.log("전송 데이터:", selectedReview);
   };
 
   const handleTasteChange = (key: string, value: number) => {
@@ -76,6 +89,7 @@ export default function ReviewForm({ wine }: ReviewFormProps) {
         </div>
       </div>
       <div className="mt-2 w-full border-b-1 border-gray-600"></div>
+
       {/* 와인 별점 */}
       <div className="mt-2 flex flex-row gap-2">
         <label className="text-gray-600">별점 선택</label>
@@ -91,6 +105,7 @@ export default function ReviewForm({ wine }: ReviewFormProps) {
           ))}
         </div>
       </div>
+
       {/* 와인 후기 */}
       <textarea
         value={content}
@@ -98,15 +113,26 @@ export default function ReviewForm({ wine }: ReviewFormProps) {
         placeholder="후기를 작성해주세요."
         className="h-32 w-full resize-none rounded-sm border border-gray-300 p-4"
       />
+
       {/* 와인 맛 */}
-      <h3 className="mb-3 text-sm font-bold text-gray-800">
+      <h3 className="mb-3 text-xl font-bold text-gray-800">
         와인의 맛은 어땠나요?
       </h3>
       <TasteBarGroup values={tastes} onChange={handleTasteChange} />
+
+      {/* 와인 향 */}
       <ReviewFormAroma
         selectedAromas={selectedAromas}
         onToggleAroma={handleToggleAroma}
-      ></ReviewFormAroma>
+      />
+
+      {/*버튼*/}
+      <button
+        onClick={handleSubmit}
+        className="mx-auto mt-8 block h-12 w-70 cursor-pointer rounded-sm bg-black text-white"
+      >
+        리뷰 남기기
+      </button>
     </div>
   );
 }

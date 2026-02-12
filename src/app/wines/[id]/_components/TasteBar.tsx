@@ -81,7 +81,9 @@ export default function WineTaste({
           );
         })}
         {isInputMode && config ? (
-          <span className="shrink-0 text-xs text-gray-400">{config.high}</span>
+          <span className="ml-2 w-14 shrink-0 text-xs text-gray-400">
+            {config.high}
+          </span>
         ) : (
           <div className="w-20 text-right text-sm">
             {getTasteText(label, value)}

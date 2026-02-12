@@ -25,17 +25,16 @@ export default function WinesPage({
   const [error, setError] = useState<string | null>(null);
   const [reviews, setReviews] = useState<WineTasteAroma[]>([]);
 
+  const openReviewModal = () => {
+    showModal(<ReviewForm wine={wineData!} />, "리뷰 등록", 550, 1000);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // 1. 와인 상세 데이터 하나만 딱 부릅니다.
         const detailData = await getWineDetail(Number(id));
-
-        // 2. 상태값들을 한꺼번에 업데이트합니다.
         setWineData(detailData);
-
-        // 만약 데이터 안에 reviews가 있다면 넣고, 없으면 빈 배열
         if (detailData.reviews) {
           setReviews(detailData.reviews);
         }
@@ -84,29 +83,36 @@ export default function WinesPage({
       </div>
       <div className="solid m-0 mx-auto w-[1100px] border-b"></div>
       <div className="m-0 mx-auto flex w-[1100px] gap-10">
-        <div className="h-full w-[778px]">
+        <div
+          className={`h-full min-h-[480px] ${reviews.length === 0 ? "w-[1100px]" : "w-[778px]"}`} //리뷰개수 0개일때 화면너비 상이
+        >
           <div className="felx-row flex">
             <h2 className="mb-2 text-xl font-bold">리뷰목록</h2>
             <h3 className="ml-3 text-gray-600">{wineData.reviewCount}개</h3>
           </div>
-          <ReviewList reviews={reviews} />
+          <ReviewList reviews={reviews} openReviewModal={openReviewModal} />
         </div>
-        <div className="h-[300px] w-[285px]">
-          <div className="felx-row flex">
-            <StarRating rating={wineData.avgRating} size={30} />{" "}
-            <h3>{wineData.avgRating}</h3>
-            <h3>/5.0</h3>
+
+        {reviews.length > 0 && (
+          <div className="flex w-[285px] flex-col gap-6">
+            <div className="flex flex-row items-center gap-2">
+              <StarRating rating={wineData.avgRating} size={30} />
+              <div className="flex items-baseline font-bold">
+                <h3 className="text-2xl">{wineData.avgRating}</h3>
+                <h3 className="text-sm text-gray-400">/5.0</h3>
+              </div>
+            </div>
+
+            <ReviewBarGroup reviews={reviews} />
+
+            <button
+              onClick={openReviewModal}
+              className="h-12 w-full cursor-pointer rounded-sm bg-black text-white transition-colors hover:bg-gray-800"
+            >
+              리뷰 남기기
+            </button>
           </div>
-          <ReviewBarGroup reviews={reviews}></ReviewBarGroup>
-          <button
-            onClick={() =>
-              showModal(<ReviewForm wine={wineData} />, "리뷰 등록", 550, 1000)
-            }
-            className="h-12 w-70 cursor-pointer rounded-sm bg-black text-white"
-          >
-            리뷰남기기
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );

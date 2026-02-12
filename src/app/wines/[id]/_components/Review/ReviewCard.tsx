@@ -4,14 +4,17 @@ import Image from "next/image";
 import ReviewAroma from "./ReviewAroma";
 import DropDown from "@/components/DropDown";
 import TasteBarGroup from "../TasteBarGroup";
+import { LoginedUser } from "@/types/auth/types";
+import RegisterTab from "@/app/myprofile/_components/RegisterTab";
 
 interface ReviewCardProps {
   review: WineTasteAroma;
   layout?: "column" | "grid";
+  user: LoginedUser;
 }
 
-export default function ReviewCard({ review }: ReviewCardProps) {
-  const userImage = review.user?.image || "/user_icon.svg";
+export default function ReviewCard({ review, user }: ReviewCardProps) {
+  const userImage = review.user?.image || "/icons/user_icon.svg";
   return (
     <div className="my-5">
       <StarRating rating={review.rating} />
