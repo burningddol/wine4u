@@ -26,26 +26,31 @@ export default function WinesPage({
   const [reviews, setReviews] = useState<WineTasteAroma[]>([]);
 
   const openReviewModal = () => {
-    showModal(<ReviewForm wine={wineData!} />, "리뷰 등록", 550, 1000);
+    showModal(
+      <ReviewForm wine={wineData!} onRefresh={fetchData} />,
+      "리뷰 등록",
+      550,
+      1000,
+    );
+  };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const detailData = await getWineDetail(Number(id));
+      setWineData(detailData);
+      if (detailData.reviews) {
+        setReviews(detailData.reviews);
+      }
+    } catch (err: any) {
+      console.error("데이터 로딩 실패:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const detailData = await getWineDetail(Number(id));
-        setWineData(detailData);
-        if (detailData.reviews) {
-          setReviews(detailData.reviews);
-        }
-      } catch (err: any) {
-        console.error("데이터 로딩 실패:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (id) fetchData();
   }, [id]);
 

@@ -15,7 +15,23 @@ interface WineDetailProps {
   className?: string;
 }
 
+const WINE_IMAGE_POS = {
+  RED: "translate-x-[120px] translate-y-5", // 레드만 우측으로 더 이동
+  WHITE: "translate-x-5 translate-y-5",
+  SPARKLING: "translate-x-5 translate-y-5",
+} as const;
+
+const WINE_BG_STYLE = {
+  RED: "translate-x-[-20px] opacity-30",
+  WHITE: "opacity-30",
+  SPARKLING: "opacity-30 rounded-md", // 스파클링만 둥글게
+} as const;
+
 export default function WineDetail({ wine }: WineDetailProps) {
+  const wineType = wine.type as keyof typeof WINE_IMAGE_POS;
+
+  const imagePos = WINE_IMAGE_POS[wineType] || WINE_IMAGE_POS.WHITE;
+  const bgStyle = WINE_BG_STYLE[wineType] || WINE_BG_STYLE.WHITE;
   return (
     <div className="m-auto my-0 flex min-h-[450px] max-w-[1100px]">
       <div className="relative min-h-[450px] min-w-[500px] overflow-hidden">
@@ -24,13 +40,13 @@ export default function WineDetail({ wine }: WineDetailProps) {
           alt="와인 타입 이미지"
           fill
           sizes="max-width: 768px "
-          className="translate-x-5 object-contain opacity-30"
+          className={`${bgStyle} object-contain opacity-30`}
         ></Image>
         <Image
           src={wine.image}
           alt="와인 상세이미지"
           fill
-          className="translate-y-3 object-contain"
+          className={`${imagePos} object-contain`}
         ></Image>
       </div>
       <div className="relative ml-[50px] min-h-[400px] min-w-[550px]">

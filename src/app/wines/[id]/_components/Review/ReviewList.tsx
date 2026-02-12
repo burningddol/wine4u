@@ -12,7 +12,7 @@ export default function ReviewList({
   reviews,
   openReviewModal,
 }: ReviewListProps) {
-  const { user } = useUser();
+  const { user } = useUser() || null;
 
   if (reviews.length === 0) {
     return (
@@ -37,10 +37,7 @@ export default function ReviewList({
     <div>
       <div>
         {reviews.map((item) => (
-          <ReviewCard
-            key={item.id}
-            review={item} /*user={user} 유저정보 추후작성*/
-          />
+          <ReviewCard key={item.id} review={item} user={user} />
         ))}
       </div>
     </div>

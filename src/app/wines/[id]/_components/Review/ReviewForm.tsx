@@ -10,9 +10,10 @@ import { postWineReview } from "@/libs/api/wineDetail/getAPIData";
 
 interface ReviewFormProps {
   wine: WineDetailType;
+  onRefresh: () => Promise<void>;
 }
 
-export default function ReviewForm({ wine }: ReviewFormProps) {
+export default function ReviewForm({ wine, onRefresh }: ReviewFormProps) {
   const router = useRouter();
   const { onClose } = useModal();
 
@@ -45,14 +46,8 @@ export default function ReviewForm({ wine }: ReviewFormProps) {
       await postWineReview(selectedReview);
 
       alert("리뷰가 등록되었습니다.");
+      await onRefresh();
       onClose();
-      //router.refresh() 문제
-      /*setTimeout(() => {
-        router.refresh();
-      }, 1500);*/
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (err) {
       console.error("리뷰 등록 실패:", err);
       alert("리뷰 등록 중 오류가 발생했습니다.");

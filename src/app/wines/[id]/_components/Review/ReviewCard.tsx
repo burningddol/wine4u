@@ -10,11 +10,12 @@ import RegisterTab from "@/app/myprofile/_components/RegisterTab";
 interface ReviewCardProps {
   review: WineTasteAroma;
   layout?: "column" | "grid";
-  user: LoginedUser;
+  user: LoginedUser | null | any;
 }
 
 export default function ReviewCard({ review, user }: ReviewCardProps) {
   const userImage = review.user?.image || "/icons/user_icon.svg";
+  const isMine = user && user.id === review.user;
   return (
     <div className="my-5">
       <StarRating rating={review.rating} />
