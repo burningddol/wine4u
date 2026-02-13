@@ -6,6 +6,7 @@ import DropDown from "@/components/DropDown";
 import TasteBarGroup from "../TasteBarGroup";
 import { LoginedUser } from "@/types/auth/types";
 import RegisterTab from "@/app/myprofile/_components/RegisterTab";
+import RelativeTime from "./RelativeTime";
 
 interface ReviewCardProps {
   review: WineTasteAroma;
@@ -25,7 +26,9 @@ export default function ReviewCard({ review, user }: ReviewCardProps) {
         </div>
         <div className="ml-4 flex flex-col justify-center">
           <h3 className="text-lg font-bold">{review.user.nickname}</h3>
-          <h3 className="text-lg text-[#BABABA]">댓글수정시간</h3>
+          <h3 className="text-lg text-[#BABABA]">
+            <RelativeTime date={review.updatedAt} />
+          </h3>
         </div>
       </div>
       <ReviewAroma aroma={review.aroma} />

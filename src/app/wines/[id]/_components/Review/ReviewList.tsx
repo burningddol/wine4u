@@ -16,7 +16,7 @@ export default function ReviewList({
 
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-6">
+      <div className="my-30 flex flex-col items-center justify-center gap-6">
         <Image
           src="/winedetail/notice_mark.png"
           alt="리뷰 없음"
