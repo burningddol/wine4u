@@ -13,3 +13,8 @@ export async function getWineDetail(
   const res = await axios.get(`/wines/${id}`);
   return res.data;
 }
+
+export async function postWineReview(payload: any) {
+  const res = await axios.post("/reviews", payload);
+  return res.data;
+}
