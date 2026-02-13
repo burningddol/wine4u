@@ -3,7 +3,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/libs/utils";
 
-type ButtonVariant = "primary" | "outline";
+type ButtonVariant = "primary" | "secondary" | "outline";
 type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
