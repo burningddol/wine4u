@@ -35,7 +35,7 @@ export default function ReviewList({
   }
   return (
     <div>
-      <div>
+      <div className="w-full pl-10">
         {reviews.map((item) => (
           <ReviewCard key={item.id} review={item} user={user} />
         ))}

@@ -17,19 +17,19 @@ export default function ReviewCard({ review, user }: ReviewCardProps) {
   const userImage = review.user?.image || "/icons/user_icon.svg";
   const isMine = user && user.id === review.user;
   return (
-    <div className="my-5">
-      <StarRating rating={review.rating} />
-      <div className="m-2 flex flex-row">
-        <div className="relative h-14 w-14 overflow-hidden rounded-full">
+    <div className="my-10">
+      <StarRating rating={review.rating} size={20} />
+      <div className="mt-5 flex flex-row">
+        <div className="relative h-16 w-16 overflow-hidden rounded-full">
           <Image src={userImage} alt="프로필이미지" fill />
         </div>
-        <div className="m-2 flex flex-col">
-          <h3>{review.user.nickname}</h3>
-          <h3>댓글수정시간</h3>
+        <div className="ml-4 flex flex-col justify-center">
+          <h3 className="text-lg font-bold">{review.user.nickname}</h3>
+          <h3 className="text-lg text-[#BABABA]">댓글수정시간</h3>
         </div>
       </div>
       <ReviewAroma aroma={review.aroma} />
-      <h3 className="my-4">{review.content}</h3>
+      <div className="mb-12">{review.content}</div>
       <div className="relative flex w-full flex-col items-end">
         <div className="flex w-full flex-row items-center">
           <DropDown>
@@ -40,7 +40,7 @@ export default function ReviewCard({ review, user }: ReviewCardProps) {
           Like
         </button>
       </div>
-      <div className="solid m-0 mx-auto mt-5 w-9/10 border-b"></div>
+      <div className="solid m-0 mx-auto mt-5 mt-12 w-full border-b"></div>
     </div>
   );
 }

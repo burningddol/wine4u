@@ -30,11 +30,11 @@ export default function ReviewFormAroma({
   onToggleAroma,
 }: AromaProps) {
   return (
-    <div className="mt-6">
-      <h3 className="mb-3 text-xl font-bold text-gray-800">
+    <div className="">
+      <h3 className="mb-4 text-xl font-bold text-gray-800">
         기억에 남는 향이 있나요?
       </h3>
-      <div className="mx-2 mt-2 flex flex-wrap gap-2 gap-y-3">
+      <div className="flex flex-wrap gap-2 gap-y-3">
         {AROMA_LIST.map((aroma) => {
           const isSelected = selectedAromas.includes(aroma);
           return (
@@ -42,7 +42,7 @@ export default function ReviewFormAroma({
               key={aroma}
               type="button"
               onClick={() => onToggleAroma(aroma)}
-              className={`h-10 rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+              className={`h-12 rounded-full border px-4 py-2 text-xs font-bold transition-all ${
                 isSelected
                   ? "cursor-pointer border-black bg-black text-white"
                   : "cursor-pointer border-gray-200 bg-white hover:border-gray-400"
