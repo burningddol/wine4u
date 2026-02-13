@@ -1,7 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { MyReviewItem } from "@/types/myprofile/types";
-import { useState } from "react";
 import WineSummary from "./WineSummary";
 import TasteBarGroup from "@/app/wines/[id]/_components/TasteBarGroup";
 import ReviewFormAroma from "@/app/wines/[id]/_components/Review/ReviewFormAroma";
@@ -14,6 +14,33 @@ interface ReviewEditFormProps {
   onSuccess: () => void;
 }
 
+interface ReviewEditFormState {
+  review: MyReviewItem;
+  onSuccess: () => void;
+}
+
+type TasteState = {
+  body: number;
+  tannins: number;
+  sweetness: number;
+  acidity: number;
+};
+
+function getInitialAromas(review: any): string[] {
+  if (Array.isArray(review?.aroma)) return review.aroma;
+  if (Array.isArray(review?.aromas)) return review.aromas;
+  return [];
+}
+
+function getInitialTastes(review: any): TasteState {
+  return {
+    body: Number(review.lightBold ?? 0),
+    tannins: Number(review.smoothTannic ?? 0),
+    sweetness: Number(review.drySweet ?? 0),
+    acidity: Number(review.softAcidic ?? 0),
+  };
+}
+
 export default function ReviewEditForm({
   review,
   onSuccess,
@@ -21,27 +48,16 @@ export default function ReviewEditForm({
   const { showToast } = useToast();
   const { onClose } = useModal();
 
-  const [rating, setRating] = useState(review.rating);
-  const [content, setContent] = useState(review.content);
-
-  const initialAromas = Array.isArray((review as any).aroma)
-    ? (review as any).aroma
-    : Array.isArray((review as any).aromas)
-      ? (review as any).aromas
-      : [];
-
-  const [selectedAromas, setSelectedAromas] = useState<string[]>(initialAromas);
-
-  const [tastes, setTastes] = useState({
-    body: Number((review as any).lightBold ?? (review as any).body ?? 0),
-    tannins: Number(
-      (review as any).smoothTannic ?? (review as any).tannins ?? 0,
-    ),
-    sweetness: Number(
-      (review as any).drySweet ?? (review as any).sweetness ?? 0,
-    ),
-    acidity: Number((review as any).softAcidic ?? (review as any).acidity ?? 0),
-  });
+  const [rating, setRating] = useState<number>(() =>
+    Number(review.rating ?? 0),
+  );
+  const [content, setContent] = useState<string>(() => review.content ?? "");
+  const [selectedAromas, setSelectedAromas] = useState<string[]>(() =>
+    getInitialAromas(review),
+  );
+  const [tastes, setTastes] = useState<TasteState>(() =>
+    getInitialTastes(review),
+  );
 
   const handleTasteChange = (key: string, value: number) => {
     setTastes((prev) => ({ ...prev, [key]: value }));

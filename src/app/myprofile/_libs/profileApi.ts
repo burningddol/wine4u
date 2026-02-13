@@ -103,3 +103,22 @@ export async function getMyWines(params?: {
   });
   return res.data;
 }
+
+export async function deleteWine(id: number): Promise<void> {
+  await axios.delete(`/wines/${id}`);
+}
+
+export async function updateWine(
+  id: number,
+  body: {
+    name: string;
+    region: string;
+    image?: string;
+    price: number;
+    avgRating: number;
+    type?: string;
+  },
+): Promise<MyWineItem> {
+  const res = await axios.patch(`/wines/${id}`, body);
+  return res.data;
+}

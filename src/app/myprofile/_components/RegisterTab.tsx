@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { getMyWines, type MyWineItem } from "@/app/myprofile/_libs/profileApi";
+import { useRouter } from "next/navigation";
+import {
+  getMyWines,
+  deleteWine,
+  type MyWineItem,
+} from "@/app/myprofile/_libs/profileApi";
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/components/ModalProvider";
 import { useToast } from "@/components/ToastProvider";
@@ -11,6 +16,7 @@ import { useDeviceTypeStore } from "@/libs/zustand";
 import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm";
 import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
 import { cn } from "@/libs/utils";
+import RegisterEditForm from "./RegisterEditForm";
 
 export default function RegisterTab() {
   const { showModal } = useModal();
@@ -86,7 +92,21 @@ export default function RegisterTab() {
   return (
     <div className="flex w-full flex-wrap gap-x-19 gap-y-10 px-8 py-10">
       {wines.map((wine) => (
-        <WineCard key={wine.id} wine={wine} showToast={showToast} />
+        <WineCard
+          key={wine.id}
+          wine={wine}
+          showToast={showToast}
+          onDelete={loadWines}
+          onEdit={() => {
+            const width = deviceType === "mobile" ? 375 : 460;
+            showModal(
+              <RegisterEditForm wine={wine} onSuccess={loadWines} />,
+              "와인 수정",
+              width,
+              700,
+            );
+          }}
+        />
       ))}
     </div>
   );
@@ -95,10 +115,15 @@ export default function RegisterTab() {
 function WineCard({
   wine,
   showToast,
+  onDelete,
+  onEdit,
 }: {
   wine: MyWineItem;
   showToast: (message: string, type: "success" | "error") => void;
+  onDelete: () => void;
+  onEdit: () => void;
 }) {
+  const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const closeDropdown = useCallback(() => setIsDropdownOpen(false), []);
@@ -106,31 +131,45 @@ function WineCard({
 
   const handleEdit = useCallback(() => {
     closeDropdown();
-    showToast("수정 기능은 준비 중입니다.", "error");
-    // TODO: 와인 수정 모달
+    onEdit();
   }, [closeDropdown, showToast]);
 
-  const handleDelete = useCallback(() => {
-    closeDropdown();
-    showToast("삭제 기능은 준비 중입니다.", "error");
-    // TODO: 삭제
-  }, [closeDropdown, showToast]);
+  const handleDelete = useCallback(async () => {
+    const ok = window.confirm("등록한 와인을 삭제하시겠습니까?");
+    if (!ok) return;
+
+    try {
+      await deleteWine(wine.id);
+      onDelete();
+      showToast("삭제되었습니다", "success");
+    } catch (error: any) {
+      showToast("삭제에 실패했습니다", "error");
+    }
+  }, [showToast, onDelete]);
+
+  const goToWineDetail = () => {
+    router.push(`/wines/${wine.id}`);
+  };
 
   return (
-    <article className="group flex w-[calc(50%-38px)] cursor-pointer flex-col gap-6 overflow-hidden">
-      <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-gray-100">
-        {wine.image ? (
-          <Image
-            src={wine.image}
-            alt={wine.name}
-            fill
-            className="object-cover"
-            unoptimized={wine.image.startsWith("http")}
-          />
-        ) : (
-          <span className="text-5xl">🍷</span>
-        )}
-      </div>
+    <article className="group flex w-[calc(50%-38px)] flex-col gap-6 overflow-hidden">
+      <button type="button" className="cursor-pointer" onClick={goToWineDetail}>
+        <div className="flex-center relative flex aspect-[1/1] overflow-hidden bg-gray-50 p-8">
+          <div className="relative block h-full w-full">
+            {wine.image ? (
+              <Image
+                src={wine.image}
+                alt={wine.name}
+                fill
+                className="object-contain"
+                unoptimized={wine.image.startsWith("http")}
+              />
+            ) : (
+              <span className="text-5xl">🍷</span>
+            )}
+          </div>
+        </div>
+      </button>
 
       <div className="flex flex-col gap-6 pb-5">
         <div className="relative flex flex-col gap-[6px]">

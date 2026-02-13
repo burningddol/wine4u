@@ -3,13 +3,12 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/libs/utils";
 
-type ButtonVariant = "primary" | "secondary" | "outline";
+type ButtonVariant = "primary" | "outline";
 type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  fullWidth?: boolean;
   children?: ReactNode;
 }
 
@@ -18,7 +17,6 @@ const base =
 
 const variantClass: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary/90",
-  secondary: "bg-gray-800 text-white hover:bg-gray-700",
   outline: "border border-gray-200 text-gray-800 hover:bg-gray-50",
 };
 
@@ -32,7 +30,6 @@ const sizeClass: Record<ButtonSize, string> = {
 export function Button({
   variant = "primary",
   size = "sm",
-  fullWidth,
   className,
   children,
   ...props
@@ -40,13 +37,7 @@ export function Button({
   return (
     <button
       type="button"
-      className={cn(
-        base,
-        variantClass[variant],
-        sizeClass[size],
-        fullWidth && "w-full",
-        className,
-      )}
+      className={cn(base, variantClass[variant], sizeClass[size], className)}
       {...props}
     >
       {children}
