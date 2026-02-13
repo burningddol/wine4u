@@ -67,6 +67,27 @@ export interface MyWinesResponse {
   totalCount?: number;
 }
 
+export async function deleteReview(id: number): Promise<void> {
+  await axios.delete(`/reviews/${id}`);
+}
+
+// 리뷰 업데이트
+export async function updateReview(
+  id: number,
+  body: {
+    rating: number;
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+    aroma: string[];
+    content: string;
+  },
+): Promise<MyReviewItem> {
+  const res = await axios.patch(`/reviews/${id}`, body);
+  return res.data;
+}
+
 // 내가 등록한 와인
 const DEFAULT_WINES_LIMIT = 20;
 
