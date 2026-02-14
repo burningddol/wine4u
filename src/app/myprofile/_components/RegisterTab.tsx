@@ -17,6 +17,7 @@ import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm"
 import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
 import { cn } from "@/libs/utils";
 import RegisterEditForm from "./RegisterEditForm";
+import { useProfileTab } from "../_contexts/ProfileTabContext";
 
 export default function RegisterTab() {
   const { showModal } = useModal();
@@ -26,13 +27,16 @@ export default function RegisterTab() {
   const [wines, setWines] = useState<MyWineItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { setWineCount } = useProfileTab();
 
   const loadWines = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const data = await getMyWines();
-      setWines(data.list ?? []);
+      const list = data.list ?? [];
+      setWines(list);
+      setWineCount(data.totalCount ?? list.length ?? 0);
     } catch (e) {
       setError(
         e instanceof Error
@@ -42,7 +46,7 @@ export default function RegisterTab() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setWineCount]);
 
   const openRegisterModal = () => {
     if (!user) return showToast("로그인이 필요합니다", "error");
@@ -80,8 +84,11 @@ export default function RegisterTab() {
 
   if (wines.length === 0) {
     return (
-      <div className="py-12 text-center">
-        <p className="text-gray-600">등록된 와인이 없습니다.</p>
+      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+        <div className="flex flex-col items-center justify-center gap-6">
+          <img src="/icons/exclamation_mark.svg" />
+          <p className="text-2xl font-bold">등록된 와인이 없습니다.</p>
+        </div>
         <Button type="button" className="mt-4" onClick={openRegisterModal}>
           와인 등록하기
         </Button>
@@ -120,7 +127,7 @@ function WineCard({
 }: {
   wine: MyWineItem;
   showToast: (message: string, type: "success" | "error") => void;
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
   onEdit: () => void;
 }) {
   const router = useRouter();
@@ -140,7 +147,7 @@ function WineCard({
 
     try {
       await deleteWine(wine.id);
-      onDelete();
+      await onDelete();
       showToast("삭제되었습니다", "success");
     } catch (error: any) {
       showToast("삭제에 실패했습니다", "error");

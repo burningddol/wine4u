@@ -30,6 +30,7 @@ export default function NicknameForm({
   return (
     <>
       <form
+        className="flex flex-col items-center gap-5"
         onSubmit={(e) => {
           e.preventDefault();
           if (!hasChanged || isSubmission) return;

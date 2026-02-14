@@ -5,7 +5,7 @@
 import { useProfileTab } from "../_contexts/ProfileTabContext";
 
 export default function ProfileTabs() {
-  const { activeTab, setActiveTab } = useProfileTab();
+  const { activeTab, setActiveTab, reviewCount, wineCount } = useProfileTab();
 
   return (
     <>
@@ -15,14 +15,14 @@ export default function ProfileTabs() {
           onClick={() => setActiveTab("reviews")}
           aria-pressed={activeTab === "reviews"}
         >
-          내가 쓴 후기
+          내가 쓴 후기 {reviewCount}
         </button>
         <button
           className={`relative cursor-pointer px-4 pt-9 pb-5 text-xl font-bold transition-colors ${activeTab === "register" ? "text-primary" : "text-gray-600 hover:text-black"} ${activeTab === "register" ? "" : ""}`}
           onClick={() => setActiveTab("register")}
           aria-pressed={activeTab === "register"}
         >
-          내가 등록한 와인
+          내가 등록한 와인 {wineCount}
         </button>
       </div>
     </>

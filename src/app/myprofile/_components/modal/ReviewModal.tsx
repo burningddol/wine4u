@@ -20,6 +20,10 @@ export default function ReviewModal({
   review,
   onSuccess,
 }: ReviewModalProps) {
+  const handleRefresh = async () => {
+    onSuccess?.();
+  };
+
   if (mode === "edit") {
     if (!review) {
       return null;
@@ -33,6 +37,6 @@ export default function ReviewModal({
     if (!wine) {
       return null;
     }
-    return <ReviewForm wine={wine} />;
+    return <ReviewForm wine={wine} onRefresh={handleRefresh} />;
   }
 }

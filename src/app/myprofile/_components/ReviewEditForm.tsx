@@ -82,7 +82,7 @@ export default function ReviewEditForm({
 
   return (
     <>
-      <div>
+      <div className="flex flex-col gap-5">
         {/* 와인 정보 */}
         <WineSummary
           image={review.wine?.image}
@@ -91,7 +91,7 @@ export default function ReviewEditForm({
         />
 
         {/* 별점 */}
-        <div className="mt-2 flex flex-row gap-2">
+        <div className="mt-2 flex flex-row items-center gap-2">
           <label className="text-gray-600">별점 선택</label>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((num) => (
@@ -115,14 +115,16 @@ export default function ReviewEditForm({
         />
 
         {/* 와인 맛 */}
-        <h3 className="mb-3 text-sm font-bold text-gray-800">
-          와인의 맛은 어땠나요?
-        </h3>
-        <TasteBarGroup
-          values={tastes}
-          onChange={handleTasteChange}
-          layout="column"
-        />
+        <div>
+          <h3 className="mb-3 text-xl font-bold text-gray-800">
+            와인의 맛은 어땠나요?
+          </h3>
+          <TasteBarGroup
+            values={tastes}
+            onChange={handleTasteChange}
+            layout="column"
+          />
+        </div>
 
         <ReviewFormAroma
           selectedAromas={selectedAromas}

@@ -9,14 +9,14 @@ import { getImageURL } from "@/libs/api/wines/getAPIData";
 
 import { MyWineItem, updateWine } from "../_libs/profileApi";
 
-import ImageUploadField from "@/app/wines/_components/register/ImageUploadField";
+import ImageUploadField from "./ImageUploadField";
 import TextInput from "@/app/wines/_components/register/TextInput";
 
 import WineTypeSelector from "@/app/wines/_components/register/WineTypeSelector";
 import {
-  wineRegisterSchema,
   WineRegisterFormValues,
-} from "@/app/wines/_libs/wineRegisterSchema";
+  wineRegisterSchema,
+} from "../_libs/wineRegisterSchema";
 
 export default function RegisterEditForm({
   wine,
@@ -68,7 +68,7 @@ export default function RegisterEditForm({
   return (
     <Formik<WineRegisterFormValues>
       initialValues={{
-        image: null as unknown as File,
+        image: null as any,
         name: wine.name ?? "",
         price: wine.price ?? 0,
         type: (wine.type as any) ?? "RED",
@@ -81,7 +81,7 @@ export default function RegisterEditForm({
       {({ isSubmitting }) => (
         <Form className="flex flex-col gap-6">
           <div className="relative">
-            {wine.image ? (
+            {/* {wine.image ? (
               <div className="flex h-[140px] w-[140px] flex-col gap-2 p-3">
                 <span className="relative block h-full w-full">
                   <Image
@@ -93,11 +93,12 @@ export default function RegisterEditForm({
                   />
                 </span>
               </div>
-            ) : null}
+            ) : null} */}
 
-            <div className="relative">
-              <ImageUploadField />
-            </div>
+            <ImageUploadField
+              initialImageUrl={wine.image ?? null}
+              alt={wine.name ?? ""}
+            />
           </div>
 
           <TextInput
