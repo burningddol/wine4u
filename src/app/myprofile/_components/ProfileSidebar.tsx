@@ -55,18 +55,15 @@ export default function ProfileSidebar({
       showToast("파일 이름은 영문 및 숫자만 허용됩니다.", "error");
       return;
     }
-
-    // const file = e.target.files?.[0];
-    // if (!file) return;
     onImageChange(file);
   };
 
   return (
-    <aside className="w-full shrink-0 self-start px-6 md:sticky md:top-[70px] md:w-[290px]">
+    <aside className="w-full shrink-0 self-start px-10 md:sticky md:top-[70px] md:w-[290px] md:px-6">
       <div className="flex flex-col gap-5 py-7 md:gap-12">
-        <div className="flex flex-col items-center gap-4 md:gap-7">
+        <div className="flex flex-col items-center gap-3 md:gap-7">
           <div
-            className="group focus-visible:ring-primary relative flex aspect-[1/1] cursor-pointer items-center justify-center overflow-hidden rounded-full ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-[160px] md:w-[160px]"
+            className="group focus-visible:ring-primary relative flex aspect-[1/1] h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-full ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-[160px] md:w-[160px]"
             role="button"
             tabIndex={0}
             onClick={handleClickImage}
@@ -99,7 +96,7 @@ export default function ProfileSidebar({
               </div>
             )}
           </div>
-          <span className="text-2xl font-bold">{user.nickname}</span>
+          <span className="text-lg font-bold md:text-2xl">{user.nickname}</span>
         </div>
 
         <div className="flex flex-row items-end justify-center gap-4 md:flex-col md:items-center md:justify-start">

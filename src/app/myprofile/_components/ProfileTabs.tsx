@@ -9,9 +9,9 @@ export default function ProfileTabs() {
 
   return (
     <>
-      <div className="sticky top-17.5 z-1 flex gap-8 border-b border-gray-200 bg-white px-10">
+      <div className="sticky top-17.5 z-1 flex gap-5 border-b border-gray-200 bg-white px-[4px] md:gap-8 md:px-10">
         <button
-          className={`relative cursor-pointer px-4 pt-9 pb-5 text-xl font-bold transition-colors ${activeTab === "reviews" ? "text-primary" : "text-gray-600 hover:text-black"} ${activeTab === "reviews" ? "" : ""}`}
+          className={`relative cursor-pointer pt-9 pb-5 text-xl font-bold transition-colors md:px-4 ${activeTab === "reviews" ? "text-primary" : "text-gray-600 hover:text-black"} ${activeTab === "reviews" ? "" : ""}`}
           onClick={() => setActiveTab("reviews")}
           aria-pressed={activeTab === "reviews"}
         >

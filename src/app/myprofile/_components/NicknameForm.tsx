@@ -30,7 +30,7 @@ export default function NicknameForm({
   return (
     <>
       <form
-        className="flex flex-col items-center gap-5"
+        className="flex flex-row items-end gap-5 md:flex-col md:items-center"
         onSubmit={(e) => {
           e.preventDefault();
           if (!hasChanged || isSubmission) return;
@@ -39,6 +39,7 @@ export default function NicknameForm({
       >
         <div className="flex flex-col items-center gap-2">
           <Input
+            className="text-md py-2"
             name="nickname"
             label="닉네임"
             value={nickname}

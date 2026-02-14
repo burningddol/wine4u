@@ -86,8 +86,13 @@ export default function RegisterTab() {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
         <div className="flex flex-col items-center justify-center gap-6">
-          <img src="/icons/exclamation_mark.svg" />
-          <p className="text-2xl font-bold">등록된 와인이 없습니다.</p>
+          <img
+            src="/icons/exclamation_mark.svg"
+            className="h-20 w-20 md:h-34 md:w-34"
+          />
+          <p className="text-2lg font-bold md:text-2xl">
+            등록된 와인이 없습니다.
+          </p>
         </div>
         <Button type="button" className="mt-4" onClick={openRegisterModal}>
           와인 등록하기
@@ -97,7 +102,7 @@ export default function RegisterTab() {
   }
 
   return (
-    <div className="flex w-full flex-wrap gap-x-19 gap-y-10 px-8 py-10">
+    <div className="flex flex-col-reverse gap-20 py-10 sm:flex-row-reverse md:px-8">
       {wines.map((wine) => (
         <WineCard
           key={wine.id}
@@ -159,7 +164,7 @@ function WineCard({
   };
 
   return (
-    <article className="group flex w-[calc(50%-38px)] flex-col gap-6 overflow-hidden">
+    <article className="group flex w-full flex-col gap-6 overflow-hidden md:w-[calc(50%-38px)]">
       <button type="button" className="cursor-pointer" onClick={goToWineDetail}>
         <div className="flex-center relative flex aspect-[1/1] overflow-hidden bg-gray-50 p-8">
           <div className="relative block h-full w-full">

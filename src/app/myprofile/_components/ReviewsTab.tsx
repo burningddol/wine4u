@@ -86,7 +86,6 @@ export default function ReviewsTab({
         await deleteReview(id);
         setReviews((prev) => {
           const next = prev.filter((r) => r.id !== id);
-          // setReviewCount(next.length);
           return next;
         });
         showToast("삭제되었습니다", "success");
@@ -120,8 +119,13 @@ export default function ReviewsTab({
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
         <div className="flex flex-col items-center justify-center gap-6">
-          <img src="/icons/exclamation_mark.svg" />
-          <p className="text-2xl font-bold">작성한 리뷰가 없습니다.</p>
+          <img
+            src="/icons/exclamation_mark.svg"
+            className="h-20 w-20 md:h-34 md:w-34"
+          />
+          <p className="text-2lg font-bold md:text-2xl">
+            작성한 리뷰가 없습니다.
+          </p>
         </div>
         <Button
           type="button"
@@ -136,7 +140,7 @@ export default function ReviewsTab({
 
   return (
     <>
-      <div className="flex flex-col-reverse gap-20 px-8 py-10">
+      <div className="flex flex-col-reverse gap-20 py-10 md:px-8">
         {reviews.map((review, index) => (
           <ReviewItem
             key={review.id}

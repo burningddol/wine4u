@@ -71,7 +71,7 @@ export default function ProfileShell() {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-[1140px] flex-col md:mt-17.5 md:flex-row">
+      <div className="mx-auto mt-[70px] flex min-h-screen w-full max-w-[1140px] flex-col md:mt-17.5 md:flex-row">
         {/* 좌측 (마이프로필 사진+닉네임변경) */}
         <ProfileSidebar
           user={user}
@@ -85,7 +85,7 @@ export default function ProfileShell() {
         />
 
         {/* 우측 (탭 내용) */}
-        <section className="sticky top-[70px] z-10 w-full border-l border-gray-200 bg-white">
+        <section className="sticky top-[70px] z-10 w-full border-l border-gray-200 bg-white px-4 md:px-0">
           <ProfileTabs />
           <ProfileTabPanel />
         </section>
