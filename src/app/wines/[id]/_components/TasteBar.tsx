@@ -5,6 +5,7 @@ interface WineTasteProps {
   value: number; // 0 ~ 5 (6단계이므로 인덱스는 0~5)
   fillColor?: string;
   onChange?: (newValue: number) => void;
+  layout?: "column" | "grid"; //상단 와인디테일 or 리뷰내에 그리드
 }
 
 const WINE_INFO = {
@@ -28,26 +29,33 @@ export default function WineTaste({
   value,
   fillColor = "#333236",
   onChange, // 리뷰남기기 모달
+  layout = "column", //상단 와인디테일 or 리뷰내에 그리드
 }: WineTasteProps) {
   const uid = useId();
   const isInputMode = !!onChange; //리뷰남기기 모달내 와인 맛
   const config = WINE_INFO[label as keyof typeof WINE_INFO];
   const maxSteps = 6; // 맛 6단계
-  const tasteText = getTasteText(label, value); // 각 영역별 text 추출
+
+  /*layout=column 상단와인내의 그래프 / 
+   layout=grid 리뷰내에 그래프 /
+   isIpuMode 리뷰폼 내의 선택그래프 */
 
   return (
-    <div className="justify-betwe en flex w-full items-center gap-4 py-2">
-      {isInputMode && <span className="w-10 text-sm font-bold">{label}</span>}
+    <div className="mb-[20px] flex w-full items-center justify-between gap-4">
+      {isInputMode && <span className="w-15 text-lg font-bold">{label}</span>}
 
       {!isInputMode && (
-        <div className="flex h-8 w-14 shrink-0 items-center justify-center rounded-sm bg-gray-200 text-sm text-gray-800">
+        <div className="flex h-[30px] w-14 shrink-0 items-center justify-center rounded-sm bg-[#F2F2F2] text-sm font-bold text-[#8C8C8B]">
           {label}
         </div>
       )}
 
-      <div className="block h-5 w-px bg-gray-400"></div>
+      {(layout === "column" || isInputMode) && (
+        <div className="block h-6 w-[1px] bg-[#D1D1D1]"></div>
+      )}
+
       {isInputMode && config && (
-        <span className="w-15 shrink-0 text-xs text-gray-400">
+        <span className="text-md w-18 shrink-0 text-[#A3A3A3]">
           {config.low}
         </span>
       )}
@@ -80,12 +88,13 @@ export default function WineTaste({
             </div>
           );
         })}
+
         {isInputMode && config ? (
-          <span className="ml-2 w-14 shrink-0 text-xs text-gray-400">
+          <span className="text-md flex w-14 shrink-0 justify-end text-[#A3A3A3]">
             {config.high}
           </span>
         ) : (
-          <div className="w-20 text-right text-sm">
+          <div className="text-md flex w-17 items-center justify-end text-right">
             {getTasteText(label, value)}
           </div>
         )}

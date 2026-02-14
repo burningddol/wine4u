@@ -18,17 +18,19 @@ export default function AromaTop4({ reviews }: AromaTop4Props) {
     .slice(0, 4) // 0번인덱스부터 4번째까지
     .map(([name]) => name); // [name, number]에서 name만 모으기
   return (
-    <div className="flex h-50 w-full">
+    <div className="flex h-[148px] w-full">
       {getTop4.map((aroma) => (
-        <div key={aroma} className="flex flex-col gap-4">
-          <div className="relative ml-4 h-30 w-30 overflow-hidden rounded-md">
+        <div key={aroma} className="ml-4 flex flex-col gap-4">
+          <div className="relative h-[100px] w-[100px] overflow-hidden rounded-md">
             <Image
               src={`/winedetail/${aroma}.jpg`}
               alt={`${aroma}향`}
               fill
             ></Image>
           </div>
-          <span className="text-center">{aroma}</span>
+          <span className="text-md flex justify-center text-center">
+            {aroma}
+          </span>
         </div>
       ))}
     </div>

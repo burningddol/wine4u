@@ -86,7 +86,7 @@ export default function ReviewForm({ wine, onRefresh }: ReviewFormProps) {
       <div className="mt-2 w-full border-b-1 border-gray-600"></div>
 
       {/* 와인 별점 */}
-      <div className="mt-2 flex flex-row gap-2">
+      <div className="my-5 flex flex-row items-center gap-2">
         <label className="text-gray-600">별점 선택</label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((num) => (
@@ -110,10 +110,12 @@ export default function ReviewForm({ wine, onRefresh }: ReviewFormProps) {
       />
 
       {/* 와인 맛 */}
-      <h3 className="mb-3 text-xl font-bold text-gray-800">
-        와인의 맛은 어땠나요?
-      </h3>
-      <TasteBarGroup values={tastes} onChange={handleTasteChange} />
+      <div className="my-12">
+        <h3 className="mb-6 text-xl font-bold text-gray-800">
+          와인의 맛은 어땠나요?
+        </h3>
+        <TasteBarGroup values={tastes} onChange={handleTasteChange} />
+      </div>
 
       {/* 와인 향 */}
       <ReviewFormAroma

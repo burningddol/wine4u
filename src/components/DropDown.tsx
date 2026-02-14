@@ -13,7 +13,7 @@ export default function dropDown({ children }: DropDownProps) {
       <div
         className={`w-full overflow-hidden transition-all duration-500 ${
           isOpen
-            ? "visibility-visible mt-4 max-h-[500px] opacity-100"
+            ? "visibility-visible mb-12 max-h-[500px] opacity-100"
             : "visibility-hidden max-h-0 opacity-60"
         }`}
       >
