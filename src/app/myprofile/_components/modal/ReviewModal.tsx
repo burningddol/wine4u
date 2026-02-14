@@ -33,7 +33,7 @@ export default function ReviewModal({
     if (!wine) {
       return null;
     }
-    return <ReviewForm wine={wine} />;
+    return <ReviewForm wine={wine} onRefresh={onSuccess ?? (() => {})} />;
   }
 }
 
