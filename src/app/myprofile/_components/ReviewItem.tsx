@@ -1,9 +1,5 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
-import { cn } from "@/libs/utils";
-
 import { MyReviewItem } from "@/types/myprofile/types";
 import { WineTasteAroma } from "@/types/detail/types";
 import StarRating from "@/components/StarRating";
@@ -11,6 +7,7 @@ import { timeAgo } from "@/utils/timeAgo";
 
 import TasteBarGroup from "@/app/wines/[id]/_components/TasteBarGroup";
 import WineSummary from "./WineSummary";
+import DropdownMenu from "./DropdownMenu";
 
 interface ReviewItemProps {
   review: MyReviewItem;
@@ -26,14 +23,9 @@ export default function ReviewItem({
   onEdit,
   onDelete,
 }: ReviewItemProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState<number | null>(null);
-
-  const closeDropdown = useCallback(() => setIsDropdownOpen(null), []);
-  const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen !== null);
-
   return (
     <>
-      <article className="relative flex flex-col gap-12 px-2">
+      <article className="relative flex flex-col gap-12 px-2 [&:not(:last-child)]:before:absolute [&:not(:last-child)]:before:-top-11 [&:not(:last-child)]:before:left-0 [&:not(:last-child)]:before:block [&:not(:last-child)]:before:w-full [&:not(:last-child)]:before:border-t [&:not(:last-child)]:before:border-gray-200 [&:not(:last-child)]:before:content-['']">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-5">
@@ -47,62 +39,10 @@ export default function ReviewItem({
                     {timeAgo(review.createdAt)}
                   </span>
                 </div>
-                <div
-                  className="absolute top-0 right-0"
-                  ref={
-                    dropdownRef as unknown as React.RefObject<HTMLDivElement>
-                  }
-                >
-                  <button
-                    type="button"
-                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsDropdownOpen((prev) =>
-                        prev === review.id ? null : review.id,
-                      );
-                    }}
-                    aria-label="메뉴 열기"
-                  >
-                    <span className="flex flex-col gap-0.5">
-                      <span className="h-1 w-1 rounded-full bg-current" />
-                      <span className="h-1 w-1 rounded-full bg-current" />
-                      <span className="h-1 w-1 rounded-full bg-current" />
-                    </span>
-                  </button>
-
-                  {isDropdownOpen === review.id && (
-                    <ul
-                      className={cn(
-                        "absolute top-9 right-0 z-10 flex min-w-[120px] flex-col rounded-sm border border-gray-300 bg-white py-1 shadow-sm",
-                        "text-base font-normal text-gray-700",
-                      )}
-                    >
-                      <li>
-                        <button
-                          type="button"
-                          className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
-                          onClick={() => {
-                            onEdit(review);
-                          }}
-                        >
-                          수정하기
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          type="button"
-                          className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
-                          onClick={() => {
-                            onDelete(review.id);
-                          }}
-                        >
-                          삭제하기
-                        </button>
-                      </li>
-                    </ul>
-                  )}
-                </div>
+                <DropdownMenu
+                  onEdit={() => onEdit(review)}
+                  onDelete={() => onDelete(review.id)}
+                />
               </div>
 
               <WineSummary

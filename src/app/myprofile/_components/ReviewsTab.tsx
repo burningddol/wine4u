@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { getMyReviews, deleteReview } from "@/app/myprofile/_libs/profileApi";
@@ -15,6 +14,7 @@ import { useUser } from "@/components/UserProvider";
 import { wineTasteAroma } from "@/utils/wineTasteAroma";
 import ReviewEditModal from "./modal/ReviewModal";
 import ReviewItem from "./ReviewItem";
+import EmptyState from "./EmptyState";
 
 export default function ReviewsTab({
   showToast,
@@ -117,24 +117,11 @@ export default function ReviewsTab({
 
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
-        <div className="flex flex-col items-center justify-center gap-6">
-          <img
-            src="/icons/exclamation_mark.svg"
-            className="h-20 w-20 md:h-34 md:w-34"
-          />
-          <p className="text-2lg font-bold md:text-2xl">
-            작성한 리뷰가 없습니다.
-          </p>
-        </div>
-        <Button
-          type="button"
-          className="mt-4"
-          onClick={() => router.push("/wines")}
-        >
-          리뷰 작성하기
-        </Button>
-      </div>
+      <EmptyState
+        message="작성한 리뷰가 없습니다."
+        actionLabel="리뷰 작성하기"
+        onAction={() => router.push("/wines")}
+      />
     );
   }
 

@@ -14,10 +14,11 @@ import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
 import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm";
-import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
-import { cn } from "@/libs/utils";
 import RegisterEditForm from "./RegisterEditForm";
+import DropdownMenu from "./DropdownMenu";
 import { useProfileTab } from "../_contexts/ProfileTabContext";
+import LoadingState from "./LoadingState";
+import EmptyState from "./EmptyState";
 
 export default function RegisterTab() {
   const { showModal } = useModal();
@@ -64,11 +65,7 @@ export default function RegisterTab() {
   }, [loadWines]);
 
   if (isLoading) {
-    return (
-      <div className="py-12 text-center">
-        <p className="text-gray-500">로딩 중...</p>
-      </div>
-    );
+    return <LoadingState message="와인 목록을 불러오는 중..." size={20} />;
   }
 
   if (error) {
@@ -84,25 +81,16 @@ export default function RegisterTab() {
 
   if (wines.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
-        <div className="flex flex-col items-center justify-center gap-6">
-          <img
-            src="/icons/exclamation_mark.svg"
-            className="h-20 w-20 md:h-34 md:w-34"
-          />
-          <p className="text-2lg font-bold md:text-2xl">
-            등록된 와인이 없습니다.
-          </p>
-        </div>
-        <Button type="button" className="mt-4" onClick={openRegisterModal}>
-          와인 등록하기
-        </Button>
-      </div>
+      <EmptyState
+        message="등록된 와인이 없습니다."
+        actionLabel="와인 등록하기"
+        onAction={openRegisterModal}
+      />
     );
   }
 
   return (
-    <div className="flex flex-col-reverse gap-20 py-10 sm:flex-row-reverse md:px-8">
+    <div className="flex flex-col-reverse gap-20 py-10 md:flex-row md:flex-wrap md:gap-x-[76px] md:gap-y-20 md:px-8">
       {wines.map((wine) => (
         <WineCard
           key={wine.id}
@@ -136,15 +124,6 @@ function WineCard({
   onEdit: () => void;
 }) {
   const router = useRouter();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const closeDropdown = useCallback(() => setIsDropdownOpen(false), []);
-  const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen);
-
-  const handleEdit = useCallback(() => {
-    closeDropdown();
-    onEdit();
-  }, [closeDropdown, showToast]);
 
   const handleDelete = useCallback(async () => {
     const ok = window.confirm("등록한 와인을 삭제하시겠습니까?");
@@ -157,7 +136,7 @@ function WineCard({
     } catch (error: any) {
       showToast("삭제에 실패했습니다", "error");
     }
-  }, [showToast, onDelete]);
+  }, [wine.id, showToast, onDelete]);
 
   const goToWineDetail = () => {
     router.push(`/wines/${wine.id}`);
@@ -190,60 +169,11 @@ function WineCard({
             {wine.region}
           </p>
 
-          <div
+          <DropdownMenu
             className="absolute top-0 right-0"
-            ref={dropdownRef as unknown as React.RefObject<HTMLDivElement>}
-          >
-            <button
-              type="button"
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDropdownOpen((prev) => !prev);
-              }}
-              aria-label="메뉴 열기"
-            >
-              <span className="flex flex-col gap-0.5">
-                <span className="h-1 w-1 rounded-full bg-current" />
-                <span className="h-1 w-1 rounded-full bg-current" />
-                <span className="h-1 w-1 rounded-full bg-current" />
-              </span>
-            </button>
-
-            {isDropdownOpen && (
-              <ul
-                className={cn(
-                  "absolute top-9 right-0 z-10 flex min-w-[120px] flex-col rounded-sm border border-gray-300 bg-white py-1 shadow-sm",
-                  "text-base font-normal text-gray-700",
-                )}
-              >
-                <li>
-                  <button
-                    type="button"
-                    className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit();
-                    }}
-                  >
-                    수정하기
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="w-full cursor-pointer px-4 py-2 text-center hover:bg-gray-200"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete();
-                    }}
-                  >
-                    삭제하기
-                  </button>
-                </li>
-              </ul>
-            )}
-          </div>
+            onEdit={onEdit}
+            onDelete={handleDelete}
+          />
         </div>
         <p className="text-2xl font-bold">
           {Number(wine.price).toLocaleString()}원

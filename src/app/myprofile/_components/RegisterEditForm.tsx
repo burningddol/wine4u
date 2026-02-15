@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useModal } from "@/components/ModalProvider";
 import { useToast } from "@/components/ToastProvider";
 import { Form, Formik, FormikHelpers } from "formik";
@@ -33,10 +32,6 @@ export default function RegisterEditForm({
     actions: FormikHelpers<WineRegisterFormValues>,
   ) => {
     try {
-      // const ImageURL = await getImageURL(values.image);
-      // if (!ImageURL) throw new Error("이미지 등록 실패");
-      // const imageURL = ImageURL.url;
-
       let nextImageUrl = wine.image ?? "";
 
       if (values.image instanceof File) {
@@ -48,7 +43,6 @@ export default function RegisterEditForm({
       await updateWine(wine.id, {
         name: values.name,
         region: values.region,
-        // image: imageURL ?? undefined,
         image: nextImageUrl ?? undefined,
         price: values.price,
         avgRating: 0,
@@ -81,20 +75,6 @@ export default function RegisterEditForm({
       {({ isSubmitting }) => (
         <Form className="flex flex-col gap-6">
           <div className="relative">
-            {/* {wine.image ? (
-              <div className="flex h-[140px] w-[140px] flex-col gap-2 p-3">
-                <span className="relative block h-full w-full">
-                  <Image
-                    src={wine.image}
-                    alt={wine.name ?? ""}
-                    fill
-                    className="flex items-center justify-center object-contain"
-                    unoptimized={wine.image.startsWith("http")}
-                  />
-                </span>
-              </div>
-            ) : null} */}
-
             <ImageUploadField
               initialImageUrl={wine.image ?? null}
               alt={wine.name ?? ""}

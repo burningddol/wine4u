@@ -30,7 +30,7 @@ export default function NicknameForm({
   return (
     <>
       <form
-        className="flex flex-row items-end gap-5 md:flex-col md:items-center"
+        className="flex flex-row items-end gap-5 lg:flex-col lg:items-center"
         onSubmit={(e) => {
           e.preventDefault();
           if (!hasChanged || isSubmission) return;

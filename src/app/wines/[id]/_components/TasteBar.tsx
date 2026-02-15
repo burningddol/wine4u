@@ -41,53 +41,60 @@ export default function WineTaste({
    isIpuMode 리뷰폼 내의 선택그래프 */
 
   return (
-    <div className="mb-[20px] flex w-full items-center justify-between gap-4">
-      {isInputMode && <span className="w-15 text-lg font-bold">{label}</span>}
-
+    <div className="flex w-full items-center justify-between gap-5 md:flex-row">
+      {isInputMode && (
+        <span className="text-md w-10 flex-shrink-0 font-bold md:w-[50px] md:text-lg">
+          {label}
+        </span>
+      )}
       {!isInputMode && (
-        <div className="flex h-[30px] w-14 shrink-0 items-center justify-center rounded-sm bg-[#F2F2F2] text-sm font-bold text-[#8C8C8B]">
+        <div className="flex h-[24px] min-h-[24px] w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm bg-[#F2F2F2] text-sm leading-none font-bold text-[#8C8C8B] md:h-[30px] md:min-h-[30px]">
           {label}
         </div>
       )}
-
       {(layout === "column" || isInputMode) && (
-        <div className="block h-6 w-[1px] bg-[#D1D1D1]"></div>
+        <div className="block h-6 w-[1px] flex-shrink-0 bg-[#D1D1D1]"></div>
       )}
+      <div className="flex items-center">
+        {isInputMode && config && (
+          <span className="text-md w-18 shrink-0 text-[#A3A3A3]">
+            {config.low}
+          </span>
+        )}
 
-      {isInputMode && config && (
-        <span className="text-md w-18 shrink-0 text-[#A3A3A3]">
-          {config.low}
-        </span>
-      )}
+        <div className="flex h-3 flex-1 gap-1">
+          {Array.from({ length: maxSteps }, (_, i) => {
+            const fill = Math.min(Math.max((value - i) * 100, 0), 100);
+            const gradientId = `${uid}-pill-${i}`;
 
-      <div className="flex h-3 flex-1 gap-1">
-        {Array.from({ length: maxSteps }, (_, i) => {
-          const fill = Math.min(Math.max((value - i) * 100, 0), 100);
-          const gradientId = `${uid}-pill-${i}`;
-
-          return (
-            <div
-              key={i}
-              onClick={() => onChange?.(i + 1)}
-              className={`bg-winesHero relative h-full flex-1 ${
-                i === 0 ? "rounded-l-full" : "" // 맨 앞만 왼쪽 둥글게
-              } ${
-                i === maxSteps - 1 ? "rounded-r-full" : "" // 맨 뒤만 오른쪽 둥글게
-              } overflow-hidden ${onChange ? "cursor-pointer" : ""} `}
-            >
-              {/* 실제 채워지는 게이지 (SVG) */}
-              <svg className="h-full w-full" aria-hidden="true">
-                <defs>
-                  <linearGradient id={gradientId}>
-                    <stop offset={`${fill}%`} stopColor={fillColor} />
-                    <stop offset={`${fill}%`} stopColor="transparent" />
-                  </linearGradient>
-                </defs>
-                <rect width="100%" height="100%" fill={`url(#${gradientId})`} />
-              </svg>
-            </div>
-          );
-        })}
+            return (
+              <div
+                key={i}
+                onClick={() => onChange?.(i + 1)}
+                className={`bg-winesHero relative h-full flex-1 ${
+                  i === 0 ? "rounded-l-full" : "" // 맨 앞만 왼쪽 둥글게
+                } ${
+                  i === maxSteps - 1 ? "rounded-r-full" : "" // 맨 뒤만 오른쪽 둥글게
+                } overflow-hidden ${onChange ? "cursor-pointer" : ""} `}
+              >
+                {/* 실제 채워지는 게이지 (SVG) */}
+                <svg className="h-full w-full" aria-hidden="true">
+                  <defs>
+                    <linearGradient id={gradientId}>
+                      <stop offset={`${fill}%`} stopColor={fillColor} />
+                      <stop offset={`${fill}%`} stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <rect
+                    width="100%"
+                    height="100%"
+                    fill={`url(#${gradientId})`}
+                  />
+                </svg>
+              </div>
+            );
+          })}
+        </div>
 
         {isInputMode && config ? (
           <span className="text-md flex w-14 shrink-0 justify-end text-[#A3A3A3]">

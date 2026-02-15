@@ -59,11 +59,11 @@ export default function ProfileSidebar({
   };
 
   return (
-    <aside className="w-full shrink-0 self-start px-10 md:sticky md:top-[70px] md:w-[290px] md:px-6">
-      <div className="flex flex-col gap-5 py-7 md:gap-12">
+    <aside className="top-0 mt-8 w-full shrink-0 px-10 lg:sticky lg:top-[70px] lg:mt-0 lg:w-[290px] lg:self-start lg:px-6">
+      <div className="flex flex-col gap-5 lg:gap-6 lg:py-7">
         <div className="flex flex-col items-center gap-3 md:gap-7">
           <div
-            className="group focus-visible:ring-primary relative flex aspect-[1/1] h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-full ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-[160px] md:w-[160px]"
+            className="group focus-visible:ring-primary relative flex aspect-[1/1] h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-full ring-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-25 md:w-25 lg:h-[160px] lg:w-[160px]"
             role="button"
             tabIndex={0}
             onClick={handleClickImage}
