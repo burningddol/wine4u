@@ -3,18 +3,14 @@
 import { useState, useCallback, useEffect } from "react";
 import useOutsideClick from "@/app/(auth)/_libs/useOutsideClick";
 import { cn } from "@/libs/utils";
-import { useUser } from "@/components/UserProvider";
 
 import { MyReviewItem } from "@/types/myprofile/types";
 import { WineTasteAroma } from "@/types/detail/types";
 import StarRating from "@/components/StarRating";
 import { timeAgo } from "@/utils/timeAgo";
-import { likeReview, unlikeReview } from "@/app/myprofile/_libs/profileApi";
 
 import TasteBarGroup from "@/app/wines/[id]/_components/TasteBarGroup";
 import WineSummary from "./WineSummary";
-import { Button } from "@/components/ui/Button";
-import HeartIcon from "@/components/icons/HeartIcon";
 
 interface ReviewItemProps {
   review: MyReviewItem;
@@ -29,60 +25,11 @@ export default function ReviewItem({
   taste,
   onEdit,
   onDelete,
-  onLikeSuccess,
 }: ReviewItemProps) {
-  const { user } = useUser();
-  const teamId = (user as any)?.teamId as string;
-
   const [isDropdownOpen, setIsDropdownOpen] = useState<number | null>(null);
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [isLiking, setIsLiking] = useState(false);
 
   const closeDropdown = useCallback(() => setIsDropdownOpen(null), []);
   const dropdownRef = useOutsideClick(closeDropdown, isDropdownOpen !== null);
-
-  useEffect(() => {
-    const currentLikeCount = Array.isArray(review.likes)
-      ? review.likes.length
-      : 0;
-    setLikeCount(currentLikeCount);
-
-    if (user === "isPending" || !user) {
-      setLiked(false);
-      return;
-    }
-
-    const likedByMe = Array.isArray(review.likes)
-      ? review.likes.some((like) => like.user.id === user.id)
-      : false;
-
-    setLiked(likedByMe);
-  }, [review.likes, user]);
-
-  const handleLike = async () => {
-    if (isLiking) return;
-    if (!teamId) return;
-    setIsLiking(true);
-
-    const nextLiked = !liked;
-    setLiked(nextLiked);
-    setLikeCount((prev) => prev + (nextLiked ? 1 : -1));
-
-    try {
-      if (nextLiked) {
-        await likeReview(review.id);
-      } else {
-        await unlikeReview(review.id);
-      }
-      onLikeSuccess?.(review.id, nextLiked);
-    } catch {
-      setLiked(!nextLiked);
-      setLikeCount((prev) => prev - (nextLiked ? 1 : -1));
-    } finally {
-      setIsLiking(false);
-    }
-  };
 
   return (
     <>
@@ -171,20 +118,6 @@ export default function ReviewItem({
           </div>
 
           <TasteBarGroup reviews={[taste]} layout="grid" />
-        </div>
-
-        <div className="flex items-center">
-          <Button
-            variant="outline"
-            size="xs"
-            type="button"
-            className="hover:text-primary flex items-center gap-2 transition"
-            onClick={handleLike}
-            disabled={isLiking}
-          >
-            <HeartIcon liked={liked} />
-            <span className="text-sm">{likeCount}</span>
-          </Button>
         </div>
       </article>
     </>
