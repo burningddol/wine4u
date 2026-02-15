@@ -38,31 +38,35 @@ export default function TasteBarGroup({
   const currentData = values ||
     tasteAverages || { body: 0, tannins: 0, sweetness: 0, acidity: 0 };
 
-  const containerClass =
+  const layoutClass =
     layout === "grid"
-      ? "grid grid-cols-2 gap-x-10 gap-y-2 " // 리뷰리스트 드롭다운내의 2열 2행
-      : "flex flex-col gap-2 ";
+      ? "grid grid-cols-2 gap-x-5 gap-y-2 " // 리뷰리스트 드롭다운내의 2열 2행
+      : "flex flex-col max-h-[180px]";
   return (
-    <div className={containerClass}>
+    <div className={`${layoutClass}`}>
       <WineTasteBar
         label="바디감"
         value={currentData.body}
         onChange={onChange ? (val) => onChange("body", val) : undefined}
+        layout={layout}
       />
       <WineTasteBar
         label="탄닌"
         value={currentData.tannins}
         onChange={onChange ? (val) => onChange("tannins", val) : undefined}
+        layout={layout}
       />
       <WineTasteBar
         label="당도"
         value={currentData.sweetness}
         onChange={onChange ? (val) => onChange("sweetness", val) : undefined}
+        layout={layout}
       />
       <WineTasteBar
         label="산미"
         value={currentData.acidity}
         onChange={onChange ? (val) => onChange("acidity", val) : undefined}
+        layout={layout}
       />
     </div>
   );

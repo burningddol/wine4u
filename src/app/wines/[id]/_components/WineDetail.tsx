@@ -16,15 +16,15 @@ interface WineDetailProps {
 }
 
 const WINE_IMAGE_POS = {
-  RED: "translate-x-[120px] translate-y-5", // 레드만 우측으로 더 이동
+  RED: "translate-x-[80px] translate-y-5", // 레드만 우측으로 더 이동
   WHITE: "translate-x-5 translate-y-5",
   SPARKLING: "translate-x-5 translate-y-5",
 } as const;
 
 const WINE_BG_STYLE = {
-  RED: "translate-x-[-20px] opacity-30",
+  RED: "max-w-100 opacity-30",
   WHITE: "opacity-30",
-  SPARKLING: "opacity-30 rounded-md", // 스파클링만 둥글게
+  SPARKLING: "object-center opacity-30 rounded-md max-h-[320px] my-auto", // 스파클링만 둥글게
 } as const;
 
 export default function WineDetail({ wine }: WineDetailProps) {
@@ -39,8 +39,7 @@ export default function WineDetail({ wine }: WineDetailProps) {
           src={`/winedetail/type_${wine.type}.png`}
           alt="와인 타입 이미지"
           fill
-          sizes="max-width: 768px "
-          className={`${bgStyle} object-contain opacity-30`}
+          className={`${bgStyle} contain opacity-30`}
         ></Image>
         <Image
           src={wine.image}
@@ -49,14 +48,20 @@ export default function WineDetail({ wine }: WineDetailProps) {
           className={`${imagePos} object-contain`}
         ></Image>
       </div>
-      <div className="relative ml-[50px] min-h-[400px] min-w-[550px]">
-        <div className="mx-0 mt-30 flex flex-row">
-          <StarRating rating={wine.avgRating} />
-          <span className="ml-5">{wine.reviewCount}개의 후기</span>
+      <div className="relative my-auto ml-[50px] h-62 w-130">
+        <div className="mx-0 flex flex-row">
+          <StarRating rating={wine.avgRating} size={30} />
+          <span className="ml-5 text-2xl text-gray-600">
+            {wine.reviewCount.toLocaleString()}개의 후기
+          </span>
         </div>
-        <div className="mt-5 text-4xl font-bold">{wine.name}</div>
+        <div className="mt-5 text-5xl leading-snug font-bold break-keep">
+          {wine.name}
+        </div>
         <div className="mt-5 text-2xl text-gray-600">{wine.region}</div>
-        <div className="mt-15 text-right text-3xl font-bold">{wine.price}</div>
+        <div className="mt-15 text-right text-3xl font-bold">
+          {wine.price.toLocaleString()}원
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export default function ReviewList({
 
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-6">
+      <div className="my-30 flex flex-col items-center justify-center gap-6">
         <Image
           src="/winedetail/notice_mark.png"
           alt="리뷰 없음"
@@ -35,7 +35,7 @@ export default function ReviewList({
   }
   return (
     <div>
-      <div>
+      <div className="w-full pl-10">
         {reviews.map((item) => (
           <ReviewCard key={item.id} review={item} user={user} />
         ))}
