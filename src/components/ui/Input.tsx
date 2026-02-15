@@ -6,11 +6,10 @@ import { cn } from "@/libs/utils";
 
 type InputSize = "sm" | "md" | "lg";
 
-interface InputProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    "size" | "className"
-  > {
+interface InputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size" | "className"
+> {
   ref?: Ref<HTMLInputElement>;
   label?: string;
   /** 에러 메시지 (유효성 검사 실패 시) */
@@ -25,7 +24,7 @@ interface InputProps
 
 const sizeClass: Record<InputSize, string> = {
   sm: "h-9 px-3 text-xs",
-  md: "h-12 px-4 text-lg font-normal",
+  md: "px-4 text-lg font-normal",
   lg: "h-11 px-4 text-base",
 };
 
