@@ -145,8 +145,8 @@ function WineCard({
   return (
     <article className="group flex w-full flex-col gap-6 overflow-hidden md:w-[calc(50%-38px)]">
       <button type="button" className="cursor-pointer" onClick={goToWineDetail}>
-        <div className="flex-center relative flex aspect-[1/1] overflow-hidden bg-gray-50 p-8">
-          <div className="relative block h-full w-full">
+        <div className="group flex-center relative flex aspect-[1/1] overflow-hidden bg-gray-50 p-8">
+          <div className="relative block h-full w-full transition-transform duration-300 group-hover:scale-110">
             {wine.image ? (
               <Image
                 src={wine.image}
