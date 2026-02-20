@@ -1,3 +1,5 @@
+import { getAromaKR } from "@/utils/getAromaKR";
+
 interface AromaProps {
   selectedAromas: string[];
   onToggleAroma: (aroma: string) => void;
@@ -42,13 +44,13 @@ export default function ReviewFormAroma({
               key={aroma}
               type="button"
               onClick={() => onToggleAroma(aroma)}
-              className={`h-12 rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+              className={`text-md h-12 rounded-full border px-5 py-2 font-bold transition-all ${
                 isSelected
                   ? "cursor-pointer border-black bg-black text-white"
                   : "cursor-pointer border-gray-200 bg-white hover:border-gray-400"
               }`}
             >
-              {aroma}
+              {getAromaKR(aroma)}
             </button>
           );
         })}
