@@ -44,7 +44,7 @@ export default function AromaTop4({ reviews }: AromaTop4Props) {
                 className={isNone ? "object-contain p-4" : "object-cover"}
               ></Image>
             </div>
-            <span className="flex justify-center text-center text-lg font-normal">
+            <span className="mt-3 flex justify-center text-center text-[16px] font-medium">
               {label}
             </span>
           </div>
