@@ -12,7 +12,7 @@ import { WineDetail as WineDetailType } from "@/types/detail/types";
 import { WineTasteAroma } from "@/types/detail/types";
 import { useModal } from "@/components/ModalProvider";
 import ReviewForm from "./_components/Review/ReviewForm";
-import LoadingState from "@/app/myprofile/_components/LoadingState";
+import WineDetailPageSkeleton from "./_components/WineDetailPageSkeleton";
 import ScrollToTop from "@/components/ScrollToTop";
 
 export default function WinesPage({
@@ -82,12 +82,7 @@ export default function WinesPage({
     if (id) fetchData();
   }, [id]);
 
-  if (loading)
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <LoadingState message="와인 정보를 불러오는 중..." size={10} />
-      </div>
-    );
+  if (loading) return <WineDetailPageSkeleton />;
   if (error)
     return (
       <div className="p-10 text-center text-red-500">에러 발생: {error}</div>
