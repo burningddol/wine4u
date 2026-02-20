@@ -103,3 +103,31 @@ export async function getMyWines(params?: {
   });
   return res.data;
 }
+
+export async function deleteWine(id: number): Promise<void> {
+  await axios.delete(`/wines/${id}`);
+}
+
+export async function updateWine(
+  id: number,
+  body: {
+    name: string;
+    region: string;
+    image?: string;
+    price: number;
+    avgRating: number;
+    type?: string;
+  },
+): Promise<MyWineItem> {
+  const res = await axios.patch(`/wines/${id}`, body);
+  return res.data;
+}
+
+// 리뷰 좋아요
+export async function likeReview(reviewId: number) {
+  await axios.post(`/reviews/${reviewId}/like`);
+}
+
+export async function unlikeReview(reviewId: number) {
+  await axios.delete(`/reviews/${reviewId}/like`);
+}

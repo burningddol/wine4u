@@ -82,47 +82,51 @@ export default function ReviewEditForm({
 
   return (
     <>
-      <div>
-        {/* 와인 정보 */}
-        <WineSummary
-          image={review.wine?.image}
-          name={review.wine?.name}
-          region={review.wine?.region}
-        />
+      <div className="flex flex-col gap-8 md:gap-12">
+        <div className="flex flex-col gap-3 md:gap-5">
+          {/* 와인 정보 */}
+          <WineSummary
+            image={review.wine?.image}
+            name={review.wine?.name}
+            region={review.wine?.region}
+          />
 
-        {/* 별점 */}
-        <div className="mt-2 flex flex-row gap-2">
-          <label className="text-gray-600">별점 선택</label>
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((num) => (
-              <button
-                key={num}
-                onClick={() => setRating(num)}
-                className={`cursor-pointer text-3xl ${num <= rating ? "text-black" : "text-gray-300"}`}
-              >
-                ★
-              </button>
-            ))}
+          {/* 별점 */}
+          <div className="flex flex-row items-center gap-4 border-t border-gray-200 pt-4">
+            <label className="text-gray-600">별점 선택</label>
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <button
+                  key={num}
+                  onClick={() => setRating(num)}
+                  className={`cursor-pointer text-xl md:text-2xl ${num <= rating ? "text-black" : "text-gray-300"}`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* 와인 후기 */}
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="후기를 작성해주세요."
+            className="h-32 w-full resize-none rounded-sm border border-gray-300 p-4"
+          />
         </div>
 
-        {/* 와인 후기 */}
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="후기를 작성해주세요."
-          className="h-32 w-full resize-none rounded-sm border border-gray-300 p-4"
-        />
-
         {/* 와인 맛 */}
-        <h3 className="mb-3 text-sm font-bold text-gray-800">
-          와인의 맛은 어땠나요?
-        </h3>
-        <TasteBarGroup
-          values={tastes}
-          onChange={handleTasteChange}
-          layout="column"
-        />
+        <div className="flex flex-col gap-3 md:gap-6">
+          <h3 className="text-2lg font-bold text-gray-800 md:text-xl">
+            와인의 맛은 어땠나요?
+          </h3>
+          <TasteBarGroup
+            values={tastes}
+            onChange={handleTasteChange}
+            layout="column"
+          />
+        </div>
 
         <ReviewFormAroma
           selectedAromas={selectedAromas}

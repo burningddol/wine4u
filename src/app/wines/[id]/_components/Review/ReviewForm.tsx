@@ -10,7 +10,7 @@ import { postWineReview } from "@/libs/api/wineDetail/getAPIData";
 
 interface ReviewFormProps {
   wine: WineDetailType;
-  onRefresh: () => Promise<void>;
+  onRefresh: () => void;
 }
 
 export default function ReviewForm({ wine, onRefresh }: ReviewFormProps) {

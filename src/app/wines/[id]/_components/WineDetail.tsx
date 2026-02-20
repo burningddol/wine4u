@@ -45,6 +45,7 @@ export default function WineDetail({ wine }: WineDetailProps) {
           src={wine.image}
           alt="와인 상세이미지"
           fill
+          priority
           className={`${imagePos} object-contain`}
         ></Image>
       </div>

@@ -12,6 +12,7 @@ import { WineDetail as WineDetailType } from "@/types/detail/types";
 import { WineTasteAroma } from "@/types/detail/types";
 import { useModal } from "@/components/ModalProvider";
 import ReviewForm from "./_components/Review/ReviewForm";
+import LoadingState from "@/app/myprofile/_components/LoadingState";
 
 export default function WinesPage({
   params,
@@ -37,6 +38,7 @@ export default function WinesPage({
   const fetchData = async () => {
     try {
       setLoading(true);
+
       const detailData = await getWineDetail(Number(id));
       setWineData(detailData);
       if (detailData.reviews) {
@@ -55,15 +57,17 @@ export default function WinesPage({
   }, [id]);
 
   if (loading)
-    return <div className="p-10 text-center">와인 정보를 불러오는 중</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <LoadingState message="와인 정보를 불러오는 중..." size={10} />
+      </div>
+    );
   if (error)
     return (
       <div className="p-10 text-center text-red-500">에러 발생: {error}</div>
     );
   if (!wineData)
-    return (
-      <div className="p-10 text-center text-white">데이터가 없습니다.</div>
-    );
+    return <div className="text-center text-white">데이터가 없습니다.</div>;
 
   return (
     <div>
