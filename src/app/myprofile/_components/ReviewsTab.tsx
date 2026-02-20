@@ -15,6 +15,7 @@ import { wineTasteAroma } from "@/utils/wineTasteAroma";
 import ReviewEditModal from "./modal/ReviewModal";
 import ReviewItem from "./ReviewItem";
 import EmptyState from "./EmptyState";
+import ReviewsTabSkeleton from "./ReviewsTabSkeleton";
 
 export default function ReviewsTab({
   showToast,
@@ -96,9 +97,7 @@ export default function ReviewsTab({
     [showToast, setReviewCount],
   );
 
-  if (user === "isPending") {
-    return <div>로딩중...</div>;
-  }
+  if (user === "isPending" || isLoading) return <ReviewsTabSkeleton />;
 
   if (!user) {
     return <div>로그인 후 이용...</div>;

@@ -86,7 +86,7 @@ export default function WineRegisterForm({ onSuccess }: WineRegisterFormProps) {
             disabled={isSubmitting}
             className={cn(
               "mt-4 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white",
-              "disabled:cursor-not-allowed disabled:opacity-50",
+              "hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50",
             )}
           >
             와인 등록하기

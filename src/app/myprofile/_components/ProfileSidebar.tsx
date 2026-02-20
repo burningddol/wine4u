@@ -30,13 +30,13 @@ export default function ProfileSidebar({
   onImageChange,
   isImageUpdating = false,
 }: ProfileSidebarProps) {
-  const userImage = user.image || "/user_icon.svg";
+  const userImage = user.image || "/icons/user_icon.svg";
   const inputRef = useRef<HTMLInputElement>(null);
   const { showToast } = useToast();
 
   const MB = 1024 * 1024;
   const Max_SIZE = 5 * MB;
-  const FILE_NAME_REGEX = /^[a-zA-Z0-9_\- ]+\.[a-zA-Z0-9]+$/;
+  const FILE_NAME_REGEX = /^[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$/;
 
   const handleClickImage = () => {
     inputRef.current?.click();

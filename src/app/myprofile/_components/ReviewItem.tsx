@@ -52,7 +52,7 @@ export default function ReviewItem({
               />
             </div>
 
-            <p className="text-lg leading-relaxed break-keep">
+            <p className="text-lg leading-relaxed break-keep whitespace-pre-wrap">
               {review.content}
             </p>
           </div>
