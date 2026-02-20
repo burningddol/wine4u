@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { tryRefresh } from "../_libs/refresh";
+import { tryRefresh, clearAuthCookies } from "../_libs/refresh";
 
-const API_BASE = "https://winereview-api.vercel.app/14-2";
+const API_BASE = "https://winereview-api.vercel.app/21-310338";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 type RouteParams = { params: Promise<{ path: string[] }> };
@@ -35,6 +35,11 @@ async function proxy(req: NextRequest, path: string[], method: HttpMethod) {
     if (newToken) {
       headers["Authorization"] = `Bearer ${newToken}`;
       res = await fetch(targetUrl, { method, headers, body });
+    } else {
+      const data = await res.json().catch(() => ({}));
+      const response = NextResponse.json(data, { status: 401 });
+      clearAuthCookies(response);
+      return response;
     }
   }
 

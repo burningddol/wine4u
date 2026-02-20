@@ -76,7 +76,7 @@ export default function WineList({ wines }: Props) {
           />
           <button
             onClick={openRegisterModal}
-            className="mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-lg font-bold text-white"
+            className="hover:bg-primary/90 mt-5 w-full cursor-pointer rounded-sm bg-black py-3.5 text-lg font-bold text-white"
           >
             와인 등록하기
           </button>

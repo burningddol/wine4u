@@ -7,7 +7,7 @@ import {
 import axios from "../axios";
 import { PostWineValue } from "@/app/wines/_components/register/WineRegisterForm";
 
-const API_BASE = "https://winereview-api.vercel.app/14-2";
+const API_BASE = "https://winereview-api.vercel.app/21-310338";
 
 export interface FetchWinesParams {
   limit: number;
