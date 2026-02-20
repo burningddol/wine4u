@@ -10,7 +10,7 @@ export default function LoadingState({
   size = 8,
 }: LoadingStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+    <div className="mx-auto flex flex-col items-center justify-center gap-4 py-12 text-center">
       <svg
         aria-hidden="true"
         className={`fill-gray-600 text-gray-200 h-${size} w-${size} animate-spin`}

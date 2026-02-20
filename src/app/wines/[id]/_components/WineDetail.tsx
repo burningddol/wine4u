@@ -16,51 +16,62 @@ interface WineDetailProps {
 }
 
 const WINE_IMAGE_POS = {
-  RED: "translate-x-[80px] translate-y-5", // 레드만 우측으로 더 이동
-  WHITE: "translate-x-5 translate-y-5",
-  SPARKLING: "translate-x-5 translate-y-5",
+  RED: "translate-x-15 md:translate-x-20 translate-y-10",
+  WHITE: "translate-x-5 translate-y-10",
+  SPARKLING: "translate-y-10",
 } as const;
 
 const WINE_BG_STYLE = {
-  RED: "max-w-100 opacity-30",
-  WHITE: "opacity-30",
-  SPARKLING: "object-center opacity-30 rounded-md max-h-[320px] my-auto", // 스파클링만 둥글게
+  RED: "  h-[300px] w-[200px] md:h-[400px] md:w-[250px] xl:h-[500px] xl:w-[400px]",
+  WHITE:
+    "  h-[260px] w-[260px] md:h-[400px] md:w-[350px] xl:h-[480px] xl:w-[480px]",
+  SPARKLING:
+    " overflow-hidden h-full w-full md:rounded-3xl md:h-[300px] md:w-[380px] xl:h-[300px] xl:w-[480px] my-auto",
 } as const;
 
 export default function WineDetail({ wine }: WineDetailProps) {
   const wineType = wine.type as keyof typeof WINE_IMAGE_POS;
 
-  const imagePos = WINE_IMAGE_POS[wineType] || WINE_IMAGE_POS.WHITE;
-  const bgStyle = WINE_BG_STYLE[wineType] || WINE_BG_STYLE.WHITE;
+  const imagePos = WINE_IMAGE_POS[wineType];
+  const bgStyle = WINE_BG_STYLE[wineType];
   return (
-    <div className="m-auto my-0 flex min-h-[450px] max-w-[1100px]">
-      <div className="relative min-h-[450px] min-w-[500px] overflow-hidden">
-        <Image
-          src={`/winedetail/type_${wine.type}.png`}
-          alt="와인 타입 이미지"
-          fill
-          className={`${bgStyle} contain opacity-30`}
-        ></Image>
-        <Image
-          src={wine.image}
-          alt="와인 상세이미지"
-          fill
-          className={`${imagePos} object-contain`}
-        ></Image>
-      </div>
-      <div className="relative my-auto ml-[50px] h-62 w-130">
-        <div className="mx-0 flex flex-row">
-          <StarRating rating={wine.avgRating} size={30} />
-          <span className="ml-5 text-2xl text-gray-600">
-            {wine.reviewCount.toLocaleString()}개의 후기
-          </span>
+    <div className="relative w-full">
+      <div className="top-0 left-0 mx-auto mt-[70px] flex min-h-[330px] w-full max-w-[1100px] flex-col md:flex-row md:items-center">
+        <div className="relative flex h-[330px] w-full items-end justify-center overflow-hidden md:h-[440px] md:w-3/5 xl:h-[520px]">
+          <div className={`${bgStyle} relative`}>
+            <Image
+              src={`/winedetail/type_${wine.type.toLowerCase()}.png`}
+              alt="와인 타입 이미지"
+              fill
+              className={`contain opacity-30`}
+            />
+          </div>
+          <div>
+            <Image
+              src={wine.image}
+              alt="와인 상세이미지"
+              fill
+              priority
+              className={`${imagePos} object-contain opacity-100`}
+            />
+          </div>
         </div>
-        <div className="mt-5 text-5xl leading-snug font-bold break-keep">
-          {wine.name}
-        </div>
-        <div className="mt-5 text-2xl text-gray-600">{wine.region}</div>
-        <div className="mt-15 text-right text-3xl font-bold">
-          {wine.price.toLocaleString()}원
+        <div className="relative mt-10 px-10 md:h-92 md:w-130 md:p-5 xl:p-0">
+          <div className="mx-0 flex flex-row">
+            <StarRating rating={wine.avgRating} size={30} />
+            <span className="ml-5 text-xl text-gray-600 md:text-2xl">
+              {wine.reviewCount.toLocaleString()}개의 후기
+            </span>
+          </div>
+          <div className="mt-2 mt-5 text-5xl leading-snug font-bold break-keep">
+            {wine.name}
+          </div>
+          <div className="mt-2 text-2xl text-gray-600 md:mt-3 xl:mt-5">
+            {wine.region}
+          </div>
+          <div className="mt-5 text-right text-3xl font-bold md:mt-3 xl:mt-5">
+            {wine.price.toLocaleString()}원
+          </div>
         </div>
       </div>
     </div>

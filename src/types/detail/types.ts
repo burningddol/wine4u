@@ -30,10 +30,17 @@ export interface WineTasteAroma {
   content: string;
   createdAt: string;
   updatedAt: string;
-  user: User;
+  wine: {
+    id: number;
+    name: string;
+    region: string;
+    image?: string;
+  };
+  likes?: { user: { id: number } }[];
   isLiked: {};
   wineId: number;
   teamId: string;
+  user: User;
 }
 
 export interface User {

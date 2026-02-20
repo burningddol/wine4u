@@ -40,8 +40,8 @@ export default function TasteBarGroup({
 
   const layoutClass =
     layout === "grid"
-      ? "flex flex-col md:grid md:grid-cols-2 md:gap-x-7 md:gap-y-4 gap-y-2" // 리뷰리스트 드롭다운내의 2열 2행
-      : "flex flex-col gap-4.5 md:gap-5";
+      ? "grid grid-cols-1 md:grid-cols-2 md:gap-x-5 md:gap-y-2 " // sm cols 1열씩, md부터 2행2열 그리드
+      : "flex flex-col";
   return (
     <div className={`${layoutClass}`}>
       <WineTasteBar

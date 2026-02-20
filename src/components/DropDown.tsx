@@ -13,7 +13,7 @@ export default function dropDown({ children }: DropDownProps) {
       <div
         className={`w-full overflow-hidden transition-all duration-500 ${
           isOpen
-            ? "visibility-visible mb-12 max-h-[500px] opacity-100"
+            ? "visibility-visible mb-8 max-h-[500px] opacity-100"
             : "visibility-hidden max-h-0 opacity-60"
         }`}
       >
@@ -25,11 +25,11 @@ export default function dropDown({ children }: DropDownProps) {
         className="flex w-full justify-center py-2"
       >
         <div
-          className={`relative h-5 w-5 cursor-pointer transition-transform duration-500 ${
+          className={`relative h-8 w-8 cursor-pointer transition-transform duration-500 ${
             isOpen ? "rotate-0" : "rotate-180"
           }`}
         >
-          <Image src="/icons/arrow.svg" alt="열기" fill></Image>
+          <Image src="/icons/arrow.svg" alt="열기" width={32} height={32} />
         </div>
       </button>
     </div>

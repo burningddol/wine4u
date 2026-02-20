@@ -34,6 +34,7 @@ export function wineTasteAroma(
 
     user,
     isLiked,
+    wine: review.wine,
 
     wineId: review.wine.id,
     teamId: opts.teamId,
