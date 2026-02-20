@@ -30,8 +30,8 @@ export default function ReviewFormAroma({
   onToggleAroma,
 }: AromaProps) {
   return (
-    <div className="">
-      <h3 className="mb-4 text-xl font-bold text-gray-800">
+    <div className="flex flex-col gap-3 md:gap-6">
+      <h3 className="text-2lg font-bold text-gray-800 md:text-xl">
         기억에 남는 향이 있나요?
       </h3>
       <div className="flex flex-wrap gap-2 gap-y-3">
