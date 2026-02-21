@@ -10,7 +10,7 @@ import ProfileSidebar from "./ProfileSidebar";
 import ProfileTabs from "./ProfileTabs";
 import ProfileTabPanel from "./ProfileTabPanel";
 import { useToast } from "@/components/ToastProvider";
-import LoadingState from "./LoadingState";
+import MyProfilePageSkeleton from "./MyProfilePageSkeleton";
 
 export default function ProfileShell() {
   const { user, setUser } = useUser();
@@ -27,9 +27,7 @@ export default function ProfileShell() {
     if (user && user !== "isPending") setNickname(user.nickname ?? "");
   }, [user]);
 
-  if (user === "isPending") {
-    return <LoadingState message="프로필 정보를 불러오는 중..." size={10} />;
-  }
+  if (user === "isPending") return <MyProfilePageSkeleton />;
 
   if (!user) {
     return <div>로그인 후 이용 ...</div>;

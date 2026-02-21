@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { cookieOptions } from "../../_libs/refresh";
 
-const API_BASE = "https://winereview-api.vercel.app/14-2";
+const API_BASE = "https://winereview-api.vercel.app/21-310338";
 
 export async function handleAuthPost(request: NextRequest, apiPath: string) {
   const cookieStore = await cookies();

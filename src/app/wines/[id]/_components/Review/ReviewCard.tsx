@@ -47,7 +47,7 @@ export default function ReviewCard({
         </div>
       </div>
       <ReviewAroma aroma={review.aroma} />
-      <div className="mb-10 break-keep">{review.content}</div>
+      <div className="mb-10 break-keep whitespace-pre-wrap">{review.content}</div>
       <div className="relative flex w-full flex-col items-end">
         <div className="flex w-full flex-row items-center">
           <DropDown>

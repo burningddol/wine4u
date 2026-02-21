@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROTECTED_ROUTES = ["/myprofile"];
+const PROTECTED_ROUTES = ["/myprofile", "/wines/"];
 const AUTH_ROUTES = ["/login", "/signup"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (/\.\w+$/.test(pathname)) {
+    return NextResponse.next();
+  }
 
   const accessToken = request.cookies.get("access_token")?.value;
   const refreshToken = request.cookies.get("refresh_token")?.value;
@@ -31,5 +35,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/myprofile/:path*", "/login", "/signup"],
+  matcher: ["/myprofile/:path*", "/login", "/signup", "/wines/:path+"],
 };

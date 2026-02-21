@@ -17,7 +17,7 @@ import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm"
 import RegisterEditForm from "./RegisterEditForm";
 import DropdownMenu from "./DropdownMenu";
 import { useProfileTab } from "../_contexts/ProfileTabContext";
-import LoadingState from "./LoadingState";
+import RegisterTabSkeleton from "./RegisterTabSkeleton";
 import EmptyState from "./EmptyState";
 
 export default function RegisterTab() {
@@ -64,9 +64,7 @@ export default function RegisterTab() {
     loadWines();
   }, [loadWines]);
 
-  if (isLoading) {
-    return <LoadingState message="와인 목록을 불러오는 중..." size={20} />;
-  }
+  if (isLoading) return <RegisterTabSkeleton />;
 
   if (error) {
     return (
@@ -143,7 +141,7 @@ function WineCard({
   };
 
   return (
-    <article className="group flex w-full flex-col gap-6 overflow-hidden md:w-[calc(50%-38px)]">
+    <article className="flex w-full flex-col gap-6 overflow-hidden md:w-[calc(50%-38px)]">
       <button type="button" className="cursor-pointer" onClick={goToWineDetail}>
         <div className="group flex-center relative flex aspect-[1/1] overflow-hidden bg-gray-50 p-8">
           <div className="relative block h-full w-full transition-transform duration-300 group-hover:scale-110">
@@ -159,10 +157,11 @@ function WineCard({
               <span className="text-5xl">🍷</span>
             )}
           </div>
+          <div className="absolute inset-0 bg-gray-300 opacity-0 transition-opacity duration-300 group-hover:opacity-30" />
         </div>
       </button>
 
-      <div className="flex flex-col gap-6 pb-5">
+      <div className="flex cursor-pointer flex-col gap-6 pb-5" onClick={goToWineDetail}>
         <div className="relative flex flex-col gap-[6px]">
           <h3 className="w-2/3 text-2xl font-bold">{wine.name}</h3>
           <p className="text-md mb-2 font-normal text-gray-300">

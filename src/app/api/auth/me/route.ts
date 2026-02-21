@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { tryRefresh } from "../../_libs/refresh";
+import { tryRefresh, clearAuthCookies } from "../../_libs/refresh";
 
-const API_BASE = "https://winereview-api.vercel.app/14-2";
+const API_BASE = "https://winereview-api.vercel.app/21-310338";
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -11,13 +11,17 @@ export async function GET() {
       headers: { Authorization: `Bearer ${t}` },
     });
 
-  let token = cookieStore.get("access_token")?.value;
+  let token: string | null | undefined = cookieStore.get("access_token")?.value;
   let res = token ? await fetchMe(token) : null;
 
   // 토큰 없거나 401이면 refresh 후 재시도
   if (!res || res.status === 401) {
     token = await tryRefresh(cookieStore);
-    if (!token) return NextResponse.json({ user: null });
+    if (!token) {
+      const response = NextResponse.json({ user: null });
+      clearAuthCookies(response);
+      return response;
+    }
     res = await fetchMe(token);
   }
 

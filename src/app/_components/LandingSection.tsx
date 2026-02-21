@@ -60,7 +60,7 @@ export default function LandingSection({ children }: LandingSectionProps) {
         <Link
           href="/wines"
           className={cn(
-            "fixed bottom-28 left-1/2 h-12.5 w-71 -translate-x-1/2 cursor-pointer rounded-sm bg-black text-lg text-white",
+            "hover:bg-primary/90 fixed bottom-28 left-1/2 h-12.5 w-71 -translate-x-1/2 cursor-pointer rounded-sm bg-black text-lg text-white",
             isComplete ? "pointer-events-auto" : "pointer-none",
             "flex items-center justify-center no-underline",
           )}

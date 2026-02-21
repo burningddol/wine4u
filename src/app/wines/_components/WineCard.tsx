@@ -51,6 +51,10 @@ function WineCard({ wine }: Props) {
           {wine.name}
         </h3>
 
+        <h3 className="mt-1.5 line-clamp-2 w-50 text-lg leading-snug font-medium break-words text-gray-400">
+          {wine.region}
+        </h3>
+
         {wine.recentReview && (
           <>
             <hr className="mt-4 border-gray-300" />

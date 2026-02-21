@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-const API_BASE = "https://winereview-api.vercel.app/14-2";
+const API_BASE = "https://winereview-api.vercel.app/21-310338";
 
 export const cookieOptions = {
   httpOnly: true,
@@ -9,18 +10,17 @@ export const cookieOptions = {
   path: "/",
 };
 
+export function clearAuthCookies(res: NextResponse) {
+  res.cookies.delete("access_token");
+  res.cookies.delete("refresh_token");
+}
+
 export async function tryRefresh(
   cookieStore: Awaited<ReturnType<typeof cookies>>,
-): Promise<string | undefined> {
+): Promise<string | null> {
   const refreshToken = cookieStore.get("refresh_token")?.value;
 
-  const cleanup = () => {
-    cookieStore.delete("access_token");
-    cookieStore.delete("refresh_token");
-    return undefined;
-  };
-
-  if (!refreshToken) return cleanup();
+  if (!refreshToken) return null;
 
   const res = await fetch(`${API_BASE}/auth/refresh-token`, {
     method: "POST",
@@ -28,7 +28,7 @@ export async function tryRefresh(
     body: JSON.stringify({ refreshToken }),
   });
 
-  if (!res.ok) return cleanup();
+  if (!res.ok) return null;
 
   const { accessToken } = await res.json();
   cookieStore.set("access_token", accessToken, {

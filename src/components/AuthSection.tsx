@@ -30,7 +30,9 @@ export default function AuthSection() {
   };
 
   if (user === "isPending") {
-    return <span className="text-white">로딩중이미지 추가</span>;
+    return (
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-white border-t-transparent" />
+    );
   }
 
   if (user) {
