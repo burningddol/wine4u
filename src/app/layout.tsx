@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ToastProvider } from "@/components/ToastProvider";
 import { UserProvider } from "@/components/UserProvider";
 import { ModalProvider } from "@/components/ModalProvider";
+import { DialogProvider } from "@/components/DialogProvider";
 
 const sfProDisplay = localFont({
   src: [
@@ -62,9 +63,11 @@ export default function RootLayout({
         <UserProvider>
           <ToastProvider>
             <ModalProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
+              <DialogProvider>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </DialogProvider>
             </ModalProvider>
           </ToastProvider>
         </UserProvider>

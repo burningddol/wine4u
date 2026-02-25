@@ -4,6 +4,7 @@ import { WineTasteAroma } from "@/types/detail/types";
 import Image from "next/image";
 import { deleteReview } from "@/app/myprofile/_libs/profileApi";
 import { useModal } from "@/components/ModalProvider";
+import { useDialog } from "@/components/DialogProvider";
 import ReviewEditForm from "@/app/myprofile/_components/ReviewEditForm";
 
 interface ReviewListProps {
@@ -19,6 +20,7 @@ export default function ReviewList({
 }: ReviewListProps) {
   const { user } = useUser() || null;
   const { showModal } = useModal();
+  const { showConfirm } = useDialog();
 
   const handleEdit = (review: WineTasteAroma) => {
     showModal(
@@ -29,14 +31,15 @@ export default function ReviewList({
     );
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("삭제하시겠습니까?")) return;
-    try {
-      await deleteReview(id); // API 호출
-      onRefresh(); // 데이터 새로고침
-    } catch (err) {
-      alert("삭제 실패");
-    }
+  const handleDelete = (id: number) => {
+    showConfirm("삭제하시겠습니까?", async () => {
+      try {
+        await deleteReview(id);
+        onRefresh();
+      } catch {
+        // 삭제 실패는 조용히 무시 (onRefresh가 최신 상태를 가져옴)
+      }
+    });
   };
 
   if (reviews.length === 0) {

@@ -10,6 +10,7 @@ import {
 } from "@/app/myprofile/_libs/profileApi";
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/components/ModalProvider";
+import { useDialog } from "@/components/DialogProvider";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
 import { useDeviceTypeStore } from "@/libs/zustand";
@@ -122,19 +123,19 @@ function WineCard({
   onEdit: () => void;
 }) {
   const router = useRouter();
+  const { showConfirm } = useDialog();
 
-  const handleDelete = useCallback(async () => {
-    const ok = window.confirm("등록한 와인을 삭제하시겠습니까?");
-    if (!ok) return;
-
-    try {
-      await deleteWine(wine.id);
-      await onDelete();
-      showToast("삭제되었습니다", "success");
-    } catch (error: any) {
-      showToast("삭제에 실패했습니다", "error");
-    }
-  }, [wine.id, showToast, onDelete]);
+  const handleDelete = useCallback(() => {
+    showConfirm("등록한 와인을 삭제하시겠습니까?", async () => {
+      try {
+        await deleteWine(wine.id);
+        await onDelete();
+        showToast("삭제되었습니다", "success");
+      } catch {
+        showToast("삭제에 실패했습니다", "error");
+      }
+    });
+  }, [wine.id, showToast, onDelete, showConfirm]);
 
   const goToWineDetail = () => {
     router.push(`/wines/${wine.id}`);

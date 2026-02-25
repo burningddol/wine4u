@@ -60,7 +60,7 @@ function WineCard({ wine }: Props) {
             <hr className="mt-4 border-gray-300" />
             <div className="mt-2.5">
               <p className="text-sm font-bold">최신 후기</p>
-              <p className="mt-0.5 line-clamp-2 text-sm text-gray-600">
+              <p className="mt-0.5 line-clamp-2 w-82 text-sm text-gray-600">
                 {wine.recentReview.content}
               </p>
             </div>

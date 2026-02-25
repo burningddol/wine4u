@@ -8,6 +8,7 @@ import type { LoginedUser } from "@/types/auth/types";
 
 import { Button } from "@/components/ui/Button";
 import { useModal } from "@/components/ModalProvider";
+import { useDialog } from "@/components/DialogProvider";
 import { useProfileTab } from "../_contexts/ProfileTabContext";
 
 import { useUser } from "@/components/UserProvider";
@@ -31,6 +32,7 @@ export default function ReviewsTab({
   const { setReviewCount } = useProfileTab();
 
   const { showModal } = useModal();
+  const { showConfirm } = useDialog();
 
   useEffect(() => {
     setReviewCount(reviews.length);
@@ -79,22 +81,18 @@ export default function ReviewsTab({
   );
 
   const handleDelete = useCallback(
-    async (id: number) => {
-      const ok = window.confirm("리뷰를 삭제하시겠습니까?");
-      if (!ok) return;
-
-      try {
-        await deleteReview(id);
-        setReviews((prev) => {
-          const next = prev.filter((r) => r.id !== id);
-          return next;
-        });
-        showToast("삭제되었습니다", "success");
-      } catch {
-        showToast("삭제에 실패했습니다", "error");
-      }
+    (id: number) => {
+      showConfirm("리뷰를 삭제하시겠습니까?", async () => {
+        try {
+          await deleteReview(id);
+          setReviews((prev) => prev.filter((r) => r.id !== id));
+          showToast("삭제되었습니다", "success");
+        } catch {
+          showToast("삭제에 실패했습니다", "error");
+        }
+      });
     },
-    [showToast, setReviewCount],
+    [showToast, showConfirm],
   );
 
   if (user === "isPending" || isLoading) return <ReviewsTabSkeleton />;
