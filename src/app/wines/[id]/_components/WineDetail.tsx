@@ -63,7 +63,7 @@ export default function WineDetail({ wine }: WineDetailProps) {
               {wine.reviewCount.toLocaleString()}개의 후기
             </span>
           </div>
-          <div className="mt-2 mt-5 text-5xl leading-snug font-bold break-keep">
+          <div className="mt-5 text-3xl leading-snug font-bold break-words md:text-4xl xl:text-5xl">
             {wine.name}
           </div>
           <div className="mt-2 text-2xl text-gray-600 md:mt-3 xl:mt-5">
