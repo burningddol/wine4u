@@ -58,6 +58,24 @@ export default function LoginForm({
     window.location.href = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL!;
   };
 
+  const handleGuestLogin = async () => {
+    setIsLoading(true);
+    try {
+      const data = await postLoginData({
+        email: "guestid@guestid.com",
+        password: "@Qwer1234",
+      });
+      setUser(data.user);
+      showToast("로그인에 성공했습니다", "success");
+      router.replace("/");
+    } catch (e: any) {
+      const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
+      showToast(errorMessage, "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const onSubmit = async (
     values: LoginFormValues,
     actions: FormikHelpers<LoginFormValues>,
@@ -93,23 +111,37 @@ export default function LoginForm({
       onFocusChange={onFocusChange}
       onTypingChange={onTypingChange}
       extraButtons={
-        <button
-          className={cn(
-            "mt-2 flex h-14 w-full cursor-pointer",
-            "items-center justify-center gap-2 border border-1",
-            "rounded-sm bg-white text-xl font-normal text-black",
-          )}
-          type="button"
-          onClick={handleKakaoLogin}
-        >
-          <Image
-            src="/auth/kakao.svg"
-            width={24}
-            height={24}
-            alt="카카오 로고"
-          />
-          카카오 간편로그인
-        </button>
+        <>
+          <button
+            className={cn(
+              "mt-2 flex h-14 w-full cursor-pointer",
+              "items-center justify-center gap-2 border border-1",
+              "rounded-sm bg-white text-xl font-normal text-black",
+            )}
+            type="button"
+            onClick={handleKakaoLogin}
+          >
+            <Image
+              src="/auth/kakao.svg"
+              width={24}
+              height={24}
+              alt="카카오 로고"
+            />
+            카카오 간편로그인
+          </button>
+          <button
+            className={cn(
+              "mt-2 flex h-14 w-full cursor-pointer",
+              "items-center justify-center gap-2 border border-1",
+              "rounded-sm bg-white text-xl font-normal text-black",
+            )}
+            type="button"
+            onClick={handleGuestLogin}
+            disabled={isLoading}
+          >
+            게스트 로그인
+          </button>
+        </>
       }
     />
   );
