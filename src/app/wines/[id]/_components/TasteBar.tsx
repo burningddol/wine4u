@@ -51,7 +51,7 @@ export default function WineTaste({
         </div>
       )}
       {/*리뷰 폼 내 박스x 레이블*/}
-      <div className="flex flex-col items-center gap-2 text-center md:flex-row md:gap-4">
+      <div className="flex flex-1 flex-col items-center gap-2 text-center md:flex-row md:gap-4">
         {isInputMode && <span className="w-15 text-lg font-bold">{label}</span>}
 
         {/*레이블 뒤 선*/}
@@ -59,7 +59,7 @@ export default function WineTaste({
           <div className="hidden h-6 w-[1px] bg-[#D1D1D1] md:block"></div>
         )}
         {/*리뷰 폼 내 좌측 최저 값 명시*/}
-        <div className="flex h-3 flex-1 items-center gap-1">
+        <div className="flex h-3 w-full flex-1 items-center gap-1">
           {isInputMode && config && (
             <span className="text-md w-18 shrink-0 text-[#A3A3A3]">
               {config.low}

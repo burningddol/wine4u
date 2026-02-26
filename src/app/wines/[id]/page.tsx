@@ -96,7 +96,7 @@ export default function WinesPage({
       <WineDetail wine={wineData} className="min-w-[1140px]" />
 
       <div className="m-auto my-20 flex max-w-[1100px] flex-col md:p-5 xl:flex-row">
-        <div className="mb-24 flex min-w-[510px] flex-col md:flex-row xl:mb-0 xl:flex-col">
+        <div className="mb-24 flex w-full flex-col md:min-w-[510px] md:flex-row xl:mb-0 xl:flex-col">
           <div className="mb-8 flex min-w-50 flex-col pl-8 xl:flex-row xl:justify-between">
             <h2 className="mb-0 text-xl font-bold md:mb-2">
               어떤 맛이 나나요?
@@ -110,7 +110,7 @@ export default function WinesPage({
           </div>
         </div>
 
-        <div className="md:min-h[440px] flex min-w-[480px] flex-col justify-start md:flex-row xl:ml-[120px] xl:min-h-[230px] xl:flex-col">
+        <div className="flex w-full flex-col justify-start md:min-h-[220px] md:min-w-[480px] md:flex-row xl:ml-[120px] xl:min-h-[230px] xl:flex-col">
           <div className="mb-10 flex min-h-8 min-w-50 flex-col pl-8 xl:flex-row xl:justify-between">
             <h2 className="mb-2 text-xl font-bold">어떤 향이 있나요?</h2>
             <h3 className="text-lg text-gray-600">
