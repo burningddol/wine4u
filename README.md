@@ -5,81 +5,16 @@
 # Wine Community Service
 
 와인 애호가를 위한 커뮤니티 플랫폼입니다. 와인을 탐색하고, 리뷰를 작성하며, AI 기반 와인 추천을 받을 수 있습니다.
-
+![image (3)](https://github.com/user-attachments/assets/572a1fa2-6292-4e8c-92f0-2a60ae85e2ee)
 
 
 ## 주요 기능
 
-- **3D 랜딩 페이지** — Three.js를 활용한 와인 보틀 3D 애니메이션과 스크롤 연동 카메라 효과
-- **와인 목록 & 필터** — 와인 종류(RED/WHITE/SPARKLING), 가격대, 평점별 필터링 및 검색
-- **와인 상세 정보** — 맛 프로필(바디감·탄닌·당도·산도), 아로마 Top 4, 평점 분포, 리뷰 목록
-- **리뷰 작성** — 별점, 맛 스펙트럼, 아로마 태그 선택이 가능한 리뷰 작성 모달
+- **BFF proxy 보안최적화** — BFF proxy 서버를 구축하여 jwt토큰을 httpOnly쿠키로 안전하게 핸들링
+- **3d interative 애니메이션** — three.js를 활용한 랜딩페이지의 이목을 끄는 애니메이션
 - **AI 와인 추천 챗봇** — Cerebras LLaMA 모델 기반의 대화형 와인 추천
-- **추천 와인 캐러셀** — 사용자 맞춤 추천 와인을 Swiper 캐러셀로 제공
-- **회원가입 / 로그인** — 이메일 인증 및 카카오 OAuth 지원
-- **마이 프로필** — 내가 쓴 리뷰, 등록한 와인 관리, 닉네임 수정
+- **ISR기반 최적화** — ISR기반 풀라우트캐싱을 이용한 페이지 최적화
 
-
-**👥 팀 소개**
-
-| 팀장 | 팀원 | 팀원 |
-|:---:|:---:|:---:|
-| <b>김준석</b><br>`리드FE`<br><br>랜딩페이지<br>로그인페이지<br>회원가입페이지<br>와인목록페이지 |<b>박예성</b><br>`FE`<br><br>와인상세페이지 | <b>이지선</b><br>`FE`<br><br>마이페이지 |
-
-
-
-
-## 기술 스택
-
-| 분류                 | 기술                                |
-| -------------------- | ----------------------------------- |
-| **Framework**        | Next.js 16, React 19, TypeScript 5  |
-| **Styling**          | Tailwind CSS 4, Sass, Framer Motion |
-| **3D**               | Three.js, React Three Fiber, Drei   |
-| **상태 관리**        | Zustand                             |
-| **폼 / 유효성 검사** | formik, Yup                         |
-| **HTTP**             | Axios                               |
-| **AI**               | Cerebras Cloud SDK (LLaMA 3.3-70B)  |
-| **UI 컴포넌트**      | Swiper, react-range                 |
-| **개발 도구**        | ESLint, Prettier                    |
-
-## 시작하기
-
-### 사전 요구사항
-
-- Node.js 18 이상
-- npm 또는 yarn
-
-### 설치
-
-```bash
-git clone https://github.com/<your-org>/wine_community_service.git
-cd wine_community_service
-npm install
-```
-
-### 환경변수 설정
-
-프로젝트 루트에 `.env.local` 파일을 생성하고 아래 값을 설정합니다.
-
-```env
-CEREBRAS_API_KEY=<Cerebras API 키>
-```
-
-### 개발 서버 실행
-
-```bash
-npm run dev
-```
-
-`http://localhost:3000`에서 확인할 수 있습니다.
-
-### 프로덕션 빌드
-
-```bash
-npm run build
-npm start
-```
 
 ## 보안 아키텍처
 
@@ -148,6 +83,67 @@ Client (Axios)            Next.js Proxy                    External API
 | **토큰 노출**   | 서버 사이드 프록시     | 토큰이 브라우저에 노출되지 않음           |
 | **토큰 만료**   | 자동 갱신              | 401 응답 시 refresh token으로 자동 재발급 |
 | **미인증 접근** | Middleware 라우트 보호 | `/myprofile` 등 보호 페이지 접근 차단     |
+
+**👥 팀 소개**
+
+| 팀장 | 팀원 | 팀원 |
+|:---:|:---:|:---:|
+| <b>김준석</b><br>`리드FE`<br><br>랜딩페이지<br>로그인페이지<br>회원가입페이지<br>와인목록페이지 |<b>박예성</b><br>`FE`<br><br>와인상세페이지 | <b>이지선</b><br>`FE`<br><br>마이페이지 |
+
+
+
+
+## 기술 스택
+
+| 분류                 | 기술                                |
+| -------------------- | ----------------------------------- |
+| **Framework**        | Next.js 16, React 19, TypeScript 5  |
+| **Styling**          | Tailwind CSS 4, Sass, Framer Motion |
+| **3D**               | Three.js, React Three Fiber, Drei   |
+| **상태 관리**        | Zustand                             |
+| **폼 / 유효성 검사** | formik, Yup                         |
+| **HTTP**             | Axios                               |
+| **AI**               | Cerebras Cloud SDK (LLaMA 3.3-70B)  |
+| **UI 컴포넌트**      | Swiper, react-range                 |
+| **개발 도구**        | ESLint, Prettier                    |
+
+## 시작하기
+
+### 사전 요구사항
+
+- Node.js 18 이상
+- npm 또는 yarn
+
+### 설치
+
+```bash
+git clone https://github.com/<your-org>/wine_community_service.git
+cd wine_community_service
+npm install
+```
+
+### 환경변수 설정
+
+프로젝트 루트에 `.env.local` 파일을 생성하고 아래 값을 설정합니다.
+
+```env
+CEREBRAS_API_KEY=<Cerebras API 키>
+```
+
+### 개발 서버 실행
+
+```bash
+npm run dev
+```
+
+`http://localhost:3000`에서 확인할 수 있습니다.
+
+### 프로덕션 빌드
+
+```bash
+npm run build
+npm start
+```
 
 ## 프로젝트 구조
 
