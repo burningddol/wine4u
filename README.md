@@ -8,6 +8,14 @@
 ![image (3)](https://github.com/user-attachments/assets/572a1fa2-6292-4e8c-92f0-2a60ae85e2ee)
 
 
+**👥 팀 소개**
+
+| 팀장 | 팀원 | 팀원 |
+|:---:|:---:|:---:|
+| <b>김준석</b><br>`리드FE`<br><br>랜딩페이지<br>로그인페이지<br>회원가입페이지<br>와인목록페이지 |<b>박예성</b><br>`FE`<br><br>와인상세페이지 | <b>이지선</b><br>`FE`<br><br>마이페이지 |
+
+
+
 ## 주요 기능
 
 - **BFF proxy 보안최적화** — BFF proxy 서버를 구축하여 jwt토큰을 httpOnly쿠키로 안전하게 핸들링
@@ -83,12 +91,6 @@ Client (Axios)            Next.js Proxy                    External API
 | **토큰 노출**   | 서버 사이드 프록시     | 토큰이 브라우저에 노출되지 않음           |
 | **토큰 만료**   | 자동 갱신              | 401 응답 시 refresh token으로 자동 재발급 |
 | **미인증 접근** | Middleware 라우트 보호 | `/myprofile` 등 보호 페이지 접근 차단     |
-
-**👥 팀 소개**
-
-| 팀장 | 팀원 | 팀원 |
-|:---:|:---:|:---:|
-| <b>김준석</b><br>`리드FE`<br><br>랜딩페이지<br>로그인페이지<br>회원가입페이지<br>와인목록페이지 |<b>박예성</b><br>`FE`<br><br>와인상세페이지 | <b>이지선</b><br>`FE`<br><br>마이페이지 |
 
 
 
