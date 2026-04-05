@@ -68,7 +68,7 @@ export default function WineList({ wines }: Props) {
       )}
     >
       {isDesktop && (
-        <div className="mb-50">
+        <div className="sticky top-24 mb-50 self-start">
           <WineFilter
             currentFilter={filter}
             setCurrentFilter={setFilter}
