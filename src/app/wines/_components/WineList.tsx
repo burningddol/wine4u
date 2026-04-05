@@ -63,12 +63,12 @@ export default function WineList({ wines }: Props) {
   return (
     <div
       className={cn(
-        "m-auto mt-8 w-full md:mt-32 xl:mt-42",
+        "m-auto mt-8 mb-10 w-full md:mt-32 xl:mt-42",
         isDesktop ? "flex max-w-[1145px] items-start gap-12" : "",
       )}
     >
       {isDesktop && (
-        <div className="mb-50">
+        <div className="sticky top-24 mb-50 self-start">
           <WineFilter
             currentFilter={filter}
             setCurrentFilter={setFilter}
