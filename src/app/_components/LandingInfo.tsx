@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { motion, Variants, Easing } from 'framer-motion';
-import { SCROLL_HEIGHT_VH } from './LandingSection';
+import { motion, Variants, Easing } from "framer-motion";
+import { SCROLL_HEIGHT_VH } from "./LandingSection";
 
 interface LandingInfoProps {
   progress: number;
@@ -9,72 +9,71 @@ interface LandingInfoProps {
 
 export default function LandingInfo({ progress }: LandingInfoProps) {
   const translateY = -progress * 150;
-  const showChevron = progress < 0.05;
 
   return (
-    <motion.div
-      className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center pb-20"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      style={{ transform: `translateY(${translateY}px)` }}
-    >
-      <motion.p
-        className="text-2xl text-gray-400 md:text-3xl"
-        variants={itemVariants}
-      >
-        와인을 고르는 가장 쉬운 방법
-      </motion.p>
-      <motion.p
-        className="mt-2 text-2xl font-medium text-white md:text-3xl"
-        variants={itemVariants}
-      >
-        당신에게 맞는 와인을 추천합니다
-      </motion.p>
-
-      <motion.h1
-        className="mt-12 flex text-7xl font-bold tracking-wider text-white md:mt-16 md:text-9xl"
-        variants={titleContainerVariants}
-      >
-        {'WINE 4 U'.split('').map((char, i) => (
-          <motion.span
-            key={i}
-            className="inline-block"
-            variants={charVariants}
-            style={{
-              textShadow:
-                '0 0 80px rgba(255,255,255,0.5), 0 0 70px rgba(255,255,255,0.3)',
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        ))}
-      </motion.h1>
-
+    <>
       <motion.div
-        className="mt-16 h-px w-64 origin-center bg-gray-200 md:mt-20 md:w-96"
-        variants={lineVariants}
-      />
-      <motion.p className="mt-6 text-sm text-gray-500" variants={itemVariants}>
-        Codeit. 2026
-      </motion.p>
-
-      {showChevron && (
-        <motion.button
-          className="pointer-events-auto absolute bottom-12 cursor-pointer text-4xl text-gray-400 transition-colors hover:text-white md:bottom-14"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          onClick={() => {
-            window.scrollTo({
-              top: window.innerHeight * (SCROLL_HEIGHT_VH / 100),
-              behavior: 'smooth',
-            });
-          }}
+        className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center pb-20"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ transform: `translateY(${translateY}px)` }}
+      >
+        <motion.p
+          className="text-2xl text-gray-400 md:text-3xl"
+          variants={itemVariants}
         >
-          ⌵
-        </motion.button>
-      )}
-    </motion.div>
+          와인을 고르는 가장 쉬운 방법
+        </motion.p>
+        <motion.p
+          className="mt-2 text-2xl font-medium text-white md:text-3xl"
+          variants={itemVariants}
+        >
+          당신에게 맞는 와인을 추천합니다
+        </motion.p>
+
+        <motion.h1
+          className="mt-12 flex text-7xl font-bold tracking-wider text-white md:mt-16 md:text-9xl"
+          variants={titleContainerVariants}
+        >
+          {"WINE 4 U".split("").map((char, i) => (
+            <motion.span
+              key={i}
+              className="inline-block"
+              variants={charVariants}
+              style={{
+                textShadow:
+                  "0 0 80px rgba(255,255,255,0.5), 0 0 70px rgba(255,255,255,0.3)",
+              }}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
+        </motion.h1>
+
+        <motion.div
+          className="mt-16 h-px w-64 origin-center bg-gray-200 md:mt-20 md:w-96"
+          variants={lineVariants}
+        />
+        <motion.p className="mt-6 text-sm text-gray-500" variants={itemVariants}>
+          Codeit. 2026
+        </motion.p>
+      </motion.div>
+
+      <motion.button
+        className="pointer-events-auto absolute bottom-12 left-1/2 z-10 -translate-x-1/2 cursor-pointer text-7xl text-gray-300 transition-colors hover:text-white md:bottom-14 md:text-8xl"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight * (SCROLL_HEIGHT_VH / 100),
+            behavior: "smooth",
+          });
+        }}
+      >
+        ⌵
+      </motion.button>
+    </>
   );
 }
 
@@ -110,13 +109,13 @@ const titleContainerVariants: Variants = {
 
 const charVariants: Variants = {
   hidden: {
-    y: '50%',
+    y: "50%",
     opacity: 0,
 
     rotateX: 40,
   },
   visible: {
-    y: '0%',
+    y: "0%",
     opacity: 1,
 
     rotateX: 0,
