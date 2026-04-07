@@ -23,13 +23,15 @@ export function useWineList(initialData: WineListResponse) {
   const [list, setList] = useState<Wine[]>(initialData.list);
   const [cursor, setCursor] = useState<number | null>(initialData.nextCursor);
   const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(false);
 
   const router = useRouter();
 
   const hasMore = cursor !== null;
 
   const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+    if (isLoadingRef.current || !hasMore) return;
+    isLoadingRef.current = true;
     setIsLoading(true);
     try {
       const data = await fetchWines({
@@ -43,13 +45,16 @@ export function useWineList(initialData: WineListResponse) {
     } catch (error) {
       console.error("Failed to load more:", error);
     } finally {
+      isLoadingRef.current = false;
       setIsLoading(false);
     }
-  }, [cursor, isLoading, hasMore, debouncedSearch, filter]);
+  }, [cursor, debouncedSearch, filter, hasMore]);
 
   const observerRef = useInfiniteScroll(loadMore, hasMore);
 
   const refetch = useCallback(async () => {
+    if (isLoadingRef.current) return;
+    isLoadingRef.current = true;
     setIsLoading(true);
     try {
       const data = await fetchWines({
@@ -63,6 +68,7 @@ export function useWineList(initialData: WineListResponse) {
     } catch (e) {
       console.error("Failed to refetch wine list:", e);
     } finally {
+      isLoadingRef.current = false;
       setIsLoading(false);
     }
   }, [debouncedSearch, filter]);
@@ -108,6 +114,7 @@ export function useWineList(initialData: WineListResponse) {
 
   return {
     list,
+    isLoading,
     search,
     setSearch,
     filter,
