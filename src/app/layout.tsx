@@ -71,13 +71,13 @@ export default function RootLayout({
         <QueryProvider>
           <UserProvider>
             <ToastProvider>
-              <ModalProvider>
-                <DialogProvider>
+              <DialogProvider>
+                <ModalProvider>
                   <Header />
                   <main className="flex-1">{children}</main>
                   <Footer />
-                </DialogProvider>
-              </ModalProvider>
+                </ModalProvider>
+              </DialogProvider>
             </ToastProvider>
           </UserProvider>
         </QueryProvider>
