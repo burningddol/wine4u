@@ -12,7 +12,9 @@ import { cn } from "@/libs/utils";
 import Image from "next/image";
 import { useUser } from "@/components/UserProvider";
 import { useToast } from "@/components/ToastProvider";
-import ChatBot from "./chatBot/ChatBot";
+import dynamic from "next/dynamic";
+
+const ChatBot = dynamic(() => import("./chatBot/ChatBot"), { ssr: false });
 
 interface Props {
   wines: WineListResponse;
@@ -98,8 +100,8 @@ export default function WineList({ wines }: Props) {
             </div>
           ) : (
             <div className="grid grid-cols-1 items-start justify-items-center gap-5 md:grid-cols-2 xl:gap-16">
-              {list.map((wine) => (
-                <WineCard key={wine.id} wine={wine} />
+              {list.map((wine, index) => (
+                <WineCard key={wine.id} wine={wine} priority={index < 2} />
               ))}
             </div>
           )}
