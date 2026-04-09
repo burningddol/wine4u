@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getMyWines,
   deleteWine,
@@ -20,58 +21,49 @@ import DropdownMenu from "./DropdownMenu";
 import { useProfileTab } from "../_contexts/ProfileTabContext";
 import RegisterTabSkeleton from "./RegisterTabSkeleton";
 import EmptyState from "./EmptyState";
+import { QUERY_KEYS } from "@/libs/query/queryKeys";
 
 export default function RegisterTab() {
   const { showModal } = useModal();
   const { showToast } = useToast();
   const { user } = useUser();
   const { deviceType } = useDeviceTypeStore();
-  const [wines, setWines] = useState<MyWineItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const { setWineCount } = useProfileTab();
 
-  const loadWines = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getMyWines();
-      const list = data.list ?? [];
-      setWines(list);
-      setWineCount(data.totalCount ?? list.length ?? 0);
-    } catch (e) {
-      setError(
-        e instanceof Error
-          ? e.message
-          : "등록한 와인 목록을 불러오지 못했습니다.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [setWineCount]);
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: QUERY_KEYS.myWines,
+    queryFn: () => getMyWines(),
+  });
+
+  const wines: MyWineItem[] = data?.list ?? [];
+
+  useEffect(() => {
+    setWineCount(data?.totalCount ?? (data?.list?.length ?? 0));
+  }, [data, setWineCount]);
 
   const openRegisterModal = () => {
     if (!user) return showToast("로그인이 필요합니다", "error");
     const width = deviceType === "mobile" ? 375 : 460;
     showModal(
-      <WineRegisterForm onSuccess={loadWines} />,
+      <WineRegisterForm
+        onSuccess={() =>
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myWines })
+        }
+      />,
       "와인 등록",
       width,
       700,
     );
   };
 
-  useEffect(() => {
-    loadWines();
-  }, [loadWines]);
-
   if (isLoading) return <RegisterTabSkeleton />;
 
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-error">{error}</p>
-        <Button type="button" className="mt-4" onClick={loadWines}>
+        <p className="text-error">{error.message}</p>
+        <Button type="button" className="mt-4" onClick={() => refetch()}>
           다시 시도
         </Button>
       </div>
@@ -95,11 +87,15 @@ export default function RegisterTab() {
           key={wine.id}
           wine={wine}
           showToast={showToast}
-          onDelete={loadWines}
           onEdit={() => {
             const width = deviceType === "mobile" ? 375 : 460;
             showModal(
-              <RegisterEditForm wine={wine} onSuccess={loadWines} />,
+              <RegisterEditForm
+                wine={wine}
+                onSuccess={() =>
+                  queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myWines })
+                }
+              />,
               "와인 수정",
               width,
               700,
@@ -114,28 +110,30 @@ export default function RegisterTab() {
 function WineCard({
   wine,
   showToast,
-  onDelete,
   onEdit,
 }: {
   wine: MyWineItem;
   showToast: (message: string, type: "success" | "error") => void;
-  onDelete: () => Promise<void>;
   onEdit: () => void;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { showConfirm } = useDialog();
 
+  const { mutate: removeWine } = useMutation({
+    mutationFn: () => deleteWine(wine.id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myWines });
+      showToast("삭제되었습니다", "success");
+    },
+    onError: () => {
+      showToast("삭제에 실패했습니다", "error");
+    },
+  });
+
   const handleDelete = useCallback(() => {
-    showConfirm("등록한 와인을 삭제하시겠습니까?", async () => {
-      try {
-        await deleteWine(wine.id);
-        await onDelete();
-        showToast("삭제되었습니다", "success");
-      } catch {
-        showToast("삭제에 실패했습니다", "error");
-      }
-    });
-  }, [wine.id, showToast, onDelete, showConfirm]);
+    showConfirm("등록한 와인을 삭제하시겠습니까?", () => removeWine());
+  }, [showConfirm, removeWine]);
 
   const goToWineDetail = () => {
     router.push(`/wines/${wine.id}`);
