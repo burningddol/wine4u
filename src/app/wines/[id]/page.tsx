@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { use, useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import WineDetail from "./_components/WineDetail";
 import WineTasteBarGroup from "./_components/TasteBarGroup";
 import AromaTop4 from "./_components/AromaTop4";
@@ -8,12 +9,11 @@ import ReviewList from "./_components/Review/ReviewList";
 import StarRating from "@/components/StarRating";
 import ReviewBarGroup from "./_components/RatingBarGroup";
 import { getWineDetail } from "@/libs/api/wineDetail/getAPIData";
-import { WineDetail as WineDetailType } from "@/types/detail/types";
-import { WineTasteAroma } from "@/types/detail/types";
 import { useModal } from "@/components/ModalProvider";
 import ReviewForm from "./_components/Review/ReviewForm";
 import WineDetailPageSkeleton from "./_components/WineDetailPageSkeleton";
 import ScrollToTop from "@/components/ScrollToTop";
+import { QUERY_KEYS } from "@/libs/query/queryKeys";
 
 export default function WinesPage({
   params,
@@ -22,73 +22,41 @@ export default function WinesPage({
 }) {
   const { id } = use(params);
   const { showModal } = useModal();
-  const [wineData, setWineData] = useState<WineDetailType | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [reviews, setReviews] = useState<WineTasteAroma[]>([]);
-  const openReviewModal = () => {
+  const queryClient = useQueryClient();
+
+  const {
+    data: wineData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: QUERY_KEYS.wineDetail(id),
+    queryFn: () => getWineDetail(Number(id)),
+  });
+
+  const refreshReviews = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.wineDetail(id) });
+  }, [queryClient, id]);
+
+  const openReviewModal = useCallback(() => {
     showModal(
       <ReviewForm wine={wineData!} onRefresh={refreshReviews} />,
       "리뷰 등록",
       550,
       1000,
     );
-  };
+  }, [showModal, wineData, refreshReviews]);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-
-      const detailData = await getWineDetail(Number(id));
-      setWineData(detailData);
-      if (detailData.reviews) {
-        setReviews(detailData.reviews);
-      }
-    } catch (err: any) {
-      console.error("데이터 로딩 실패:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const refreshReviews = async () => {
-    try {
-      const updatedDetailData = await getWineDetail(Number(id));
-
-      setWineData((prev) => {
-        if (!prev) return updatedDetailData;
-
-        return {
-          ...prev,
-
-          avgRating: updatedDetailData.avgRating,
-
-          reviewCount: updatedDetailData.reviewCount,
-
-          reviews: updatedDetailData.reviews,
-        };
-      });
-
-      if (updatedDetailData.reviews) {
-        setReviews(updatedDetailData.reviews);
-      }
-    } catch (err) {
-      console.error("리뷰 새로고침 실패:", err);
-    }
-  };
-
-  useEffect(() => {
-    if (id) fetchData();
-  }, [id]);
-
-  if (loading) return <WineDetailPageSkeleton />;
+  if (isLoading) return <WineDetailPageSkeleton />;
   if (error)
     return (
-      <div className="p-10 text-center text-red-500">에러 발생: {error}</div>
+      <div className="p-10 text-center text-red-500">
+        에러 발생: {error.message}
+      </div>
     );
   if (!wineData)
     return <div className="text-center text-white">데이터가 없습니다.</div>;
+
+  const reviews = wineData.reviews ?? [];
 
   return (
     <div>
@@ -123,12 +91,11 @@ export default function WinesPage({
         </div>
       </div>
 
-      {/*와인디테일&리뷰리스트 구분선*/}
       <div className="solid m-0 mx-auto mb-20 w-7/8 border-[2px] border-b border-[#D1D1D1] xl:w-[1140px]" />
 
       <div className="m-auto flex w-full max-w-[1140px] flex-col-reverse xl:flex-row xl:justify-between">
         <div
-          className={`h-full min-h-[480px] ${reviews.length === 0 ? "w-full xl:w-[1140px]" : "w-10/11 xl:mr-20 xl:w-[725px]"}`} //리뷰개수 0개일때 화면너비 상이
+          className={`h-full min-h-[480px] ${reviews.length === 0 ? "w-full xl:w-[1140px]" : "w-10/11 xl:mr-20 xl:w-[725px]"}`}
         >
           <div className="flex h-8 flex-row items-center pl-2 xl:pl-0">
             <h2 className="ml-4 text-xl font-bold">리뷰 목록</h2>
