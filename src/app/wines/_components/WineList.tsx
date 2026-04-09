@@ -101,7 +101,7 @@ export default function WineList({ wines }: Props) {
           ) : (
             <div className="grid grid-cols-1 items-start justify-items-center gap-5 md:grid-cols-2 xl:gap-16">
               {list.map((wine, index) => (
-                <WineCard key={wine.id} wine={wine} priority={index < 2} />
+                <WineCard key={wine.id} wine={wine} priority={index < 7} />
               ))}
             </div>
           )}
