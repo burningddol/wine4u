@@ -1,6 +1,5 @@
 "use client";
 
-import { WineListResponse } from "@/types/wines/types";
 import { useWineList } from "../_libs/hooks/useWineList";
 import WineCard from "./WineCard";
 import WineSearchBar from "./WineSearchBar";
@@ -16,11 +15,7 @@ import dynamic from "next/dynamic";
 
 const ChatBot = dynamic(() => import("./chatBot/ChatBot"), { ssr: false });
 
-interface Props {
-  wines: WineListResponse;
-}
-
-export default function WineList({ wines }: Props) {
+export default function WineList() {
   const {
     list,
     search,
@@ -30,7 +25,7 @@ export default function WineList({ wines }: Props) {
     hasMore,
     observerRef,
     refetch,
-  } = useWineList(wines);
+  } = useWineList();
   const { deviceType } = useDeviceTypeStore();
   const isDesktop = deviceType === "desktop";
 
