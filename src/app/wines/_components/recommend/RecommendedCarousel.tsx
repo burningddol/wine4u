@@ -54,7 +54,7 @@ export default function RecommendedCarousel({
         }}
         onSlideChange={handleSlideChange}
       >
-        {recommendedWines.map((wine) => (
+        {recommendedWines.map((wine, index) => (
           <SwiperSlide key={wine.id}>
             <Link href={`/wines/${wine.id}`} className="no-underline">
               <div className="flex h-full flex-col items-center justify-start rounded-md bg-transparent md:h-[320px]">
@@ -75,7 +75,8 @@ export default function RecommendedCarousel({
                       alt={wine.name}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 150px, 201px"
+                      sizes="(max-width: 767px) 150px, 220px"
+                      priority={index < slidesPerView}
                     />
                   </div>
                 </div>

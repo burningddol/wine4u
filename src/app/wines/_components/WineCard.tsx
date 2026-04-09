@@ -7,9 +7,10 @@ import Link from "next/link";
 
 interface Props {
   wine: Wine;
+  priority?: boolean;
 }
 
-function WineCard({ wine }: Props) {
+function WineCard({ wine, priority = false }: Props) {
   return (
     <Link href={`/wines/${wine.id}`} className="no-underline">
       <article className="flex max-w-[370px] cursor-pointer flex-col justify-start">
@@ -30,6 +31,8 @@ function WineCard({ wine }: Props) {
               alt={wine.name}
               fill
               className="object-contain"
+              sizes="(max-width: 767px) 100vw, 50vw"
+              priority={priority}
             />
           </div>
           <div
