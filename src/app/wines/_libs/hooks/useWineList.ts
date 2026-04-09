@@ -10,7 +10,6 @@ import {
   WINES_PER_PAGE,
 } from "../winesQueryOptions";
 
-
 export function useWineList() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
