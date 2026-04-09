@@ -12,6 +12,7 @@ import TextInput from "./TextInput";
 import WineTypeSelector from "./WineTypeSelector";
 import { getImageURL, postWine } from "@/libs/api/wines/getAPIData";
 import { useToast } from "@/components/ToastProvider";
+import { useDialog } from "@/components/DialogProvider";
 
 export interface PostWineValue {
   name: string;
@@ -28,6 +29,7 @@ interface WineRegisterFormProps {
 export default function WineRegisterForm({ onSuccess }: WineRegisterFormProps) {
   const { onClose } = useModal();
   const { showToast } = useToast();
+  const { showAlert } = useDialog();
 
   const onSubmit = async (
     values: WineRegisterFormValues,
@@ -82,11 +84,16 @@ export default function WineRegisterForm({ onSuccess }: WineRegisterFormProps) {
           <TextInput label="원산지" name="region" placeholder="원산지 입력" />
 
           <button
-            type="submit"
-            disabled={isSubmitting}
+            type="button"
+            onClick={() =>
+              showAlert(
+                "현재 포트폴리오 아이템 유지를 위해 와인 등록 기능이 비활성화되어 있습니다.\n리뷰 등록은 정상적으로 이용 가능합니다.",
+                { title: "안내" },
+              )
+            }
             className={cn(
               "mt-4 w-full cursor-pointer rounded-sm bg-black py-3.5 text-sm font-bold text-white",
-              "hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50",
+              "hover:bg-primary/90",
             )}
           >
             와인 등록하기

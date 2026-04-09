@@ -15,6 +15,7 @@ interface ConfirmData {
   confirmText?: string;
   cancelText?: string;
   onConfirm: () => void;
+  alertOnly?: boolean;
 }
 
 interface DialogContextValue {
@@ -22,6 +23,10 @@ interface DialogContextValue {
     message: string,
     onConfirm: () => void,
     options?: { title?: string; confirmText?: string; cancelText?: string },
+  ) => void;
+  showAlert: (
+    message: string,
+    options?: { title?: string; confirmText?: string },
   ) => void;
 }
 
@@ -37,6 +42,16 @@ export function DialogProvider({ children }: { children: ReactNode }) {
       options?: { title?: string; confirmText?: string; cancelText?: string },
     ) => {
       setDialog({ message, onConfirm, ...options });
+    },
+    [],
+  );
+
+  const showAlert = useCallback(
+    (
+      message: string,
+      options?: { title?: string; confirmText?: string },
+    ) => {
+      setDialog({ message, onConfirm: () => {}, alertOnly: true, ...options });
     },
     [],
   );
@@ -67,7 +82,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <DialogContext.Provider value={{ showConfirm }}>
+    <DialogContext.Provider value={{ showConfirm, showAlert }}>
       {children}
       {dialog && (
         <div
@@ -86,15 +101,17 @@ export function DialogProvider({ children }: { children: ReactNode }) {
               {dialog.message}
             </p>
             <div className="flex justify-end gap-3">
-              <Button variant="outline" size="md" onClick={onClose}>
-                {dialog.cancelText ?? "취소"}
-              </Button>
+              {!dialog.alertOnly && (
+                <Button variant="outline" size="md" onClick={onClose}>
+                  {dialog.cancelText ?? "취소"}
+                </Button>
+              )}
               <Button
                 size="md"
-                className="bg-error hover:bg-error/90"
+                className={dialog.alertOnly ? "" : "bg-error hover:bg-error/90"}
                 onClick={handleConfirm}
               >
-                {dialog.confirmText ?? "삭제"}
+                {dialog.confirmText ?? (dialog.alertOnly ? "확인" : "삭제")}
               </Button>
             </div>
           </div>
