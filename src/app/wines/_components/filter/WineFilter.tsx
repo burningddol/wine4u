@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import { WineFilterValues } from "@/types/wines/types";
-import { INITIAL_FILTER } from "../../_libs/hooks/useWineList";
+import { INITIAL_FILTER } from "../../_libs/winesQueryOptions";
 import { cn } from "@/libs/utils";
 import PriceRangeSlider, { MAX_PRICE, MIN_PRICE } from "./PriceRangeSlider";
 import { useModal } from "@/components/ModalProvider";
