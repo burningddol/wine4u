@@ -4,17 +4,12 @@ import { fetchWines } from "@/libs/api/wines/getAPIData";
 import { WineFilterValues } from "@/types/wines/types";
 import useDebounce from "./useDebounce";
 import useInfiniteScroll from "./useInfiniteScroll";
+import {
+  WINES_QUERY_KEY,
+  INITIAL_FILTER,
+  WINES_PER_PAGE,
+} from "../winesQueryOptions";
 
-export const WINES_QUERY_KEY = "wines" as const;
-
-export const INITIAL_FILTER: WineFilterValues = {
-  type: undefined,
-  minPrice: undefined,
-  maxPrice: undefined,
-  rating: undefined,
-};
-
-export const WINES_PER_PAGE = 6;
 
 export function useWineList() {
   const [search, setSearch] = useState("");

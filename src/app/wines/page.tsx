@@ -5,7 +5,7 @@ import {
   WINES_QUERY_KEY,
   INITIAL_FILTER,
   WINES_PER_PAGE,
-} from "./_libs/hooks/useWineList";
+} from "./_libs/winesQueryOptions";
 import type { WineListResponse } from "@/types/wines/types";
 import RecommendedWineList from "./_components/recommend/RecommendedWines";
 import WineList from "./_components/WineList";
