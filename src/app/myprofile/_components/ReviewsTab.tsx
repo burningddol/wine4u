@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMyReviews, deleteReview } from "@/app/myprofile/_libs/profileApi";
 import type { MyReviewItem } from "@/types/myprofile/types";
 import type { LoginedUser } from "@/types/auth/types";
@@ -17,6 +18,7 @@ import ReviewEditModal from "./modal/ReviewModal";
 import ReviewItem from "./ReviewItem";
 import EmptyState from "./EmptyState";
 import ReviewsTabSkeleton from "./ReviewsTabSkeleton";
+import { QUERY_KEYS } from "@/libs/query/queryKeys";
 
 export default function ReviewsTab({
   showToast,
@@ -25,37 +27,37 @@ export default function ReviewsTab({
 }) {
   const { user } = useUser();
   const router = useRouter();
-
-  const [reviews, setReviews] = useState<MyReviewItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const { setReviewCount } = useProfileTab();
-
   const { showModal } = useModal();
   const { showConfirm } = useDialog();
+
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: QUERY_KEYS.myReviews,
+    queryFn: () => getMyReviews(),
+  });
+
+  const reviews: MyReviewItem[] = data?.list ?? [];
 
   useEffect(() => {
     setReviewCount(reviews.length);
   }, [reviews.length, setReviewCount]);
 
-  const loadReviews = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getMyReviews();
-      setReviews(data.list ?? []);
-    } catch (any: any) {
-      setError(
-        any instanceof Error ? any.message : "리뷰 목록을 불러오지 못했습니다.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadReviews();
-  }, [loadReviews]);
+  const { mutate: removeReview } = useMutation({
+    mutationFn: deleteReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myReviews });
+      showToast("삭제되었습니다", "success");
+    },
+    onError: () => {
+      showToast("삭제에 실패했습니다", "error");
+    },
+  });
 
   const tastes = useMemo(() => {
     if (!user || user === "isPending") return [];
@@ -71,28 +73,26 @@ export default function ReviewsTab({
   const handleEdit = useCallback(
     (review: MyReviewItem) => {
       showModal(
-        <ReviewEditModal mode="edit" review={review} onSuccess={loadReviews} />,
+        <ReviewEditModal
+          mode="edit"
+          review={review}
+          onSuccess={() =>
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.myReviews })
+          }
+        />,
         "리뷰 수정",
         460,
         700,
       );
     },
-    [showModal, loadReviews],
+    [showModal, queryClient],
   );
 
   const handleDelete = useCallback(
     (id: number) => {
-      showConfirm("리뷰를 삭제하시겠습니까?", async () => {
-        try {
-          await deleteReview(id);
-          setReviews((prev) => prev.filter((r) => r.id !== id));
-          showToast("삭제되었습니다", "success");
-        } catch {
-          showToast("삭제에 실패했습니다", "error");
-        }
-      });
+      showConfirm("리뷰를 삭제하시겠습니까?", () => removeReview(id));
     },
-    [showToast, showConfirm],
+    [showConfirm, removeReview],
   );
 
   if (user === "isPending" || isLoading) return <ReviewsTabSkeleton />;
@@ -104,8 +104,8 @@ export default function ReviewsTab({
   if (error) {
     return (
       <div className="py-12 text-center">
-        <p className="text-error">{error}</p>
-        <Button type="button" className="mt-4" onClick={loadReviews}>
+        <p className="text-error">{error.message}</p>
+        <Button type="button" className="mt-4" onClick={() => refetch()}>
           다시 시도
         </Button>
       </div>
