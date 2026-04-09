@@ -42,6 +42,13 @@ const sfProRounded = localFont({
   display: "swap",
 });
 
+const pretendard = localFont({
+  src: "../../public/fonts/PretendardVariable.woff2",
+  variable: "--font-pretendard",
+  display: "swap",
+  weight: "100 900",
+});
+
 export const metadata: Metadata = {
   title: "WINE4U",
   description: "와인 추천 및 리뷰 서비스",
@@ -58,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${sfProDisplay.variable} ${sfProRounded.variable} flex min-h-screen flex-col antialiased`}
+        className={`${sfProDisplay.variable} ${sfProRounded.variable} ${pretendard.variable} flex min-h-screen flex-col antialiased`}
       >
         <UserProvider>
           <ToastProvider>
