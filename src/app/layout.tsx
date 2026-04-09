@@ -7,6 +7,7 @@ import { ToastProvider } from "@/components/ToastProvider";
 import { UserProvider } from "@/components/UserProvider";
 import { ModalProvider } from "@/components/ModalProvider";
 import { DialogProvider } from "@/components/DialogProvider";
+import { QueryProvider } from "@/components/QueryProvider";
 
 const sfProDisplay = localFont({
   src: [
@@ -67,17 +68,19 @@ export default function RootLayout({
       <body
         className={`${sfProDisplay.variable} ${sfProRounded.variable} ${pretendard.variable} flex min-h-screen flex-col antialiased`}
       >
-        <UserProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <DialogProvider>
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </DialogProvider>
-            </ModalProvider>
-          </ToastProvider>
-        </UserProvider>
+        <QueryProvider>
+          <UserProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <DialogProvider>
+                  <Header />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </DialogProvider>
+              </ModalProvider>
+            </ToastProvider>
+          </UserProvider>
+        </QueryProvider>
       </body>
     </html>
   );
