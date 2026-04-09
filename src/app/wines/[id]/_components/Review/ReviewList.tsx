@@ -18,17 +18,12 @@ export default function ReviewList({
   openReviewModal,
   onRefresh,
 }: ReviewListProps) {
-  const { user } = useUser() || null;
+  const { user } = useUser();
   const { showModal } = useModal();
   const { showConfirm } = useDialog();
 
   const handleEdit = (review: WineTasteAroma) => {
-    showModal(
-      <ReviewEditForm review={review} onSuccess={onRefresh} />,
-      "리뷰 수정",
-      550,
-      1000,
-    );
+    showModal(<ReviewEditForm review={review} onSuccess={onRefresh} />, "리뷰 수정");
   };
 
   const handleDelete = (id: number) => {

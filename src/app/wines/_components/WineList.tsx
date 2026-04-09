@@ -35,13 +35,7 @@ export default function WineList() {
 
   const openRegisterModal = () => {
     if (!user) return showToast("로그인이 필요합니다", "error");
-    const width = deviceType === "mobile" ? 375 : 460;
-    showModal(
-      <WineRegisterForm onSuccess={refetch} />,
-      "와인 등록",
-      width,
-      700,
-    );
+    showModal(<WineRegisterForm onSuccess={refetch} />, "와인 등록");
   };
 
   const openFilterModal = () => {
@@ -52,8 +46,6 @@ export default function WineList() {
         isDesktop={isDesktop}
       />,
       "필터",
-      375,
-      641,
     );
   };
 

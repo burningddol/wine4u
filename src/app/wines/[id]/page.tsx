@@ -38,12 +38,7 @@ export default function WinesPage({
   }, [queryClient, id]);
 
   const openReviewModal = useCallback(() => {
-    showModal(
-      <ReviewForm wine={wineData!} onRefresh={refreshReviews} />,
-      "리뷰 등록",
-      550,
-      1000,
-    );
+    showModal(<ReviewForm wine={wineData!} onRefresh={refreshReviews} />, "리뷰 등록");
   }, [showModal, wineData, refreshReviews]);
 
   if (isLoading) return <WineDetailPageSkeleton />;
