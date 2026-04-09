@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchWines } from "@/libs/api/wines/getAPIData";
-import { Wine, WineFilterValues, WineListResponse } from "@/types/wines/types";
+import { WineFilterValues } from "@/types/wines/types";
 import useDebounce from "./useDebounce";
 import useInfiniteScroll from "./useInfiniteScroll";
-import { useRouter } from "next/navigation";
+
+export const WINES_QUERY_KEY = "wines" as const;
 
 export const INITIAL_FILTER: WineFilterValues = {
   type: undefined,
@@ -12,99 +14,43 @@ export const INITIAL_FILTER: WineFilterValues = {
   rating: undefined,
 };
 
-const WINES_PER_PAGE = 6;
+export const WINES_PER_PAGE = 6;
 
-export function useWineList(initialData: WineListResponse) {
+export function useWineList() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
-  const isInitialMount = useRef(true);
-
   const [filter, setFilter] = useState<WineFilterValues>(INITIAL_FILTER);
-  const [list, setList] = useState<Wine[]>(initialData.list);
-  const [cursor, setCursor] = useState<number | null>(initialData.nextCursor);
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const router = useRouter();
+  const queryKey = [WINES_QUERY_KEY, { search: debouncedSearch, ...filter }] as const;
 
-  const hasMore = cursor !== null;
-
-  const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    try {
-      const data = await fetchWines({
+  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey,
+    queryFn: ({ pageParam }) =>
+      fetchWines({
         limit: WINES_PER_PAGE,
-        cursor: cursor ?? undefined,
+        cursor: pageParam as number | undefined,
         name: debouncedSearch || undefined,
         ...filter,
-      });
-      setList((prev) => [...prev, ...data.list]);
-      setCursor(data.nextCursor);
-    } catch (error) {
-      console.error("Failed to load more:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cursor, isLoading, hasMore, debouncedSearch, filter]);
+      }),
+    initialPageParam: undefined as number | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+  });
 
-  const observerRef = useInfiniteScroll(loadMore, hasMore);
+  const list = useMemo(
+    () => data?.pages.flatMap((page) => page.list) ?? [],
+    [data],
+  );
 
-  const refetch = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchWines({
-        limit: WINES_PER_PAGE,
-        name: debouncedSearch || undefined,
-        ...filter,
-      });
-      setList(data.list);
-      setCursor(data.nextCursor);
-      router.refresh();
-    } catch (e) {
-      console.error("Failed to refetch wine list:", e);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [debouncedSearch, filter]);
+  const loadMore = useCallback(() => {
+    if (!isFetching && hasNextPage) fetchNextPage();
+  }, [fetchNextPage, isFetching, hasNextPage]);
 
-  // 검색어/필터 변경 시 목록 새로고침 (첫 마운트 제외)
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
+  const observerRef = useInfiniteScroll(loadMore, hasNextPage);
 
-    let cancelled = false;
-    setIsLoading(true);
-
-    fetchWines({
-      limit: WINES_PER_PAGE,
-      name: debouncedSearch || undefined,
-      ...filter,
-    })
-      .then((data) => {
-        if (cancelled) return;
-        setList(data.list);
-        setCursor(data.nextCursor);
-      })
-      .catch((e) => {
-        if (cancelled) return;
-        console.error("Failed to refresh wine list:", e);
-      })
-      .finally(() => {
-        if (!cancelled) setIsLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [
-    debouncedSearch,
-    filter.type,
-    filter.minPrice,
-    filter.maxPrice,
-    filter.rating,
-  ]);
+  const refetch = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: [WINES_QUERY_KEY] });
+  }, [queryClient]);
 
   return {
     list,
@@ -112,7 +58,7 @@ export function useWineList(initialData: WineListResponse) {
     setSearch,
     filter,
     setFilter,
-    hasMore,
+    hasMore: hasNextPage,
     observerRef,
     refetch,
   };
