@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 type ScrollHeight = number;
 
@@ -9,6 +9,7 @@ export function useScrollProgress(
   scrollHeight: ScrollHeight,
 ) {
   const [progress, setProgress] = useState(0);
+  const prevProgressRef = useRef(0);
 
   const handleScroll = useCallback(() => {
     const container = containerRef.current;
@@ -20,9 +21,13 @@ export function useScrollProgress(
       (scrollHeight / 100) * windowHeight - windowHeight;
     const scrolled = -rect.top;
     const rawProgress =
-      Math.round((scrolled / totalScrollDistance) * 1000) / 1000; //3째자리에서 반올림, 성능구려져서
+      Math.round((scrolled / totalScrollDistance) * 1000) / 1000;
 
-    setProgress(Math.max(0, Math.min(1, rawProgress)));
+    const next = Math.max(0, Math.min(1, rawProgress));
+    if (next === prevProgressRef.current) return;
+
+    prevProgressRef.current = next;
+    setProgress(next);
   }, [containerRef, scrollHeight]);
 
   useEffect(() => {
