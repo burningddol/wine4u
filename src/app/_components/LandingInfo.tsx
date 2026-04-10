@@ -55,19 +55,29 @@ export default function LandingInfo({ progress, onScrollToEnd }: LandingInfoProp
           className="mt-16 h-px w-64 origin-center bg-gray-200 md:mt-20 md:w-96"
           variants={lineVariants}
         />
-        <motion.p className="mt-6 text-sm text-gray-500" variants={itemVariants}>
+        <motion.p
+          className="mt-6 text-sm text-gray-500"
+          variants={itemVariants}
+        >
           Codeit. 2026
         </motion.p>
       </motion.div>
 
-      <motion.button
-        className="pointer-events-auto absolute bottom-12 left-1/2 z-10 -translate-x-1/2 cursor-pointer text-7xl text-gray-300 transition-colors hover:text-white md:bottom-14 md:text-8xl"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+      <button
+        className="pointer-events-auto absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 cursor-pointer flex-col items-center text-gray-300 transition-colors hover:text-white md:bottom-10"
         onClick={onScrollToEnd}
       >
-        ⌵
-      </motion.button>
+        <span className="relative top-6 text-[14px] tracking-widest text-white/60 uppercase md:top-7 md:text-base">
+          scroll
+        </span>
+        <motion.span
+          className="text-7xl md:text-8xl"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          ⌵
+        </motion.span>
+      </button>
     </>
   );
 }
@@ -105,13 +115,11 @@ const charVariants: Variants = {
   hidden: {
     y: "50%",
     opacity: 0,
-
     rotateX: 40,
   },
   visible: {
     y: "0%",
     opacity: 1,
-
     rotateX: 0,
     transition: {
       duration: 1,
