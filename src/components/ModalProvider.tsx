@@ -11,17 +11,10 @@ import {
 interface ModalData {
   content: ReactNode;
   title: string;
-  width: number;
-  height: number;
 }
 
 interface ModalContextValue {
-  showModal: (
-    content: ReactNode,
-    title: string,
-    width: number,
-    height: number,
-  ) => void;
+  showModal: (content: ReactNode, title: string) => void;
   onClose: () => void;
 }
 
@@ -34,17 +27,9 @@ interface ModalProviderProps {
 export function ModalProvider({ children }: ModalProviderProps) {
   const [modal, setModal] = useState<ModalData | null>(null);
 
-  const showModal = useCallback(
-    (
-      content: ReactNode,
-      title: string,
-      width: number = 375,
-      height: number = 641,
-    ) => {
-      setModal({ content, title, width, height });
-    },
-    [],
-  );
+  const showModal = useCallback((content: ReactNode, title: string) => {
+    setModal({ content, title });
+  }, []);
 
   const onClose = useCallback(() => {
     setModal(null);
@@ -77,8 +62,7 @@ export function ModalProvider({ children }: ModalProviderProps) {
           onClick={(e) => e.target === e.currentTarget && onClose()}
         >
           <div
-            className="scrollbar-ghost relative max-h-[85vh] overflow-y-auto rounded-sm bg-white py-8 pr-6 pl-7"
-            style={{ width: modal.width, height: modal.height }}
+            className="scrollbar-ghost relative w-full max-w-[550px] max-h-[85vh] overflow-y-auto rounded-sm bg-white py-8 pr-6 pl-7"
           >
             <div className="mb-6 flex items-center justify-between">
               <h2 id="modal-title" className="text-xl font-bold">

@@ -81,8 +81,6 @@ export default function ReviewsTab({
           }
         />,
         "리뷰 수정",
-        460,
-        700,
       );
     },
     [showModal, queryClient],

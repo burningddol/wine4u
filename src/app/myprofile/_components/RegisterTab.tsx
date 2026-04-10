@@ -14,7 +14,6 @@ import { useModal } from "@/components/ModalProvider";
 import { useDialog } from "@/components/DialogProvider";
 import { useToast } from "@/components/ToastProvider";
 import { useUser } from "@/components/UserProvider";
-import { useDeviceTypeStore } from "@/libs/zustand";
 import WineRegisterForm from "@/app/wines/_components/register/WineRegisterForm";
 import RegisterEditForm from "./RegisterEditForm";
 import DropdownMenu from "./DropdownMenu";
@@ -27,7 +26,6 @@ export default function RegisterTab() {
   const { showModal } = useModal();
   const { showToast } = useToast();
   const { user } = useUser();
-  const { deviceType } = useDeviceTypeStore();
   const queryClient = useQueryClient();
   const { setWineCount } = useProfileTab();
 
@@ -44,7 +42,6 @@ export default function RegisterTab() {
 
   const openRegisterModal = () => {
     if (!user) return showToast("로그인이 필요합니다", "error");
-    const width = deviceType === "mobile" ? 375 : 460;
     showModal(
       <WineRegisterForm
         onSuccess={() =>
@@ -52,8 +49,6 @@ export default function RegisterTab() {
         }
       />,
       "와인 등록",
-      width,
-      700,
     );
   };
 
@@ -88,7 +83,6 @@ export default function RegisterTab() {
           wine={wine}
           showToast={showToast}
           onEdit={() => {
-            const width = deviceType === "mobile" ? 375 : 460;
             showModal(
               <RegisterEditForm
                 wine={wine}
@@ -97,8 +91,6 @@ export default function RegisterTab() {
                 }
               />,
               "와인 수정",
-              width,
-              700,
             );
           }}
         />
