@@ -1,19 +1,19 @@
 "use client";
 
 import { motion, Variants, Easing } from "framer-motion";
-import { SCROLL_HEIGHT_VH } from "./LandingSection";
 
 interface LandingInfoProps {
   progress: number;
+  onScrollToEnd: () => void;
 }
 
-export default function LandingInfo({ progress }: LandingInfoProps) {
+export default function LandingInfo({ progress, onScrollToEnd }: LandingInfoProps) {
   const translateY = -progress * 150;
 
   return (
     <>
       <motion.div
-        className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center pb-20"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-[70px] z-10 flex flex-col items-center justify-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -33,7 +33,7 @@ export default function LandingInfo({ progress }: LandingInfoProps) {
         </motion.p>
 
         <motion.h1
-          className="mt-12 flex text-7xl font-bold tracking-wider text-white md:mt-16 md:text-9xl"
+          className="mt-8 flex text-6xl font-bold tracking-wider text-white md:mt-16 md:text-9xl"
           variants={titleContainerVariants}
         >
           {"WINE 4 U".split("").map((char, i) => (
@@ -64,12 +64,7 @@ export default function LandingInfo({ progress }: LandingInfoProps) {
         className="pointer-events-auto absolute bottom-12 left-1/2 z-10 -translate-x-1/2 cursor-pointer text-7xl text-gray-300 transition-colors hover:text-white md:bottom-14 md:text-8xl"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
-        onClick={() => {
-          window.scrollTo({
-            top: window.innerHeight * (SCROLL_HEIGHT_VH / 100),
-            behavior: "smooth",
-          });
-        }}
+        onClick={onScrollToEnd}
       >
         ⌵
       </motion.button>
@@ -102,7 +97,6 @@ const titleContainerVariants: Variants = {
   visible: {
     transition: {
       staggerChildren: 0.08,
-      delayChildren: 0,
     },
   },
 };
