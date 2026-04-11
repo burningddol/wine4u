@@ -99,7 +99,7 @@ export default function WineList() {
         </section>
       </div>
 
-      <ChatBot user={user} />
+      <ChatBot />
     </div>
   );
 }
