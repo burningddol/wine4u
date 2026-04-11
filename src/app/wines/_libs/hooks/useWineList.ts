@@ -1,5 +1,9 @@
 import { useState, useCallback, useMemo } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import { fetchWines } from "@/libs/api/wines/getAPIData";
 import { WineFilterValues } from "@/types/wines/types";
 import useDebounce from "./useDebounce";
@@ -16,7 +20,10 @@ export function useWineList() {
   const [filter, setFilter] = useState<WineFilterValues>(INITIAL_FILTER);
   const queryClient = useQueryClient();
 
-  const queryKey = [WINES_QUERY_KEY, { search: debouncedSearch, ...filter }] as const;
+  const queryKey = [
+    WINES_QUERY_KEY,
+    { search: debouncedSearch, ...filter },
+  ] as const;
 
   const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey,
@@ -29,6 +36,7 @@ export function useWineList() {
       }),
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    placeholderData: keepPreviousData,
   });
 
   const list = useMemo(
