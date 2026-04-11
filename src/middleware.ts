@@ -21,14 +21,17 @@ export function middleware(request: NextRequest) {
   );
 
   if (isProtectedRoute && !hasValidSession) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   //auth페이지 접근 방지(이미 인증시)
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname === route);
 
   if (isAuthRoute && hasValidSession) {
-    return NextResponse.redirect(new URL("/", request.url));
+    const redirectTo = request.nextUrl.searchParams.get("redirect") || "/";
+    return NextResponse.redirect(new URL(redirectTo, request.url));
   }
 
   return NextResponse.next();

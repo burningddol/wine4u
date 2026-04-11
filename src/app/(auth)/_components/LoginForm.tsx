@@ -2,7 +2,7 @@
 
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { FocusTarget } from "./Character";
 import Image from "next/image";
 import { LoginFormValues, loginSchema } from "../_libs/authSchema";
@@ -51,10 +51,17 @@ export default function LoginForm({
 }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setUser } = useUser();
   const { showToast } = useToast();
 
+  const getRedirectPath = () => searchParams.get("redirect") || "/";
+
   const handleKakaoLogin = () => {
+    const redirect = getRedirectPath();
+    if (redirect !== "/") {
+      localStorage.setItem("kakaoRedirect", redirect);
+    }
     window.location.href = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL!;
   };
 
@@ -67,7 +74,7 @@ export default function LoginForm({
       });
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
-      router.replace("/");
+      router.replace(getRedirectPath());
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       showToast(errorMessage, "error");
@@ -89,7 +96,7 @@ export default function LoginForm({
       const data = await postLoginData(loginData);
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
-      router.replace("/");
+      router.replace(getRedirectPath());
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       console.log(errorMessage);
