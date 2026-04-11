@@ -7,18 +7,12 @@ import { parseWineBotAnswer } from "../../_libs/parseWineBotAnswer";
 import { AnimatePresence, motion } from "framer-motion";
 import ChatMessages, { ChatMessage } from "./ChatMessages";
 import ChatInput from "./ChatInput";
-import { LoginedUser } from "@/types/auth/types";
-
-interface ChatBotProps {
-  user: LoginedUser | null | "isPending";
-}
-
 const INITIAL_MESSAGE: ChatMessage = {
   role: "bot",
   content: "안녕하세요! 와인 추천을 도와드릴게요. 어떤 와인을 찾고 계신가요?",
 };
 
-export default function ChatBot({ user }: ChatBotProps) {
+export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
@@ -32,14 +26,6 @@ export default function ChatBot({ user }: ChatBotProps) {
     setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
     setInput("");
     setIsLoading(true);
-
-    if (!user || user === "isPending") {
-      setIsLoading(false);
-      return setMessages((prev) => [
-        ...prev,
-        { role: "bot", content: "해당 기능은 로그인이 필요합니다." },
-      ]);
-    }
 
     try {
       const answer = await postWineBotMessage(trimmed);
