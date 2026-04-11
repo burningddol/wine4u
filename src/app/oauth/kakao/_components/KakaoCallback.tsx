@@ -40,7 +40,9 @@ export default function KakaoCallback() {
         });
         setUser(data.user);
         showToast("카카오 로그인에 성공했습니다!", "success");
-        router.replace("/");
+        const redirectPath = localStorage.getItem("kakaoRedirect") || "/";
+        localStorage.removeItem("kakaoRedirect");
+        router.replace(redirectPath);
       } catch (e: any) {
         const errorMessage =
           e.response?.data?.message || "카카오 로그인에 실패했습니다.";
