@@ -84,8 +84,20 @@ export async function postWine(wine: PostWineValue) {
   }
 }
 
+function extractWineType(message: string): WineType | undefined {
+  if (/레드|red|까베르네|메를로|피노\s?누아|시라|진판델/i.test(message))
+    return "RED";
+  if (/화이트|white|샤르도네|소비뇽\s?블랑|리슬링|피노\s?그리/i.test(message))
+    return "WHITE";
+  if (/스파클링|sparkling|샴페인|프로세코|카바|버블/i.test(message))
+    return "SPARKLING";
+
+  return undefined;
+}
+
 export async function postWineBotMessage(message: string): Promise<string> {
-  const wineData = await fetchWines({ limit: 10000 });
+  const type = extractWineType(message);
+  const wineData = await fetchWines({ limit: 100, type });
   const wineList = wineData.list.map((w) => ({ id: w.id, name: w.name }));
   const res = await axios.post("/winebot", { wineList, message });
   return res.data.answer;
