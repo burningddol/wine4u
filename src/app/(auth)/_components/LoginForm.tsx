@@ -2,7 +2,7 @@
 
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { FocusTarget } from "./Character";
 import Image from "next/image";
 import { LoginFormValues, loginSchema } from "../_libs/authSchema";
@@ -50,7 +50,6 @@ export default function LoginForm({
   onTypingChange,
 }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { setUser } = useUser();
   const { showToast } = useToast();
@@ -74,7 +73,7 @@ export default function LoginForm({
       });
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
-      router.replace(getRedirectPath());
+      window.location.replace(getRedirectPath());
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       showToast(errorMessage, "error");
@@ -96,7 +95,7 @@ export default function LoginForm({
       const data = await postLoginData(loginData);
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
-      router.replace(getRedirectPath());
+      window.location.replace(getRedirectPath());
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       console.log(errorMessage);
