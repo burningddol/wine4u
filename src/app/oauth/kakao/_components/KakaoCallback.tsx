@@ -40,7 +40,7 @@ export default function KakaoCallback() {
         });
         setUser(data.user);
         showToast("카카오 로그인에 성공했습니다!", "success");
-        const redirectPath = localStorage.getItem("kakaoRedirect") || "/";
+        const redirectPath = localStorage.getItem("kakaoRedirect") || "/wines";
         localStorage.removeItem("kakaoRedirect");
         router.replace(redirectPath);
         router.refresh();

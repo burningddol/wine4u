@@ -30,7 +30,7 @@ export function middleware(request: NextRequest) {
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname === route);
 
   if (isAuthRoute && hasValidSession) {
-    const redirectTo = request.nextUrl.searchParams.get("redirect") || "/";
+    const redirectTo = request.nextUrl.searchParams.get("redirect") || "/wines";
     return NextResponse.redirect(new URL(redirectTo, request.url));
   }
 

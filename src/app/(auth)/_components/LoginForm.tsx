@@ -55,11 +55,11 @@ export default function LoginForm({
   const { setUser } = useUser();
   const { showToast } = useToast();
 
-  const getRedirectPath = () => searchParams.get("redirect") || "/";
+  const getRedirectPath = () => searchParams.get("redirect") || "/wines";
 
   const handleKakaoLogin = () => {
-    const redirect = getRedirectPath();
-    if (redirect !== "/") {
+    const redirect = searchParams.get("redirect");
+    if (redirect) {
       localStorage.setItem("kakaoRedirect", redirect);
     }
     window.location.href = process.env.NEXT_PUBLIC_KAKAO_AUTH_URL!;
