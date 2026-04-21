@@ -6,7 +6,7 @@ interface DropDownProps {
   children: ReactNode;
 }
 
-export default function dropDown({ children }: DropDownProps) {
+export default function DropDown({ children }: DropDownProps) {
   const [isOpen, SetIsOpen] = useState(false);
   return (
     <div className="flex w-full flex-col items-center">
