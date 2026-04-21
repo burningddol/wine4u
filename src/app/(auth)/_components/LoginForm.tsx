@@ -75,6 +75,7 @@ export default function LoginForm({
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
       router.replace(getRedirectPath());
+      router.refresh();
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       showToast(errorMessage, "error");
@@ -97,6 +98,7 @@ export default function LoginForm({
       setUser(data.user);
       showToast("로그인에 성공했습니다", "success");
       router.replace(getRedirectPath());
+      router.refresh();
     } catch (e: any) {
       const errorMessage = e.response?.data?.message || "로그인에 실패했습니다";
       console.log(errorMessage);
