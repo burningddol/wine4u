@@ -43,6 +43,7 @@ export default function KakaoCallback() {
         const redirectPath = localStorage.getItem("kakaoRedirect") || "/";
         localStorage.removeItem("kakaoRedirect");
         router.replace(redirectPath);
+        router.refresh();
       } catch (e: any) {
         const errorMessage =
           e.response?.data?.message || "카카오 로그인에 실패했습니다.";
