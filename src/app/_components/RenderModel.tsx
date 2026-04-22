@@ -1,11 +1,14 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei';
 import { Suspense } from 'react';
 import LightObject from './LightObject';
 import { WineModel } from './WineModel';
 
 import { DeviceType } from '@/libs/zustand';
+
+useGLTF.preload('/main/opti_wine_objects.glb');
 
 interface RenderModelProps {
   deviceType: DeviceType;
