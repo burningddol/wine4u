@@ -1,0 +1,1290 @@
+/* ================================================================
+   Wine 4 U — README banner shared styles
+   Target viewport: 1460 x 820 (taken by Playwright)
+   Phone content matches the real app UI (monochrome + near-black
+   primary, per tokens.css).
+================================================================ */
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  /* Banner-only decorative palette */
+  --wine-ink: #2A0710;
+  --wine-deep: #3D0E14;
+  --wine-main: #6B1E2D;
+  --wine-cream: #FAF3E7;
+  --wine-cream-2: #EFDCC4;
+  --wine-gold: #C9A96E;
+  --wine-gold-soft: #D9BE8A;
+
+  /* App tokens — mirror src/styles/tokens.css */
+  --app-primary: #1A1815;     /* hsl(30 4% 10%) ≈ near-black */
+  --app-header: #101318;      /* Header dark nav */
+  --app-bg: #ffffff;
+  --app-gray-100: #FAFAFA;
+  --app-gray-300: #D1D1D1;
+  --app-gray-400: #A6A6A6;
+  --app-gray-600: #8C8C8C;
+  --app-gray-800: #474644;
+  --app-border: rgba(20, 20, 20, 0.1);
+  --app-page-bg: #F2F2F2;
+  --kakao-yellow: #FEE500;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  font-family: "Pretendard", "Noto Serif KR", -apple-system, system-ui, sans-serif;
+  color: #141414;
+  background: #fff;
+}
+
+.banner {
+  width: 1460px;
+  height: 820px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 100px;
+  gap: 40px;
+}
+
+/* Outer banner — cream theme (warm neutral) */
+.banner.theme-cream {
+  background:
+    radial-gradient(1200px 700px at 0% 100%, rgba(201, 169, 110, 0.12), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(107, 30, 45, 0.08), transparent 60%),
+    linear-gradient(135deg, #FAF3E7 0%, #EFDCC4 100%);
+  color: var(--wine-ink);
+}
+
+/* Outer banner — dark wine theme */
+.banner.theme-wine {
+  background:
+    radial-gradient(900px 600px at 100% 100%, rgba(201, 169, 110, 0.18), transparent 55%),
+    radial-gradient(1000px 700px at 0% 0%, rgba(140, 43, 59, 0.45), transparent 60%),
+    linear-gradient(135deg, #2A0710 0%, #3D0E14 55%, #6B1E2D 100%);
+  color: var(--wine-cream);
+}
+
+/* ========== Left copy column ========== */
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 520px;
+  z-index: 2;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: "Inter", "Pretendard", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.theme-cream .tag {
+  background: rgba(107, 30, 45, 0.08);
+  color: var(--wine-main);
+  border: 1px solid rgba(107, 30, 45, 0.18);
+}
+
+.theme-wine .tag {
+  background: rgba(201, 169, 110, 0.14);
+  color: var(--wine-gold-soft);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+}
+
+.title {
+  font-family: "Noto Serif KR", "Pretendard", serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.theme-cream .title { color: var(--wine-ink); }
+.theme-wine .title { color: var(--wine-cream); }
+.theme-wine .title .accent { color: var(--wine-gold); }
+.theme-cream .title .accent { color: var(--wine-main); }
+
+.lead {
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 500;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.theme-cream .lead { color: #5B5552; }
+.theme-wine .lead { color: rgba(250, 243, 231, 0.75); }
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  list-style: none;
+}
+
+.bullets li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.bullets li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.theme-cream .bullets li { color: var(--wine-ink); }
+.theme-cream .bullets li::before { background: var(--wine-main); }
+.theme-wine .bullets li { color: var(--wine-cream); }
+.theme-wine .bullets li::before { background: var(--wine-gold); }
+
+.bullets li strong { font-weight: 700; }
+.theme-cream .bullets li strong { color: var(--wine-main); }
+.theme-wine .bullets li strong { color: var(--wine-gold); }
+
+/* Tech chips */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.theme-cream .chip {
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--wine-ink);
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.theme-wine .chip {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wine-cream);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+/* ========== Right phone column ========== */
+.phone-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 2;
+}
+
+.phone {
+  position: relative;
+  width: 340px;
+  height: 700px;
+  border-radius: 48px;
+  background: #0B0D12;
+  padding: 10px;
+  box-shadow:
+    0 40px 100px rgba(42, 7, 16, 0.35),
+    0 20px 40px rgba(42, 7, 16, 0.25),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.06);
+  transform: rotate(-2deg);
+}
+
+.phone::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 28px;
+  background: #0B0D12;
+  border-radius: 999px;
+  z-index: 10;
+}
+
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 38px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* status bar */
+.status-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  padding: 18px 36px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 5;
+}
+.status-bar .right {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Decorative glow */
+.grape-decor {
+  position: absolute;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.theme-cream .grape-decor {
+  background: radial-gradient(circle, rgba(107, 30, 45, 0.22), transparent 70%);
+  top: -120px; right: -80px;
+}
+.theme-wine .grape-decor {
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.25), transparent 70%);
+  bottom: -140px; left: -100px;
+}
+
+/* ================================================================
+   Shared app-scoped pieces (header / logos / AI FAB)
+   Everything below lives INSIDE a .phone-screen and mirrors the
+   actual Next.js app's rendered markup.
+================================================================ */
+
+/* App header bar (#101318 with WINE logo + 로그인 text) — used on
+   top of non-auth pages. */
+.app-header-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--app-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 4;
+  padding-top: 14px;
+  padding-bottom: 0;
+}
+
+.wine-wordmark {
+  /* actual /logo.svg 52x15 scaled up a touch */
+  width: 46px;
+  height: 13px;
+  display: inline-block;
+}
+
+.app-header-bar .login-link {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Floating "AI" FAB — bg-primary round button */
+.ai-fab {
+  position: absolute;
+  right: 14px;
+  bottom: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--app-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 6;
+}
+
+/* ================================================================
+   Landing screen — mirrors LandingSection (#101318) + LandingInfo
+================================================================ */
+.screen-landing {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 50% 55%, rgba(255, 255, 255, 0.08), transparent 50%),
+    #101318;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.screen-landing .bottle-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.screen-landing .landing-copy {
+  position: absolute;
+  inset: 52px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.screen-landing .sub-top {
+  font-size: 13px;
+  color: var(--app-gray-400);
+  font-weight: 500;
+}
+.screen-landing .sub-main {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.screen-landing .big-title {
+  margin-top: 44px;
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  letter-spacing: 0.16em;
+  color: #fff;
+  text-shadow:
+    0 0 60px rgba(255, 255, 255, 0.45),
+    0 0 30px rgba(255, 255, 255, 0.25);
+  text-align: center;
+}
+
+.screen-landing .divider {
+  margin: 60px auto 0;
+  width: 64%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+.screen-landing .year {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: "Inter", sans-serif;
+}
+
+.screen-landing .scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  color: rgba(255, 255, 255, 0.55);
+  z-index: 3;
+}
+.screen-landing .scroll-hint .chev {
+  font-size: 28px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ================================================================
+   Wines screen — mirrors /wines (WineSearchBar + Recommended +
+   WineList grid + ChatBot FAB/panel)
+================================================================ */
+.screen-wines {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  color: #141414;
+}
+
+/* Light marble hero band — mainBG.png is a near-white marble texture.
+   Sits behind header; covers top portion of page where Recommended
+   carousel is rendered. */
+.wines-hero {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 328px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 100%),
+    radial-gradient(400px 200px at 20% 20%, rgba(0,0,0,0.045), transparent 60%),
+    radial-gradient(300px 240px at 85% 80%, rgba(0,0,0,0.035), transparent 60%),
+    linear-gradient(180deg, #F6F3EF 0%, #EFECE7 100%);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  z-index: 0;
+}
+
+/* "이번 달 추천 와인" — inside marble hero, below header */
+.wines-reco-title {
+  position: absolute;
+  top: 76px;
+  left: 22px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #141414;
+  z-index: 2;
+}
+
+/* Carousel — transparent items, 2 visible on mobile */
+.wines-reco-row {
+  position: absolute;
+  top: 112px;
+  left: 22px; right: 22px;
+  display: flex;
+  gap: 8px;
+  overflow: hidden;
+  z-index: 2;
+  height: 200px;
+}
+.reco-cell {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  gap: 6px;
+}
+.reco-cell .img-slot {
+  width: 100%;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.reco-cell .name {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.3;
+  color: #141414;
+  max-width: 120px;
+}
+.reco-cell .region {
+  font-size: 10px;
+  color: var(--app-gray-600);
+}
+
+/* Search bar — below marble, in white area. rounded-sm (4px), border gray-300 */
+.wines-search {
+  position: absolute;
+  top: 350px;
+  left: 14px;
+  right: 14px;
+  height: 42px;
+  background: #fff;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  z-index: 2;
+}
+.wines-search .ic {
+  width: 15px;
+  height: 15px;
+  border: 1.6px solid var(--app-gray-600);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+.wines-search .ic::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 1.6px;
+  background: var(--app-gray-600);
+  bottom: -3px; right: -4px;
+  transform: rotate(45deg);
+}
+.wines-search .ph {
+  font-size: 12px;
+  color: var(--app-gray-600);
+}
+
+/* Filter icon button + Register black button row (mobile only — isNotDesktop) */
+.wines-toolbar {
+  position: absolute;
+  top: 410px;
+  left: 14px; right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+.wines-toolbar .filter-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wines-toolbar .filter-btn svg { display: block; }
+.wines-toolbar .register-btn {
+  height: 38px;
+  padding: 0 20px;
+  background: var(--app-primary);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Wine grid (WineCard layout: gray-100 square + meta below) */
+.wines-grid {
+  position: absolute;
+  top: 466px;
+  left: 14px; right: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  z-index: 2;
+}
+
+.wcard { display: flex; flex-direction: column; }
+.wcard .img-box {
+  height: 140px;
+  background: var(--app-gray-100);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px 0 0;
+}
+.wcard .meta-row {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wcard .stars {
+  color: #141414;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.wcard .reviews {
+  font-size: 9px;
+  color: var(--app-gray-600);
+}
+.wcard .wname {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #141414;
+  line-height: 1.25;
+}
+.wcard .wregion {
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--app-gray-400);
+}
+
+/* Reusable CSS wine bottle (narrow neck + body) */
+.bottle {
+  position: relative;
+  width: 28px;
+  height: 118px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.bottle .neck {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 34px;
+  background: #0C0606;
+  border-radius: 2px 2px 1px 1px;
+}
+.bottle .neck::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  height: 6px;
+  background: #050202;
+  border-radius: 2px 2px 0 0;
+}
+.bottle .body {
+  width: 28px;
+  height: 90px;
+  border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(180deg, #5A0F1A 0%, #2F070D 100%);
+  position: relative;
+}
+.bottle .body::after {
+  /* label */
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: 3px; right: 3px;
+  height: 28px;
+  background: #F3EEDF;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+}
+.bottle.white .body { background: linear-gradient(180deg, #C9A96E 0%, #8F7540 100%); }
+.bottle.spark .body { background: linear-gradient(180deg, #2C1A0E 0%, #0C0705 100%); }
+
+/* Smaller variants */
+.bottle.sm { width: 22px; height: 96px; }
+.bottle.sm .neck { width: 7px; height: 28px; }
+.bottle.sm .body { width: 22px; height: 72px; }
+.bottle.sm .body::after { top: 25px; left: 2px; right: 2px; height: 22px; }
+
+.bottle.reco { width: 18px; height: 76px; }
+.bottle.reco .neck { width: 6px; height: 22px; }
+.bottle.reco .body { width: 18px; height: 58px; }
+.bottle.reco .body::after { top: 20px; left: 2px; right: 2px; height: 16px; }
+
+/* ChatBot panel (350x500 in app → ~210x310 in 340px phone) */
+.chat-panel {
+  position: absolute;
+  right: 14px;
+  bottom: 70px;
+  width: 208px;
+  height: 270px;
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 7;
+}
+.chat-panel .chat-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 12px;
+  font-weight: 700;
+  color: #141414;
+}
+.chat-panel .chat-body {
+  flex: 1;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+.bubble {
+  max-width: 82%;
+  padding: 6px 9px;
+  border-radius: 4px;
+  font-size: 9.5px;
+  line-height: 1.45;
+}
+.bubble.bot {
+  background: var(--app-gray-100);
+  color: var(--app-gray-800);
+  align-self: flex-start;
+}
+.bubble.user {
+  background: var(--app-primary);
+  color: #fff;
+  align-self: flex-end;
+}
+.wine-reco-card {
+  max-width: 78%;
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wine-reco-card .img {
+  height: 58px;
+  background: var(--app-gray-100);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: 6px;
+}
+.wine-reco-card .body {
+  padding: 6px 8px;
+}
+.wine-reco-card .body .nm {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--app-gray-800);
+  line-height: 1.3;
+}
+.wine-reco-card .body .btn {
+  margin-top: 5px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--app-primary);
+  color: #fff;
+  font-size: 8.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat-panel .chat-input {
+  border-top: 1px solid var(--app-border);
+  padding: 8px 10px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.chat-panel .chat-input .inp {
+  flex: 1;
+  height: 22px;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 3px;
+  font-size: 9px;
+  color: var(--app-gray-400);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+.chat-panel .chat-input .send {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background: var(--app-primary);
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================================================================
+   Login screen — mirrors AuthLayout + LoginForm
+   - outer bg #f2f2f2
+   - white card with shadow-soft rounded-md centered
+   - WINE logo (black), 2 inputs, bg-primary "로그인", kakao, guest,
+     bottom link
+================================================================ */
+.screen-login {
+  width: 100%;
+  height: 100%;
+  background: var(--app-page-bg);
+  padding: 44px 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 290px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 28px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.login-logo {
+  width: 84px;
+  height: 24px;
+  display: inline-block;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.login-form .field { display: flex; flex-direction: column; gap: 6px; }
+.login-form .field .lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--app-gray-800);
+}
+.login-form .field .input {
+  height: 34px;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 4px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: var(--app-gray-400);
+}
+.login-form .field .input.filled {
+  color: #141414;
+  font-weight: 500;
+}
+.login-form .field .input.focus {
+  border: 1.5px solid var(--app-primary);
+  box-shadow: 0 0 0 3px rgba(26, 24, 21, 0.12);
+}
+
+.btn-primary {
+  margin-top: 4px;
+  height: 34px;
+  background: var(--app-primary);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-kakao, .btn-guest {
+  height: 34px;
+  border-radius: 4px;
+  background: #fff;
+  border: 1px solid var(--app-gray-300);
+  color: #141414;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-kakao .kakao-ic {
+  width: 14px; height: 14px;
+  background: var(--kakao-yellow);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #3C1E1E;
+  font-weight: 700;
+}
+
+.login-bottom {
+  font-size: 10px;
+  color: var(--app-gray-800);
+  margin-top: 4px;
+}
+.login-bottom a {
+  color: #1b18fc;
+  text-decoration: underline;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+/* ================================================================
+   Filter modal — mirrors WineFilter mobile modal with TypeFilter +
+   PriceRangeSlider + RatingFilter + reset/apply buttons
+================================================================ */
+.filter-modal {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 18px 18px;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.12);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.filter-modal .fm-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #141414;
+}
+.filter-section .fs-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #141414;
+  margin-bottom: 10px;
+}
+.type-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--app-gray-300);
+  background: #fff;
+  font-size: 11px;
+  color: #141414;
+  font-weight: 500;
+}
+.type-pill .pi {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.type-pill .pi.red { background: radial-gradient(circle at 30% 30%, #8A1F2A, #2F070D); }
+.type-pill .pi.white { background: radial-gradient(circle at 30% 30%, #E7D798, #8F7540); }
+.type-pill .pi.spark { background: radial-gradient(circle at 30% 30%, #4A2E1A, #0E0806); }
+.type-pill.selected {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Fake price slider (visual-only) */
+.price-slider {
+  height: 6px;
+  background: var(--app-gray-100);
+  border-radius: 999px;
+  position: relative;
+  margin: 12px 4px 8px;
+}
+.price-slider .fill {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 35%;
+  height: 100%;
+  background: #141414;
+  border-radius: 999px;
+}
+.price-slider .thumb {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #141414;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.price-slider .thumb.left { left: 20%; }
+.price-slider .thumb.right { left: 65%; }
+.price-range-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--app-gray-600);
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.rating-filter {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--app-gray-800);
+}
+.rating-filter .rf-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.rating-filter .rf-chip.on {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.filter-actions .fa-reset {
+  flex: 1;
+  height: 36px;
+  border: 1px solid var(--app-gray-300);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--app-gray-800);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.filter-actions .fa-apply {
+  flex: 2;
+  height: 36px;
+  background: #000;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal backdrop dim (wines page behind the filter) */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 7;
+}
+
+/* ================================================================
+   Wine detail page — mirrors /wines/[id] layout
+================================================================ */
+.screen-detail {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  color: #141414;
+}
+
+.detail-hero {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 260px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%),
+    radial-gradient(400px 220px at 30% 30%, rgba(0,0,0,0.05), transparent 60%),
+    linear-gradient(180deg, #F6F3EF 0%, #EFECE7 100%);
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  z-index: 0;
+}
+.detail-bottle {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.detail-info {
+  position: absolute;
+  top: 270px;
+  left: 22px;
+  right: 22px;
+  z-index: 2;
+}
+.detail-info .stars-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.detail-info .stars-row .st { font-size: 12px; color: var(--app-gray-800); letter-spacing: 1px; }
+.detail-info .stars-row .rev { font-size: 11px; color: var(--app-gray-600); }
+.detail-info .dname {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #141414;
+  line-height: 1.2;
+}
+.detail-info .dregion {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--app-gray-600);
+}
+.detail-info .dprice {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: 800;
+  color: #141414;
+}
+
+.taste-section {
+  position: absolute;
+  top: 362px;
+  left: 22px;
+  right: 22px;
+  z-index: 2;
+}
+.taste-section .ts-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.taste-section .ts-head .h {
+  font-size: 13px;
+  font-weight: 800;
+  color: #141414;
+}
+.taste-section .ts-head .s {
+  font-size: 10px;
+  color: var(--app-gray-600);
+}
+.taste-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.taste-bar .lbl {
+  width: 42px;
+  height: 22px;
+  background: var(--app-page-bg);
+  color: #8C8C8B;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.taste-bar .pills {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+}
+.taste-bar .pills .seg {
+  flex: 1;
+  height: 10px;
+  background: #EFECE7;
+  border-radius: 0;
+}
+.taste-bar .pills .seg:first-child { border-radius: 999px 0 0 999px; }
+.taste-bar .pills .seg:last-child { border-radius: 0 999px 999px 0; }
+.taste-bar .pills .seg.on { background: #333236; }
+.taste-bar .txt {
+  min-width: 44px;
+  font-size: 10px;
+  color: #141414;
+  text-align: right;
+}
+
+.aroma-section {
+  position: absolute;
+  bottom: 16px;
+  left: 22px;
+  right: 22px;
+  z-index: 2;
+}
+.aroma-section .as-head {
+  font-size: 13px;
+  font-weight: 800;
+  color: #141414;
+  margin-bottom: 10px;
+}
+.aroma-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.aroma-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.aroma-cell .thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.aroma-cell .thumb.cherry { background: linear-gradient(135deg, #8A1F2A, #4A0E14); }
+.aroma-cell .thumb.berry { background: linear-gradient(135deg, #3D1B3F, #1A0A1C); }
+.aroma-cell .thumb.oak { background: linear-gradient(135deg, #6B4A2B, #3D2814); }
+.aroma-cell .thumb.spice { background: linear-gradient(135deg, #6B2A2A, #3D1414); }
+.aroma-cell .label {
+  font-size: 10px;
+  color: #141414;
+  font-weight: 600;
+}
+
+/* Cookie flow overlay (security banner) */
+.cookie-flow {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  background: #101318;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+}
+.cookie-flow .cf-title {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--wine-gold);
+  text-transform: uppercase;
+}
+.cookie-flow .cf-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Inter", monospace;
+  font-size: 8.5px;
+  color: rgba(255,255,255,0.88);
+}
+.cookie-flow .cf-key {
+  background: var(--wine-gold);
+  color: #141414;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+}
