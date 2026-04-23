@@ -1,9 +1,32 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, RefObject } from "react";
 
 const FOCUSABLE_SELECTORS =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-export function useFocusTrap(isOpen: boolean, onClose: () => void) {
+let scrollLockCount = 0;
+let savedBodyOverflow = "";
+
+function lockBodyScroll(): void {
+  if (scrollLockCount === 0) {
+    savedBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  }
+  scrollLockCount += 1;
+}
+
+function unlockBodyScroll(): void {
+  scrollLockCount -= 1;
+  if (scrollLockCount === 0) {
+    document.body.style.overflow = savedBodyOverflow;
+  }
+}
+
+interface UseFocusTrapResult {
+  panelRef: RefObject<HTMLDivElement | null>;
+  saveTrigger: () => void;
+}
+
+export function useFocusTrap(isOpen: boolean, onClose: () => void): UseFocusTrapResult {
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<Element | null>(null);
 
@@ -14,8 +37,7 @@ export function useFocusTrap(isOpen: boolean, onClose: () => void) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    lockBodyScroll();
 
     const focusable = panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS);
     (focusable?.[0] ?? panelRef.current)?.focus();
@@ -45,7 +67,7 @@ export function useFocusTrap(isOpen: boolean, onClose: () => void) {
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
+      unlockBodyScroll();
       (triggerRef.current as HTMLElement | null)?.focus();
     };
   }, [isOpen, onClose]);
