@@ -2,12 +2,12 @@
 import {
   createContext,
   useContext,
-  useState,
   useCallback,
+  useMemo,
   ReactNode,
 } from "react";
-import { createPortal } from "react-dom";
-import { useFocusTrap } from "@/libs/hooks/useFocusTrap";
+import { Overlay } from "@/components/overlay/Overlay";
+import { useOverlay } from "@/libs/hooks/useOverlay";
 
 interface ModalData {
   content: ReactNode;
@@ -25,57 +25,47 @@ interface ModalProviderProps {
   children: ReactNode;
 }
 
-export function ModalProvider({ children }: ModalProviderProps) {
-  const [modal, setModal] = useState<ModalData | null>(null);
-
-  const onClose = useCallback(() => setModal(null), []);
-
-  const { panelRef, saveTrigger } = useFocusTrap(modal !== null, onClose);
+export function ModalProvider({ children }: ModalProviderProps): ReactNode {
+  const { state: modal, open, close, panelRef } = useOverlay<ModalData>();
 
   const showModal = useCallback(
-    (content: ReactNode, title: string) => {
-      saveTrigger();
-      setModal({ content, title });
-    },
-    [saveTrigger],
+    (content: ReactNode, title: string) => open({ content, title }),
+    [open],
+  );
+
+  const value = useMemo<ModalContextValue>(
+    () => ({ showModal, onClose: close }),
+    [showModal, close],
   );
 
   return (
-    <ModalContext.Provider value={{ showModal, onClose }}>
+    <ModalContext.Provider value={value}>
       <div className="contents" inert={modal !== null}>
         {children}
       </div>
-      {modal &&
-        createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-            onClick={(e) => e.target === e.currentTarget && onClose()}
-          >
-            <div
-              ref={panelRef}
-              tabIndex={-1}
-              className="scrollbar-ghost relative w-full max-w-[550px] max-h-[85vh] overflow-y-auto rounded-sm bg-white py-8 pr-6 pl-7"
+      {modal && (
+        <Overlay
+          role="dialog"
+          labelledBy="modal-title"
+          panelRef={panelRef}
+          panelClassName="scrollbar-ghost relative w-full max-w-[550px] max-h-[85vh] overflow-y-auto rounded-sm bg-white py-8 pr-6 pl-7"
+          onClose={close}
+        >
+          <div className="mb-6 flex items-center justify-between">
+            <h2 id="modal-title" className="text-xl font-bold">
+              {modal.title}
+            </h2>
+            <button
+              onClick={close}
+              aria-label="닫기"
+              className="cursor-pointer text-2xl text-gray-600 hover:text-black"
             >
-              <div className="mb-6 flex items-center justify-between">
-                <h2 id="modal-title" className="text-xl font-bold">
-                  {modal.title}
-                </h2>
-                <button
-                  onClick={onClose}
-                  aria-label="닫기"
-                  className="cursor-pointer text-2xl text-gray-600 hover:text-black"
-                >
-                  ✕
-                </button>
-              </div>
-              {modal.content}
-            </div>
-          </div>,
-          document.body,
-        )}
+              ✕
+            </button>
+          </div>
+          {modal.content}
+        </Overlay>
+      )}
     </ModalContext.Provider>
   );
 }
